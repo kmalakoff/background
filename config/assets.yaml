@@ -1,0 +1,6 @@
+gzip_assets: off
+compress_assets: on
+
+javascripts:
+  'worker_queue.min':
+    - build/worker_queue.js

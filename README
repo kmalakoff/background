@@ -1,0 +1,70 @@
+This library provides a sequentially-processed worker queue for allowing work to be done in the background in a JavaScript application.
+
+This library is based on the following project: https://github.com/infojunkie/WorkerQueue. The enhancements are:
+
+1) Allow the caller to provide set up and clean up functions:
+
+  a) Worker without setup and cleanup:
+    worker_queue = new WQWorkerQueue(10) # timeslice of 10ms per iteration
+    worker_queue.push(
+      null, 
+      (-> 
+        return true # done
+      )
+    )
+
+  b) Worker with setup and cleanup:
+    some_var = null
+    worker_queue = new WQWorkerQueue(10) # timeslice of 10ms per iteration
+    worker_queue.push(
+      (->some_var=1), 
+      (-> 
+        return true # done
+      ),
+      ((was_completed)->some_var=null)
+    )
+
+2) The addition of an array iterator 
+
+  a) Iterate by array entry per timeslice
+  
+    some_data = [1, 2, 3, 4]
+    iterator = null
+    worker_queue = new WQWorkerQueue(10) # timeslice of 10ms per iteration
+    worker_queue.push(
+      (-> 
+        iterator = new WQArrayIterator(some_data, 2)     # process 2 entries per worker timeslice
+      ), 
+      (-> 
+        return iterator.next_by_entry((entry) ->
+          return false # not done early
+        )
+      ),
+    )
+
+    a) Iterate by array slice per timeslice
+    some_data = [1, 2, 3, 4]
+    iterator = null
+    worker_queue = new WQWorkerQueue(10) # timeslice of 10ms per iteration
+    worker_queue.push(
+      (-> 
+        iterator = new WQArrayIterator(some_data, 2)     # process 2 entries per worker timeslice
+      ), 
+      (-> 
+        return iterator.next_by_slice((entries) ->
+          return false # not done early
+        )
+      ),
+    )
+
+3) Allow the caller to destroy the queue (for example, if you have a single page app)
+  was_destroyed = false
+  worker_queue = new WQWorkerQueue(10) # timeslice of 10ms per iteration
+  worker_queue.push(
+    null, 
+    (-> 
+      return false # not done
+    ),
+    ((was_completed)->was_destroyed=(was_completed==false))
+  )
+  worker_queue.destroy(); worker_queue = null
