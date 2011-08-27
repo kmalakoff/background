@@ -1,34 +1,66 @@
-This library provides a sequentially-processed worker queue for allowing work to be done in the background in a JavaScript application.
+ _                _                                   _    _     
+| |__   __ _  ___| | ____ _ _ __ ___  _   _ _ __   __| |  (_)___ 
+| '_ \ / _` |/ __| |/ / _` | '__/ _ \| | | | '_ \ / _` |  | / __|
+| |_) | (_| | (__|   < (_| | | | (_) | |_| | | | | (_| |_ | \__ \
+|_.__/ \__,_|\___|_|\_\__, |_|  \___/ \__,_|_| |_|\__,_(_)/ |___/
+                      |___/                             |__/
+                      
+                      
+This library provides a sequentially-processed job queue and job list for allowing work to be done in the background in a JavaScript application.
 
 You can get the library here:
-  - Development version: https://github.com/kmalakoff/worker_queue.js/blob/master/build/worker_queue.js
-  - Production version: https://github.com/kmalakoff/worker_queue.js/blob/master/build/worker_queue.min.js
+  - Development version: https://github.com/kmalakoff/background/blob/master/build/background.js
+  - Production version: https://github.com/kmalakoff/background/blob/master/build/background.min.js
 
-Please look at the example for usage examples: https://github.com/kmalakoff/worker_queue.js/blob/master/examples/src/example.coffee
+The library is composed of the following classes:
+
+  1) BGJobQueue - a sequentially-processed background job queue. When you 'push' a job on a queue, it is run on each 'tick' until it signals it is finished then the job that was added immediately after is run on the next 'tick' until it has completed...and so on. 
+
+  2) BGJobList - a sequentially-processed background job list. When you 'append' a job on a list, it and the rest of the jobs in the list are run on each 'tick' in the order they were appended until they signal that they are done.
+
+  3) BGArrayIterator - a helper to iterate over a subset of an array on each 'tick'. You can either process the subset per iteration:
+    a) callback per array item - by calling 'next_by_item' with a function of the form (item) -> do_something
+    a) callback per array slice - by calling 'next_by_slice' with a function of the form (slice) -> do_something
+
+  4) BGJob - a job class which requires a run_fn and can optionally be provided an init_fn and/or a destroy_fn. 
+
+Other notes:
+
+  1) You can manually call 'tick' instead of waiting for the background timer
+  2) You can 'destroy' a job queue or list and it will cancel all of the jobs 
+  3) You can 'push' or 'append' a job without using the BGJob class by just passing the functions directly. In other words,
+    'my_list.append(null, ->)' is equivalent to 'my_list.append(new BGJob(null, ->))'. 
 
 
-This library is based on the following project: https://github.com/infojunkie/WorkerQueue. The enhancements are:
+Please look at the provided examples and specs for sample code: 
+  - https://github.com/kmalakoff/background/blob/master/examples/src/example_queue.coffee
+  - https://github.com/kmalakoff/background/blob/master/examples/src/example_list.coffee
+  - https://github.com/kmalakoff/background/blob/master/spec/javascripts/src/tests
+
+
+***********************************************************
+This library was originally based on the following project: https://github.com/infojunkie/JobQueue with the following enhancements:
 
 1) Allow the caller to provide set up and clean up functions:
 
-  a) Worker without setup and cleanup:
-    worker_queue = new WQWorkerQueue(10) # timeslice of 10ms per iteration
-    worker_queue.push(
+  a) Job without setup and cleanup:
+    job_queue = new BGJobQueue(10) # timeslice of 10ms per iteration
+    job_queue.push(
       null, 
       (-> 
         return true # done
       )
     )
 
-  b) Worker with setup and cleanup:
-    some_var = null
-    worker_queue = new WQWorkerQueue(10) # timeslice of 10ms per iteration
-    worker_queue.push(
+  b) Job with setup and cleanup:
+    some_var = false
+    job_queue = new BGJobQueue(10) # timeslice of 10ms per iteration
+    job_queue.push(
       (->some_var=1), 
       (-> 
         return true # done
       ),
-      ((was_completed)->some_var=null)
+      ((was_completed)->some_var=true)
     )
 
 2) The addition of an array iterator 
@@ -37,41 +69,33 @@ This library is based on the following project: https://github.com/infojunkie/Wo
   
     some_data = [1, 2, 3, 4]
     iterator = null
-    worker_queue = new WQWorkerQueue(10) # timeslice of 10ms per iteration
-    worker_queue.push(
+    job_queue = new BGJobQueue(10) # timeslice of 10ms per iteration
+    job_queue.push(
       (-> 
-        iterator = new WQArrayIterator(some_data, 2)     # process 2 entries per worker timeslice
+        iterator = new BGArrayIterator(some_data, 2)     # process 2 entries per job timeslice
       ), 
-      (-> 
-        return iterator.next_by_entry((entry) ->
-          return false # not done early
-        )
-      ),
+      (-> return iterator.next_by_item((entry) ->) ),
     )
 
     a) Iterate by array slice per timeslice
     some_data = [1, 2, 3, 4]
     iterator = null
-    worker_queue = new WQWorkerQueue(10) # timeslice of 10ms per iteration
-    worker_queue.push(
+    job_queue = new BGJobQueue(10) # timeslice of 10ms per iteration
+    job_queue.push(
       (-> 
-        iterator = new WQArrayIterator(some_data, 2)     # process 2 entries per worker timeslice
+        iterator = new BGArrayIterator(some_data, 2)     # process 2 entries per job timeslice
       ), 
-      (-> 
-        return iterator.next_by_slice((entries) ->
-          return false # not done early
-        )
-      ),
+      (-> return iterator.next_by_slice((entries) ->) ),
     )
 
 3) Allow the caller to destroy the queue (for example, if you have a single page app)
   was_destroyed = false
-  worker_queue = new WQWorkerQueue(10) # timeslice of 10ms per iteration
-  worker_queue.push(
+  job_queue = new BGJobQueue(10) # timeslice of 10ms per iteration
+  job_queue.push(
     null, 
     (-> 
       return false # not done
     ),
     ((was_completed)->was_destroyed=(was_completed==false))
   )
-  worker_queue.destroy(); worker_queue = null
+  job_queue.destroy(); job_queue = null

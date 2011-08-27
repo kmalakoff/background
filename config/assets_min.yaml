@@ -1,8 +1,8 @@
 gzip_assets: off
-compress_assets: off
+compress_assets: on
 
 javascripts:
-  'background':
+  'background.min':
     - build/parts/bg_core.js
     - build/parts/bg_job.js
     - build/parts/bg_job_queue.js
