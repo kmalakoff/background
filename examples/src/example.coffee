@@ -64,11 +64,12 @@ worker_queue.push(
 
       # push another worker
       was_run = false
-      worker_queue.push(
+      test_worker = new WQ.Worker(
         null, 
         (->was_run = true), 
         ((was_completed)-> alert("Cancelled: #{if was_run then 'I was run' else 'I was never run'}") if not was_completed)
-      )
+      ) 
+      worker_queue.pushWorker(test_worker)
 
       worker_queue.destroy() if(timeslice_count==3)   # end early
       return false # not done early

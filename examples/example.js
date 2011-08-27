@@ -63,16 +63,17 @@
   }), (function() {
     timeslice_count++;
     iterator.next_by_entry(function(entry) {
-      var was_run;
+      var test_worker, was_run;
       results.push(entry.text);
       was_run = false;
-      worker_queue.push(null, (function() {
+      test_worker = new WQ.Worker(null, (function() {
         return was_run = true;
       }), (function(was_completed) {
         if (!was_completed) {
           return alert("Cancelled: " + (was_run ? 'I was run' : 'I was never run'));
         }
       }));
+      worker_queue.pushWorker(test_worker);
       if (timeslice_count === 3) {
         worker_queue.destroy();
       }

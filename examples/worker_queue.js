@@ -135,12 +135,12 @@
         }
       }
     };
-    WorkerQueue.prototype.push = function(setup_callback, task, cleanup_callback) {
+    WorkerQueue.prototype.pushWorker = function(worker) {
       WQ.ASSERT(!this.isDestroyed(), "push shouldn't happen after destroy");
       if (this.isDestroyed()) {
         return;
       }
-      this.worker_queue.push(new WQ.Worker(setup_callback, task, cleanup_callback));
+      this.worker_queue.push(worker);
       if (!this.timeout) {
         this.timeout = window.setInterval((__bind(function() {
           return this.pop();
@@ -149,6 +149,9 @@
       if (!this.current_worker) {
         return this.pop();
       }
+    };
+    WorkerQueue.prototype.push = function(setup_callback, task, cleanup_callback) {
+      return this.pushWorker(new WQ.Worker(setup_callback, task, cleanup_callback));
     };
     WorkerQueue.prototype._do_destroy = function() {
       var worker;
@@ -172,6 +175,7 @@
   })();
   if (typeof exports !== 'undefined') {
     exports.WQ.ArrayIterator = WQ.ArrayIterator;
+    exports.WQ.Worker = WQ.Worker;
     exports.WQ.WorkerQueue = WQ.WorkerQueue;
   }
 }).call(this);

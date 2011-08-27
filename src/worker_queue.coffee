@@ -116,15 +116,19 @@ class WQ.WorkerQueue
     else
       (@_do_destroy(); return) if(@being_destroyed)
 
-  push: (setup_callback, task, cleanup_callback) ->
+  pushWorker: (worker) ->
     WQ.ASSERT(not @isDestroyed(), "push shouldn't happen after destroy")
     return if(@isDestroyed())
-    
-    @worker_queue.push(new WQ.Worker(setup_callback, task, cleanup_callback))
+
+    # add to the queue
+    @worker_queue.push(worker)
 
     # set up timeslice and start a new worked
     @timeout = window.setInterval((=> @pop()), @frequency) if(not @timeout)
     @pop() if(not @current_worker) 
+
+  push: (setup_callback, task, cleanup_callback) -> 
+    @pushWorker(new WQ.Worker(setup_callback, task, cleanup_callback))
 
   _do_destroy: ->
     WQ.ASSERT(@being_destroyed, "not in destroy")
@@ -150,4 +154,5 @@ class WQ.WorkerQueue
 ####################################################
 if (typeof exports != 'undefined')
   exports.WQ.ArrayIterator = WQ.ArrayIterator
+  exports.WQ.Worker = WQ.Worker
   exports.WQ.WorkerQueue = WQ.WorkerQueue
