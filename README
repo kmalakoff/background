@@ -1,5 +1,12 @@
 This library provides a sequentially-processed worker queue for allowing work to be done in the background in a JavaScript application.
 
+You can get the library here:
+  - Development version: https://github.com/kmalakoff/worker_queue.js/blob/master/build/worker_queue.js
+  - Production version: https://github.com/kmalakoff/worker_queue.js/blob/master/build/worker_queue.min.js
+
+Please look at the example for usage examples: https://github.com/kmalakoff/worker_queue.js/blob/master/examples/src/example.coffee
+
+
 This library is based on the following project: https://github.com/infojunkie/WorkerQueue. The enhancements are:
 
 1) Allow the caller to provide set up and clean up functions:
