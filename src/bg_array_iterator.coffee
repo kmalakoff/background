@@ -10,7 +10,7 @@ class BGArrayIterator
     current_batch_count = @array_index + @batch_size
     current_batch_count = @array.length if(current_batch_count > @array.length)
 
-    # send entry by entry
+    # send item by item
     while(@array_index<current_batch_count)
       fn(@array[@array_index], @array_index)
       @array_index++

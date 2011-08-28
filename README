@@ -65,16 +65,16 @@ This library was originally based on the following project: https://github.com/i
 
 2) The addition of an array iterator 
 
-  a) Iterate by array entry per timeslice
+  a) Iterate by array item per timeslice
   
     some_data = [1, 2, 3, 4]
     iterator = null
     job_queue = new BGJobQueue(10) # timeslice of 10ms per iteration
     job_queue.push(
       (-> 
-        iterator = new BGArrayIterator(some_data, 2)     # process 2 entries per job timeslice
+        iterator = new BGArrayIterator(some_data, 2)     # process 2 items per job timeslice
       ), 
-      (-> return iterator.nextByItem((entry) ->) ),
+      (-> return iterator.nextByItem((item) ->) ),
     )
 
     a) Iterate by array slice per timeslice
@@ -83,9 +83,9 @@ This library was originally based on the following project: https://github.com/i
     job_queue = new BGJobQueue(10) # timeslice of 10ms per iteration
     job_queue.push(
       (-> 
-        iterator = new BGArrayIterator(some_data, 2)     # process 2 entries per job timeslice
+        iterator = new BGArrayIterator(some_data, 2)     # process 2 items per job timeslice
       ), 
-      (-> return iterator.nextBySlice((entries) ->) ),
+      (-> return iterator.nextBySlice((items) ->) ),
     )
 
 3) Allow the caller to destroy the queue (for example, if you have a single page app)

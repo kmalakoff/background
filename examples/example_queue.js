@@ -21,9 +21,12 @@ results = null;
 iterator = null;
 timeslice_count = null;
 job_queue.push(null, (function() {
-  results = _.map(some_data, function(entry) {
-    return entry.text;
-  });
+  var item, _i, _len;
+  results = [];
+  for (_i = 0, _len = some_data.length; _i < _len; _i++) {
+    item = some_data[_i];
+    results.push(item.text);
+  }
   alert("One timeslice. Results: '" + (results.join(' ')) + "'");
   return true;
 }));
@@ -33,8 +36,8 @@ job_queue.push((function() {
   return iterator = new BGArrayIterator(some_data, 2);
 }), (function() {
   timeslice_count++;
-  return iterator.nextByItem(function(entry) {
-    return results.push(entry.text);
+  return iterator.nextByItem(function(item) {
+    return results.push(item.text);
   });
 }), (function() {
   return alert("" + timeslice_count + " timeslices. Results: '" + (results.join(' ')) + "'");
@@ -45,10 +48,14 @@ job_queue.push((function() {
   return iterator = new BGArrayIterator(some_data, 3);
 }), (function() {
   timeslice_count++;
-  return iterator.nextBySlice(function(entries) {
-    return results = results.concat(_.map(entries, function(entry) {
-      return entry.text;
-    }));
+  return iterator.nextBySlice(function(items) {
+    var item, _i, _len, _results;
+    _results = [];
+    for (_i = 0, _len = items.length; _i < _len; _i++) {
+      item = items[_i];
+      _results.push(results.push(item.text));
+    }
+    return _results;
   });
 }), (function() {
   return alert("" + timeslice_count + " timeslices. Results: '" + (results.join(' ')) + "'");
@@ -59,9 +66,9 @@ job_queue.push((function() {
   return iterator = new BGArrayIterator(some_data, 1);
 }), (function() {
   timeslice_count++;
-  iterator.nextByItem(function(entry) {
+  iterator.nextByItem(function(item) {
     var test_job, was_run;
-    results.push(entry.text);
+    results.push(item.text);
     was_run = false;
     test_job = new BGJob(null, (function() {
       return was_run = true;

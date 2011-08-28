@@ -34,8 +34,8 @@ try
         test_array = [1,2,3,4]
         test_count = 0
         iterator = new BGArrayIterator(test_array,1)
-        while(not iterator.nextByItem((entry)->
-          expect(entry == test_array[test_count]).toBeTruthy()
+        while(not iterator.nextByItem((item)->
+          expect(item == test_array[test_count]).toBeTruthy()
           test_count++ 
         ))
           no_op=true
@@ -44,8 +44,8 @@ try
         test_array = [1,2,3,4, 5]
         test_count = 0
         iterator = new BGArrayIterator(test_array,1)
-        while(not iterator.nextByItem((entry)->
-          expect(entry == test_array[test_count]).toBeTruthy()
+        while(not iterator.nextByItem((item)->
+          expect(item == test_array[test_count]).toBeTruthy()
           test_count++ 
         ))
           no_op=true
@@ -59,7 +59,7 @@ try
         test_array = [1,2,3,4]
         test_count = 0
         iterator = new BGArrayIterator(test_array,1)
-        while(not iterator.nextBySlice((slice)->test_count++ for entry in slice))
+        while(not iterator.nextBySlice((slice)->test_count++ for item in slice))
           no_op=true
         expect(test_count==test_array.length).toBeTruthy()
       )
@@ -67,7 +67,7 @@ try
         test_array = [1,2,3,4]
         test_count = 0
         iterator = new BGArrayIterator(test_array,2)
-        while(not iterator.nextBySlice((slice)->test_count++ for entry in slice))
+        while(not iterator.nextBySlice((slice)->test_count++ for item in slice))
           no_op=true
         expect(test_count==test_array.length).toBeTruthy()
       )
@@ -75,7 +75,7 @@ try
         test_array = [1,2,3,4,5]
         test_count = 0
         iterator = new BGArrayIterator(test_array,3)
-        while(not iterator.nextBySlice((slice)->test_count++ for entry in slice))
+        while(not iterator.nextBySlice((slice)->test_count++ for item in slice))
           no_op=true
         expect(test_count==test_array.length).toBeTruthy()
       )
@@ -86,9 +86,9 @@ try
         test_count = 0
         iterator = new BGArrayIterator(test_array,1)
         while(not iterator.nextBySlice((slice)->
-          for entry in slice
-            do (entry) ->
-              expect(entry == test_array[test_count]).toBeTruthy()
+          for item in slice
+            do (item) ->
+              expect(item == test_array[test_count]).toBeTruthy()
               test_count++ 
         ))
           no_op=true
@@ -98,9 +98,9 @@ try
         test_count = 0
         iterator = new BGArrayIterator(test_array,1)
         while(not iterator.nextBySlice((slice)->
-          for entry in slice
-            do (entry) ->
-              expect(entry == test_array[test_count]).toBeTruthy()
+          for item in slice
+            do (item) ->
+              expect(item == test_array[test_count]).toBeTruthy()
               test_count++ 
         ))
           no_op=true

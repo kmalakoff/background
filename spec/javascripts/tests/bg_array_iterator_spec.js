@@ -45,8 +45,8 @@ try {
         test_count = 0;
         iterator = new BGArrayIterator(test_array, 1);
         _results = [];
-        while (!iterator.nextByItem(function(entry) {
-            expect(entry === test_array[test_count]).toBeTruthy();
+        while (!iterator.nextByItem(function(item) {
+            expect(item === test_array[test_count]).toBeTruthy();
             return test_count++;
           })) {
           _results.push(no_op = true);
@@ -59,8 +59,8 @@ try {
         test_count = 0;
         iterator = new BGArrayIterator(test_array, 1);
         _results = [];
-        while (!iterator.nextByItem(function(entry) {
-            expect(entry === test_array[test_count]).toBeTruthy();
+        while (!iterator.nextByItem(function(item) {
+            expect(item === test_array[test_count]).toBeTruthy();
             return test_count++;
           })) {
           _results.push(no_op = true);
@@ -75,10 +75,10 @@ try {
         test_count = 0;
         iterator = new BGArrayIterator(test_array, 1);
         while (!iterator.nextBySlice(function(slice) {
-            var entry, _i, _len, _results;
+            var item, _i, _len, _results;
             _results = [];
             for (_i = 0, _len = slice.length; _i < _len; _i++) {
-              entry = slice[_i];
+              item = slice[_i];
               _results.push(test_count++);
             }
             return _results;
@@ -93,10 +93,10 @@ try {
         test_count = 0;
         iterator = new BGArrayIterator(test_array, 2);
         while (!iterator.nextBySlice(function(slice) {
-            var entry, _i, _len, _results;
+            var item, _i, _len, _results;
             _results = [];
             for (_i = 0, _len = slice.length; _i < _len; _i++) {
-              entry = slice[_i];
+              item = slice[_i];
               _results.push(test_count++);
             }
             return _results;
@@ -111,10 +111,10 @@ try {
         test_count = 0;
         iterator = new BGArrayIterator(test_array, 3);
         while (!iterator.nextBySlice(function(slice) {
-            var entry, _i, _len, _results;
+            var item, _i, _len, _results;
             _results = [];
             for (_i = 0, _len = slice.length; _i < _len; _i++) {
-              entry = slice[_i];
+              item = slice[_i];
               _results.push(test_count++);
             }
             return _results;
@@ -132,14 +132,14 @@ try {
         iterator = new BGArrayIterator(test_array, 1);
         _results = [];
         while (!iterator.nextBySlice(function(slice) {
-            var entry, _i, _len, _results2;
+            var item, _i, _len, _results2;
             _results2 = [];
             for (_i = 0, _len = slice.length; _i < _len; _i++) {
-              entry = slice[_i];
-              _results2.push((function(entry) {
-                expect(entry === test_array[test_count]).toBeTruthy();
+              item = slice[_i];
+              _results2.push((function(item) {
+                expect(item === test_array[test_count]).toBeTruthy();
                 return test_count++;
-              })(entry));
+              })(item));
             }
             return _results2;
           })) {
@@ -154,14 +154,14 @@ try {
         iterator = new BGArrayIterator(test_array, 1);
         _results = [];
         while (!iterator.nextBySlice(function(slice) {
-            var entry, _i, _len, _results2;
+            var item, _i, _len, _results2;
             _results2 = [];
             for (_i = 0, _len = slice.length; _i < _len; _i++) {
-              entry = slice[_i];
-              _results2.push((function(entry) {
-                expect(entry === test_array[test_count]).toBeTruthy();
+              item = slice[_i];
+              _results2.push((function(item) {
+                expect(item === test_array[test_count]).toBeTruthy();
                 return test_count++;
-              })(entry));
+              })(item));
             }
             return _results2;
           })) {

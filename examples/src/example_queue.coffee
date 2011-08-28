@@ -9,7 +9,7 @@ timeslice_count = null
 job_queue.push(
   null, 
   (-> 
-    results = _.map(some_data, (entry) -> return entry.text)
+    results = []; results.push(item.text) for item in some_data
     alert("One timeslice. Results: '#{results.join(' ')}'")
     return true # done
   )
@@ -18,30 +18,32 @@ job_queue.push(
 job_queue.push(
   (-> 
     results = []; timeslice_count = 0
-    iterator = new BGArrayIterator(some_data, 2)     # process 2 entries per job timeslice
+    iterator = new BGArrayIterator(some_data, 2)     # process 2 items per job timeslice
   ), 
-  (-> timeslice_count++; return iterator.nextByItem((entry) -> results.push(entry.text)) ),
+  (-> timeslice_count++; return iterator.nextByItem((item) -> results.push(item.text)) ),
   (-> alert("#{timeslice_count} timeslices. Results: '#{results.join(' ')}'") )
 )
 
 job_queue.push(
   (-> 
     results = []; timeslice_count = 0
-    iterator = new BGArrayIterator(some_data, 3)     # process 3 entries per job timeslice
+    iterator = new BGArrayIterator(some_data, 3)     # process 3 items per job timeslice
   ), 
-  (-> timeslice_count++; return iterator.nextBySlice((entries) -> results = results.concat(_.map(entries, (entry) -> return entry.text))) ),
+  (-> timeslice_count++; return iterator.nextBySlice((items) -> 
+    results.push(item.text) for item in items) 
+  ),
   (-> alert("#{timeslice_count} timeslices. Results: '#{results.join(' ')}'") )
 )
 
 job_queue.push(
   (-> 
     results = []; timeslice_count = 0
-    iterator = new BGArrayIterator(some_data, 1)     # process 1 entry per job timeslice
+    iterator = new BGArrayIterator(some_data, 1)     # process 1 item per job timeslice
   ), 
   (-> 
     timeslice_count++
-    iterator.nextByItem((entry) ->
-      results.push(entry.text)
+    iterator.nextByItem((item) ->
+      results.push(item.text)
 
       # push another job
       was_run = false
