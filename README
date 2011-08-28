@@ -19,8 +19,8 @@ The library is composed of the following classes:
   2) BGJobList - a sequentially-processed background job list. When you 'append' a job on a list, it and the rest of the jobs in the list are run on each 'tick' in the order they were appended until they signal that they are done.
 
   3) BGArrayIterator - a helper to iterate over a subset of an array on each 'tick'. You can either process the subset per iteration:
-    a) callback per array item - by calling 'next_by_item' with a function of the form (item) -> do_something
-    a) callback per array slice - by calling 'next_by_slice' with a function of the form (slice) -> do_something
+    a) callback per array item - by calling 'nextByItem' with a function of the form (item) -> do_something
+    a) callback per array slice - by calling 'nextBySlice' with a function of the form (slice) -> do_something
 
   4) BGJob - a job class which requires a run_fn and can optionally be provided an init_fn and/or a destroy_fn. 
 
@@ -74,7 +74,7 @@ This library was originally based on the following project: https://github.com/i
       (-> 
         iterator = new BGArrayIterator(some_data, 2)     # process 2 entries per job timeslice
       ), 
-      (-> return iterator.next_by_item((entry) ->) ),
+      (-> return iterator.nextByItem((entry) ->) ),
     )
 
     a) Iterate by array slice per timeslice
@@ -85,7 +85,7 @@ This library was originally based on the following project: https://github.com/i
       (-> 
         iterator = new BGArrayIterator(some_data, 2)     # process 2 entries per job timeslice
       ), 
-      (-> return iterator.next_by_slice((entries) ->) ),
+      (-> return iterator.nextBySlice((entries) ->) ),
     )
 
 3) Allow the caller to destroy the queue (for example, if you have a single page app)

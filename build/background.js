@@ -222,7 +222,7 @@ BGArrayIterator = (function() {
     this.batch_index = 0;
     this.array_index = 0;
   }
-  BGArrayIterator.prototype.next_by_item = function(fn) {
+  BGArrayIterator.prototype.nextByItem = function(fn) {
     var current_batch_count;
     current_batch_count = this.array_index + this.batch_size;
     if (current_batch_count > this.array.length) {
@@ -235,7 +235,7 @@ BGArrayIterator = (function() {
     this.batch_index++;
     return this.batch_index === this.batch_count;
   };
-  BGArrayIterator.prototype.next_by_slice = function(fn) {
+  BGArrayIterator.prototype.nextBySlice = function(fn) {
     var current_batch_count;
     current_batch_count = this.batch_size;
     if (this.array_index + current_batch_count > this.array.length) {

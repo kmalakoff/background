@@ -33,7 +33,7 @@ job_queue.push((function() {
   return iterator = new BGArrayIterator(some_data, 2);
 }), (function() {
   timeslice_count++;
-  return iterator.next_by_item(function(entry) {
+  return iterator.nextByItem(function(entry) {
     return results.push(entry.text);
   });
 }), (function() {
@@ -45,7 +45,7 @@ job_queue.push((function() {
   return iterator = new BGArrayIterator(some_data, 3);
 }), (function() {
   timeslice_count++;
-  return iterator.next_by_slice(function(entries) {
+  return iterator.nextBySlice(function(entries) {
     return results = results.concat(_.map(entries, function(entry) {
       return entry.text;
     }));
@@ -59,7 +59,7 @@ job_queue.push((function() {
   return iterator = new BGArrayIterator(some_data, 1);
 }), (function() {
   timeslice_count++;
-  iterator.next_by_item(function(entry) {
+  iterator.nextByItem(function(entry) {
     var test_job, was_run;
     results.push(entry.text);
     was_run = false;

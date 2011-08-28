@@ -20,7 +20,7 @@ job_queue.push(
     results = []; timeslice_count = 0
     iterator = new BGArrayIterator(some_data, 2)     # process 2 entries per job timeslice
   ), 
-  (-> timeslice_count++; return iterator.next_by_item((entry) -> results.push(entry.text)) ),
+  (-> timeslice_count++; return iterator.nextByItem((entry) -> results.push(entry.text)) ),
   (-> alert("#{timeslice_count} timeslices. Results: '#{results.join(' ')}'") )
 )
 
@@ -29,7 +29,7 @@ job_queue.push(
     results = []; timeslice_count = 0
     iterator = new BGArrayIterator(some_data, 3)     # process 3 entries per job timeslice
   ), 
-  (-> timeslice_count++; return iterator.next_by_slice((entries) -> results = results.concat(_.map(entries, (entry) -> return entry.text))) ),
+  (-> timeslice_count++; return iterator.nextBySlice((entries) -> results = results.concat(_.map(entries, (entry) -> return entry.text))) ),
   (-> alert("#{timeslice_count} timeslices. Results: '#{results.join(' ')}'") )
 )
 
@@ -40,7 +40,7 @@ job_queue.push(
   ), 
   (-> 
     timeslice_count++
-    iterator.next_by_item((entry) ->
+    iterator.nextByItem((entry) ->
       results.push(entry.text)
 
       # push another job

@@ -1,12 +1,12 @@
 try {
   describe("BGArrayIterator", function() {
-    describe("checking element counts in next_by_item", function() {
+    describe("checking element counts in nextByItem", function() {
       it("should count once for each element in the array", function() {
         var iterator, no_op, test_array, test_count;
         test_array = [1, 2, 3, 4];
         test_count = 0;
         iterator = new BGArrayIterator(test_array, 1);
-        while (!iterator.next_by_item(function() {
+        while (!iterator.nextByItem(function() {
             return test_count++;
           })) {
           no_op = true;
@@ -18,7 +18,7 @@ try {
         test_array = [1, 2, 3, 4];
         test_count = 0;
         iterator = new BGArrayIterator(test_array, 2);
-        while (!iterator.next_by_item(function() {
+        while (!iterator.nextByItem(function() {
             return test_count++;
           })) {
           no_op = true;
@@ -30,7 +30,7 @@ try {
         test_array = [1, 2, 3, 4, 5];
         test_count = 0;
         iterator = new BGArrayIterator(test_array, 3);
-        while (!iterator.next_by_item(function() {
+        while (!iterator.nextByItem(function() {
             return test_count++;
           })) {
           no_op = true;
@@ -38,14 +38,14 @@ try {
         return expect(test_count === test_array.length).toBeTruthy();
       });
     });
-    describe("checking element values match in next_by_item", function() {
-      it("should refer to the correct elements in next_by_item batch size 1", function() {
+    describe("checking element values match in nextByItem", function() {
+      it("should refer to the correct elements in nextByItem batch size 1", function() {
         var iterator, no_op, test_array, test_count, _results;
         test_array = [1, 2, 3, 4];
         test_count = 0;
         iterator = new BGArrayIterator(test_array, 1);
         _results = [];
-        while (!iterator.next_by_item(function(entry) {
+        while (!iterator.nextByItem(function(entry) {
             expect(entry === test_array[test_count]).toBeTruthy();
             return test_count++;
           })) {
@@ -53,13 +53,13 @@ try {
         }
         return _results;
       });
-      return it("should refer to the correct elements in next_by_item batch size 3", function() {
+      return it("should refer to the correct elements in nextByItem batch size 3", function() {
         var iterator, no_op, test_array, test_count, _results;
         test_array = [1, 2, 3, 4, 5];
         test_count = 0;
         iterator = new BGArrayIterator(test_array, 1);
         _results = [];
-        while (!iterator.next_by_item(function(entry) {
+        while (!iterator.nextByItem(function(entry) {
             expect(entry === test_array[test_count]).toBeTruthy();
             return test_count++;
           })) {
@@ -68,13 +68,13 @@ try {
         return _results;
       });
     });
-    describe("checking element counts in next_by_slice", function() {
+    describe("checking element counts in nextBySlice", function() {
       it("should count once for each element in the array", function() {
         var iterator, no_op, test_array, test_count;
         test_array = [1, 2, 3, 4];
         test_count = 0;
         iterator = new BGArrayIterator(test_array, 1);
-        while (!iterator.next_by_slice(function(slice) {
+        while (!iterator.nextBySlice(function(slice) {
             var entry, _i, _len, _results;
             _results = [];
             for (_i = 0, _len = slice.length; _i < _len; _i++) {
@@ -92,7 +92,7 @@ try {
         test_array = [1, 2, 3, 4];
         test_count = 0;
         iterator = new BGArrayIterator(test_array, 2);
-        while (!iterator.next_by_slice(function(slice) {
+        while (!iterator.nextBySlice(function(slice) {
             var entry, _i, _len, _results;
             _results = [];
             for (_i = 0, _len = slice.length; _i < _len; _i++) {
@@ -110,7 +110,7 @@ try {
         test_array = [1, 2, 3, 4, 5];
         test_count = 0;
         iterator = new BGArrayIterator(test_array, 3);
-        while (!iterator.next_by_slice(function(slice) {
+        while (!iterator.nextBySlice(function(slice) {
             var entry, _i, _len, _results;
             _results = [];
             for (_i = 0, _len = slice.length; _i < _len; _i++) {
@@ -124,14 +124,14 @@ try {
         return expect(test_count === test_array.length).toBeTruthy();
       });
     });
-    return describe("checking element values match in next_by_slice", function() {
-      it("should refer to the correct elements in next_by_item batch size 1", function() {
+    return describe("checking element values match in nextBySlice", function() {
+      it("should refer to the correct elements in nextByItem batch size 1", function() {
         var iterator, no_op, test_array, test_count, _results;
         test_array = [1, 2, 3, 4];
         test_count = 0;
         iterator = new BGArrayIterator(test_array, 1);
         _results = [];
-        while (!iterator.next_by_slice(function(slice) {
+        while (!iterator.nextBySlice(function(slice) {
             var entry, _i, _len, _results2;
             _results2 = [];
             for (_i = 0, _len = slice.length; _i < _len; _i++) {
@@ -147,13 +147,13 @@ try {
         }
         return _results;
       });
-      return it("should refer to the correct elements in next_by_item batch size 3", function() {
+      return it("should refer to the correct elements in nextByItem batch size 3", function() {
         var iterator, no_op, test_array, test_count, _results;
         test_array = [1, 2, 3, 4, 5];
         test_count = 0;
         iterator = new BGArrayIterator(test_array, 1);
         _results = [];
-        while (!iterator.next_by_slice(function(slice) {
+        while (!iterator.nextBySlice(function(slice) {
             var entry, _i, _len, _results2;
             _results2 = [];
             for (_i = 0, _len = slice.length; _i < _len; _i++) {

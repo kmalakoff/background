@@ -6,7 +6,7 @@ class BGArrayIterator
     @batch_index = 0
     @array_index = 0
 
-  next_by_item: (fn) ->
+  nextByItem: (fn) ->
     current_batch_count = @array_index + @batch_size
     current_batch_count = @array.length if(current_batch_count > @array.length)
 
@@ -18,7 +18,7 @@ class BGArrayIterator
     @batch_index++
     return (@batch_index==@batch_count)
 
-  next_by_slice: (fn) ->
+  nextBySlice: (fn) ->
     current_batch_count = @batch_size
     current_batch_count = (@array.length-@array_index) if(@array_index + current_batch_count > @array.length)
 
