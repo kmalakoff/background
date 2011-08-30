@@ -177,10 +177,9 @@ try {
         test_count = 0;
         iterator = new BGArrayIterator(test_array, 1);
         while (!iterator.nextByRange(function(range) {
-            var index_bound, _results;
-            index_bound = range.index + range.length;
+            var _results;
             _results = [];
-            while (range.index < index_bound) {
+            while (range.index < range.excluded_boundary) {
               test_count++;
               _results.push(range.index++);
             }
@@ -196,10 +195,9 @@ try {
         test_count = 0;
         iterator = new BGArrayIterator(test_array, 2);
         while (!iterator.nextByRange(function(range) {
-            var index_bound, _results;
-            index_bound = range.index + range.length;
+            var _results;
             _results = [];
-            while (range.index < index_bound) {
+            while (range.index < range.excluded_boundary) {
               test_count++;
               _results.push(range.index++);
             }
@@ -215,10 +213,9 @@ try {
         test_count = 0;
         iterator = new BGArrayIterator(test_array, 3);
         while (!iterator.nextByRange(function(range) {
-            var index_bound, _results;
-            index_bound = range.index + range.length;
+            var _results;
             _results = [];
-            while (range.index < index_bound) {
+            while (range.index < range.excluded_boundary) {
               test_count++;
               _results.push(range.index++);
             }
@@ -229,7 +226,7 @@ try {
         return expect(test_count === test_array.length).toBeTruthy();
       });
     });
-    return describe("checking element values match in nextByRange", function() {
+    describe("checking element values match in nextByRange", function() {
       it("should refer to the correct elements in nextByItem batch size 1", function() {
         var iterator, no_op, test_array, test_count, _results;
         test_array = [1, 2, 3, 4];
@@ -237,10 +234,9 @@ try {
         iterator = new BGArrayIterator(test_array, 1);
         _results = [];
         while (!iterator.nextByRange(function(range, array) {
-            var index_bound, _results2;
-            index_bound = range.index + range.length;
+            var _results2;
             _results2 = [];
-            while (range.index < index_bound) {
+            while (range.index < range.excluded_boundary) {
               expect(array[range.index] === test_array[test_count]).toBeTruthy();
               range.index++;
               _results2.push(test_count++);
@@ -258,10 +254,9 @@ try {
         iterator = new BGArrayIterator(test_array, 1);
         _results = [];
         while (!iterator.nextByRange(function(range, array) {
-            var index_bound, _results2;
-            index_bound = range.index + range.length;
+            var _results2;
             _results2 = [];
-            while (range.index < index_bound) {
+            while (range.index < range.excluded_boundary) {
               expect(array[range.index] === test_array[test_count]).toBeTruthy();
               range.index++;
               _results2.push(test_count++);
@@ -269,6 +264,94 @@ try {
             return _results2;
           })) {
           _results.push(no_op = true);
+        }
+        return _results;
+      });
+    });
+    describe("checking element counts using step()", function() {
+      it("should count once for each element in the array", function() {
+        var iterator, range, test_array, test_count;
+        test_array = [1, 2, 3, 4];
+        test_count = 0;
+        iterator = new BGArrayIterator(test_array, 1);
+        while (!iterator.isDone()) {
+          range = iterator.step();
+          while (range.index < range.excluded_boundary) {
+            test_count++;
+            range.index++;
+          }
+        }
+        return expect(test_count === test_array.length).toBeTruthy();
+      });
+      it("should count once for each element in the array with batch size 2", function() {
+        var iterator, range, test_array, test_count;
+        test_array = [1, 2, 3, 4];
+        test_count = 0;
+        iterator = new BGArrayIterator(test_array, 2);
+        while (!iterator.isDone()) {
+          range = iterator.step();
+          while (range.index < range.excluded_boundary) {
+            test_count++;
+            range.index++;
+          }
+        }
+        return expect(test_count === test_array.length).toBeTruthy();
+      });
+      return it("should count once for each element in the array with batch size 3 and an odd number of elements", function() {
+        var iterator, range, test_array, test_count;
+        test_array = [1, 2, 3, 4, 5];
+        test_count = 0;
+        iterator = new BGArrayIterator(test_array, 3);
+        while (!iterator.isDone()) {
+          range = iterator.step();
+          while (range.index < range.excluded_boundary) {
+            test_count++;
+            range.index++;
+          }
+        }
+        return expect(test_count === test_array.length).toBeTruthy();
+      });
+    });
+    return describe("checking element values match using step()", function() {
+      it("should refer to the correct elements in nextByItem batch size 1", function() {
+        var iterator, range, test_array, test_count, _results;
+        test_array = [1, 2, 3, 4];
+        test_count = 0;
+        iterator = new BGArrayIterator(test_array, 1);
+        _results = [];
+        while (!iterator.isDone()) {
+          range = iterator.step();
+          _results.push((function() {
+            var _results2;
+            _results2 = [];
+            while (range.index < range.excluded_boundary) {
+              expect(test_array[range.index] === test_array[test_count]).toBeTruthy();
+              range.index++;
+              _results2.push(test_count++);
+            }
+            return _results2;
+          })());
+        }
+        return _results;
+      });
+      return it("should refer to the correct elements in step batch size 3", function() {
+        var iterator, range, test_array, test_count, _results;
+        test_array = [1, 2, 3, 4, 5];
+        test_count = 0;
+        iterator = new BGArrayIterator(test_array, 1);
+        _results = [];
+        while (!iterator.isDone()) {
+          range = iterator.step();
+          _results.push((function() {
+            var _results2;
+            _results2 = [];
+            while (range.index < range.excluded_boundary) {
+              expect(test_array[range.index] === test_array[test_count]).toBeTruthy();
+              range.index++;
+              _results2.push(test_count++);
+            }
+            return _results2;
+          })());
         }
         return _results;
       });

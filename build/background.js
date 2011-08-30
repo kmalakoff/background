@@ -230,51 +230,46 @@ BGArrayIterator = (function() {
     range = {
       index: (this.batch_index - 1) * this.batch_length
     };
-    range.length = (range.index + this.batch_length) > this.array_length ? this.array_length - range.index : this.batch_length;
+    range.excluded_boundary = range.index + this.batch_length;
+    if (range.excluded_boundary > this.array_length) {
+      range.excluded_boundary = this.array_length;
+    }
     return range;
   };
   BGArrayIterator.prototype.step = function() {
     if (this.isDone()) {
       return {
         index: this.array_length,
-        length: 0
+        excluded_boundary: this.array_length
       };
     }
     this.batch_index++;
     return this.getCurrentRange();
   };
   BGArrayIterator.prototype.nextByItem = function(fn) {
-    var index_bound, range;
+    var range;
     range = this.step();
-    if (range.length === 0) {
-      return true;
-    }
-    index_bound = range.index + range.length;
-    while (range.index < index_bound) {
+    while (range.index < range.excluded_boundary) {
       fn(this.array[range.index], range.index, this.array);
       range.index++;
     }
-    return index_bound >= this.array_length;
+    return this.isDone();
   };
   BGArrayIterator.prototype.nextBySlice = function(fn) {
-    var index_bound, range;
+    var range;
     range = this.step();
-    if (range.length === 0) {
-      return true;
+    if (range.index < range.excluded_boundary) {
+      fn(this.array.slice(range.index, range.excluded_boundary), range, this.array);
     }
-    index_bound = range.index + range.length;
-    fn(this.array.slice(range.index, index_bound), range, this.array);
-    return index_bound >= this.array_length;
+    return this.isDone();
   };
   BGArrayIterator.prototype.nextByRange = function(fn) {
-    var index_bound, range;
+    var range;
     range = this.step();
-    if (range.length === 0) {
-      return true;
+    if (range.index < range.excluded_boundary) {
+      fn(range, this.array);
     }
-    index_bound = range.index + range.length;
-    fn(range, this.array);
-    return index_bound >= this.array_length;
+    return this.isDone();
   };
   return BGArrayIterator;
 })();

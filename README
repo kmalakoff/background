@@ -20,8 +20,9 @@ The library is composed of the following classes:
 
   3) BGArrayIterator - a helper to iterate over a subset of an array on each 'tick'. You can either process the subset per iteration:
     a) callback per array item - by calling 'nextByItem' with a function of the form (item) -> do_something
-    a) callback per array slice - by calling 'nextBySlice' with a function of the form (slice) -> do_something
-    a) callback per range (a range is in the form: {index:, length:}) - by calling 'nextByRange' with a function of the form (range) -> do_something
+    b) callback per array slice - by calling 'nextBySlice' with a function of the form (slice) -> do_something
+    c) callback per range (in the form: {index:, excluded_boundary:}) - by calling 'nextByRange' with a function of the form (range) -> do_something
+    d) manually using step() which returns a range (in the form: {index:, excluded_boundary:}) and isDone() after manually processing the range
 
   4) BGJob - a job class which requires a run_fn and can optionally be provided an init_fn and/or a destroy_fn. 
 
