@@ -6,7 +6,7 @@
                       |___/                             |__/
                       
                       
-This library provides a sequentially-processed job queue and job list for allowing work to be done in the background in a JavaScript application.
+This library provides a sequentially-processed job queue and per tick job list for doing jobs in the background on a periodic timer in a JavaScript application.
 
 You can get the library here:
   - Development version: https://github.com/kmalakoff/background/raw/master/build/background.js
@@ -21,6 +21,7 @@ The library is composed of the following classes:
   3) BGArrayIterator - a helper to iterate over a subset of an array on each 'tick'. You can either process the subset per iteration:
     a) callback per array item - by calling 'nextByItem' with a function of the form (item) -> do_something
     a) callback per array slice - by calling 'nextBySlice' with a function of the form (slice) -> do_something
+    a) callback per range (a range is in the form: {index:, length:}) - by calling 'nextByRange' with a function of the form (range) -> do_something
 
   4) BGJob - a job class which requires a run_fn and can optionally be provided an init_fn and/or a destroy_fn. 
 
