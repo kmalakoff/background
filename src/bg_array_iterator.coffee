@@ -1,34 +1,58 @@
 class BGArrayIterator
 
-  constructor: (array, @batch_size) ->
+  constructor: (array, @batch_length) ->
     @array = array
-    @batch_count = Math.floor(@array.length/@batch_size) + 1
+    @array_length = @array.length
     @batch_index = 0
-    @array_index = 0
+    @batch_count = Math.floor(@array_length/@batch_length) + 1
 
+  # checks whether all the steps are done
+  isDone: -> return (@batch_index >= @batch_count) 
+  getCurrentRange: -> 
+    range = {index: (@batch_index-1)*@batch_length}
+    range.length = if((range.index+@batch_length)>@array_length) then (@array_length-range.index) else @batch_length
+    return range 
+
+  # updates the iteration and returns a range {index: , length: }. Check length==0 to see if you are done
+  step: -> 
+    return {index: @array_length, length: 0} if @isDone()
+    @batch_index++
+    return @getCurrentRange()
+
+  # iterates passing (item, index, array) for each element per call (but you should only need item)
   nextByItem: (fn) ->
-    current_batch_count = @array_index + @batch_size
-    current_batch_count = @array.length if(current_batch_count > @array.length)
+    range = @step()
+    return true if(range.length==0) # done
 
     # send item by item
-    while(@array_index<current_batch_count)
-      fn(@array[@array_index], @array_index)
-      @array_index++
+    index_bound = range.index+range.length
+    while(range.index<index_bound)
+      fn(@array[range.index], range.index, @array)
+      range.index++
     
-    @batch_index++
-    return (@batch_index==@batch_count)
+    return (index_bound>=@array_length) # check if done
 
+  # iterates passing (array_slice, range, array) once per call (but you should only need array_slice)
   nextBySlice: (fn) ->
-    current_batch_count = @batch_size
-    current_batch_count = (@array.length-@array_index) if(@array_index + current_batch_count > @array.length)
+    range = @step()
+    return true if(range.length==0) # done
 
     # send a slice of the array
-    return true if(current_batch_count==0)
-    fn(@array.slice(@array_index, @array_index+current_batch_count))
+    index_bound = range.index+range.length
+    fn(@array.slice(range.index, index_bound), range, @array)
 
-    @array_index += current_batch_count
-    @batch_index++
-    return (@batch_index==@batch_count)
+    return (index_bound>=@array_length) # check if done
+
+  # iterates passing ({index: , length: }, array) once per call
+  nextByRange: (fn) ->
+    range = @step()
+    return true if(range.length==0) # done
+
+    # send the range and array 
+    index_bound = range.index+range.length
+    fn(range, @array)
+
+    return (index_bound>=@array_length) # check if done
 
 ####################################################
 # CommonJS

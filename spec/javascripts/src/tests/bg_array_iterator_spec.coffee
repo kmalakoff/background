@@ -93,7 +93,7 @@ try
         ))
           no_op=true
       )
-      it("should refer to the correct elements in nextByItem batch size 3", ->
+      it("should refer to the correct elements in nextBySlice batch size 3", ->
         test_array = [1,2,3,4,5]
         test_count = 0
         iterator = new BGArrayIterator(test_array,1)
@@ -102,6 +102,78 @@ try
             do (item) ->
               expect(item == test_array[test_count]).toBeTruthy()
               test_count++ 
+        ))
+          no_op=true
+      )
+    )
+    ##############################
+    # nextByRange
+    ##############################
+    describe("checking element counts in nextByRange", ->
+      it("should count once for each element in the array", ->
+        test_array = [1,2,3,4]
+        test_count = 0
+        iterator = new BGArrayIterator(test_array,1)
+        while(not iterator.nextByRange((range)->
+          index_bound=range.index+range.length 
+          while(range.index<index_bound) 
+            test_count++
+            range.index++
+        ))
+          no_op=true
+        expect(test_count==test_array.length).toBeTruthy()
+      )
+      it("should count once for each element in the array with batch size 2", ->
+        test_array = [1,2,3,4]
+        test_count = 0
+        iterator = new BGArrayIterator(test_array,2)
+        while(not iterator.nextByRange((range)->
+          index_bound=range.index+range.length 
+          while(range.index<index_bound) 
+            test_count++
+            range.index++
+        ))
+          no_op=true
+        expect(test_count==test_array.length).toBeTruthy()
+      )
+      it("should count once for each element in the array with batch size 3 and an odd number of elements", ->
+        test_array = [1,2,3,4,5]
+        test_count = 0
+        iterator = new BGArrayIterator(test_array,3)
+        while(not iterator.nextByRange((range)->
+          index_bound=range.index+range.length 
+          while(range.index<index_bound) 
+            test_count++
+            range.index++
+        ))
+          no_op=true
+        expect(test_count==test_array.length).toBeTruthy()
+      )
+    )
+    describe("checking element values match in nextByRange", ->
+      it("should refer to the correct elements in nextByItem batch size 1", ->
+        test_array = [1,2,3,4]
+        test_count = 0
+        iterator = new BGArrayIterator(test_array,1)
+        while(not iterator.nextByRange((range, array)->
+          index_bound=range.index+range.length 
+          while(range.index<index_bound) 
+            expect(array[range.index] == test_array[test_count]).toBeTruthy()
+            range.index++
+            test_count++
+        ))
+          no_op=true
+      )
+      it("should refer to the correct elements in nextByRange batch size 3", ->
+        test_array = [1,2,3,4,5]
+        test_count = 0
+        iterator = new BGArrayIterator(test_array,1)
+        while(not iterator.nextByRange((range, array)->
+          index_bound=range.index+range.length 
+          while(range.index<index_bound) 
+            expect(array[range.index] == test_array[test_count]).toBeTruthy()
+            range.index++
+            test_count++
         ))
           no_op=true
       )

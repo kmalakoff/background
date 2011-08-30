@@ -215,39 +215,66 @@ if (typeof exports !== 'undefined') {
 }
 var BGArrayIterator;
 BGArrayIterator = (function() {
-  function BGArrayIterator(array, batch_size) {
-    this.batch_size = batch_size;
+  function BGArrayIterator(array, batch_length) {
+    this.batch_length = batch_length;
     this.array = array;
-    this.batch_count = Math.floor(this.array.length / this.batch_size) + 1;
+    this.array_length = this.array.length;
     this.batch_index = 0;
-    this.array_index = 0;
+    this.batch_count = Math.floor(this.array_length / this.batch_length) + 1;
   }
-  BGArrayIterator.prototype.nextByItem = function(fn) {
-    var current_batch_count;
-    current_batch_count = this.array_index + this.batch_size;
-    if (current_batch_count > this.array.length) {
-      current_batch_count = this.array.length;
-    }
-    while (this.array_index < current_batch_count) {
-      fn(this.array[this.array_index], this.array_index);
-      this.array_index++;
+  BGArrayIterator.prototype.isDone = function() {
+    return this.batch_index >= this.batch_count;
+  };
+  BGArrayIterator.prototype.getCurrentRange = function() {
+    var range;
+    range = {
+      index: (this.batch_index - 1) * this.batch_length
+    };
+    range.length = (range.index + this.batch_length) > this.array_length ? this.array_length - range.index : this.batch_length;
+    return range;
+  };
+  BGArrayIterator.prototype.step = function() {
+    if (this.isDone()) {
+      return {
+        index: this.array_length,
+        length: 0
+      };
     }
     this.batch_index++;
-    return this.batch_index === this.batch_count;
+    return this.getCurrentRange();
   };
-  BGArrayIterator.prototype.nextBySlice = function(fn) {
-    var current_batch_count;
-    current_batch_count = this.batch_size;
-    if (this.array_index + current_batch_count > this.array.length) {
-      current_batch_count = this.array.length - this.array_index;
-    }
-    if (current_batch_count === 0) {
+  BGArrayIterator.prototype.nextByItem = function(fn) {
+    var index_bound, range;
+    range = this.step();
+    if (range.length === 0) {
       return true;
     }
-    fn(this.array.slice(this.array_index, this.array_index + current_batch_count));
-    this.array_index += current_batch_count;
-    this.batch_index++;
-    return this.batch_index === this.batch_count;
+    index_bound = range.index + range.length;
+    while (range.index < index_bound) {
+      fn(this.array[range.index], range.index, this.array);
+      range.index++;
+    }
+    return index_bound >= this.array_length;
+  };
+  BGArrayIterator.prototype.nextBySlice = function(fn) {
+    var index_bound, range;
+    range = this.step();
+    if (range.length === 0) {
+      return true;
+    }
+    index_bound = range.index + range.length;
+    fn(this.array.slice(range.index, index_bound), range, this.array);
+    return index_bound >= this.array_length;
+  };
+  BGArrayIterator.prototype.nextByRange = function(fn) {
+    var index_bound, range;
+    range = this.step();
+    if (range.length === 0) {
+      return true;
+    }
+    index_bound = range.index + range.length;
+    fn(range, this.array);
+    return index_bound >= this.array_length;
   };
   return BGArrayIterator;
 })();
