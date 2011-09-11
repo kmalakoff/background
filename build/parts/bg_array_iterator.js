@@ -2,6 +2,7 @@ var BGArrayIterator;
 BGArrayIterator = (function() {
   function BGArrayIterator(array, batch_length) {
     this.batch_length = batch_length;
+    BGASSERT(this.array && this.batch_length, "array and positive integer batch length required");
     this.array = array;
     this.array_length = this.array.length;
     this.batch_index = 0;

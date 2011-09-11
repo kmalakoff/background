@@ -1,7 +1,10 @@
-BGASSERT = (check_condition, message) -> 
-  return if(not window.DEBUG)
-  alert(message) if(not check_condition)
-    
+# can be overridden
+window.BGDEBUG = true     # enable assertions by default
+window.BGASSERT_ACTION = (message) -> alert(message)
+window.BGASSERT = (check_condition, message) -> 
+  return if(not window.BGDEBUG)
+  BGASSERT_ACTION(message) if(not check_condition)
+
 class _BGJobContainer
 
   constructor: (@frequency) ->

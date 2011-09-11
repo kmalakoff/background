@@ -1,11 +1,15 @@
-var BGASSERT, _BGJobContainer;
+var _BGJobContainer;
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-BGASSERT = function(check_condition, message) {
-  if (!window.DEBUG) {
+window.BGDEBUG = true;
+window.BGASSERT_ACTION = function(message) {
+  return alert(message);
+};
+window.BGASSERT = function(check_condition, message) {
+  if (!window.BGDEBUG) {
     return;
   }
   if (!check_condition) {
-    return alert(message);
+    return BGASSERT_ACTION(message);
   }
 };
 _BGJobContainer = (function() {
@@ -217,6 +221,7 @@ var BGArrayIterator;
 BGArrayIterator = (function() {
   function BGArrayIterator(array, batch_length) {
     this.batch_length = batch_length;
+    BGASSERT(this.array && this.batch_length, "array and positive integer batch length required");
     this.array = array;
     this.array_length = this.array.length;
     this.batch_index = 0;

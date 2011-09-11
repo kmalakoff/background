@@ -1,11 +1,15 @@
-var BGASSERT, _BGJobContainer;
+var _BGJobContainer;
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-BGASSERT = function(check_condition, message) {
-  if (!window.DEBUG) {
+window.BGDEBUG = true;
+window.BGASSERT_ACTION = function(message) {
+  return alert(message);
+};
+window.BGASSERT = function(check_condition, message) {
+  if (!window.BGDEBUG) {
     return;
   }
   if (!check_condition) {
-    return alert(message);
+    return BGASSERT_ACTION(message);
   }
 };
 _BGJobContainer = (function() {
