@@ -220,9 +220,9 @@ if (typeof exports !== 'undefined') {
 var BGArrayIterator;
 BGArrayIterator = (function() {
   function BGArrayIterator(array, batch_length) {
+    this.array = array;
     this.batch_length = batch_length;
     BGASSERT(this.array && this.batch_length, "array and positive integer batch length required");
-    this.array = array;
     this.array_length = this.array.length;
     this.batch_index = 0;
     this.batch_count = Math.floor(this.array_length / this.batch_length) + 1;

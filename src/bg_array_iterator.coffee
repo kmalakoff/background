@@ -1,8 +1,7 @@
 class BGArrayIterator
 
-  constructor: (array, @batch_length) ->
+  constructor: (@array, @batch_length) ->
     BGASSERT(@array and @batch_length, "array and positive integer batch length required")
-    @array = array
     @array_length = @array.length
     @batch_index = 0
     @batch_count = Math.floor(@array_length/@batch_length) + 1
