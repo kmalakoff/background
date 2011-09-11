@@ -26,6 +26,16 @@ class _BGJobContainer
     # we are being destroyed
     (@_doDestroy(); return) if(@being_destroyed)
 
+  clear: ->
+    # destroy the jobs
+    while(job = @jobs.shift())
+      job.destroy(true)
+
+    # clear the timer
+    if @timeout
+      window.clearInterval(@timeout)
+      @timeout = null
+
   _appendJob: (init_fn_or_job, run_fn, destroy_fn) -> 
     BGASSERT(not @isDestroyed(), "push shouldn't happen after destroy")
     return if(@isDestroyed())
@@ -50,10 +60,5 @@ class _BGJobContainer
     return if(@is_destroyed)
     @is_destroyed = true
     
-    # destroy the jobs
-    while(job = @jobs.shift())
-      job.destroy(true)
-
-    # clear the timer
-    window.clearInterval(@timeout)
-    @timeout = 0
+    # clear the jobs
+    @clear()  

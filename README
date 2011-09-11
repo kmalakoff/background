@@ -28,11 +28,12 @@ The library is composed of the following classes:
 
 Other notes:
 
-  1) You can manually call 'tick' instead of waiting for the background timer
-  2) You can 'destroy' a job queue or list and it will cancel all of the jobs 
-  3) You can 'push' or 'append' a job without using the BGJob class by just passing the functions directly. In other words,
+  1) You can manually call 'tick' instead of waiting for the background timer.
+  2) You can 'destroy' a job queue or list and it will cancel all of the jobs, and will mark it as destroyed.
+  3) You can 'clear' a job queue or list and it will cancel all of the jobs. 
+  4) You can 'push' or 'append' a job without using the BGJob class by just passing the functions directly. In other words,
     'my_list.append(null, ->)' is equivalent to 'my_list.append(new BGJob(null, ->))'. 
-  4) You can disable assertions by defining window.BGDEBUG to false (by default they are enabled) and can override the action on an assertion by setting BGASSERT_ACTION to your own implementation. For example:
+  5) You can disable assertions by defining window.BGDEBUG to false (by default they are enabled) and can override the action on an assertion by setting BGASSERT_ACTION to your own implementation. For example:
     BGASSERT_ACTION = (message) -> mylogger(message)
 
 Please look at the provided examples and specs for sample code: 

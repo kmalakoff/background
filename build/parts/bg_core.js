@@ -38,6 +38,16 @@ _BGJobContainer = (function() {
       this._doDestroy();
     }
   };
+  _BGJobContainer.prototype.clear = function() {
+    var job;
+    while ((job = this.jobs.shift())) {
+      job.destroy(true);
+    }
+    if (this.timeout) {
+      window.clearInterval(this.timeout);
+      return this.timeout = null;
+    }
+  };
   _BGJobContainer.prototype._appendJob = function(init_fn_or_job, run_fn, destroy_fn) {
     var job;
     BGASSERT(!this.isDestroyed(), "push shouldn't happen after destroy");
@@ -63,18 +73,13 @@ _BGJobContainer = (function() {
     }
   };
   _BGJobContainer.prototype._doDestroy = function() {
-    var job;
     BGASSERT(this.being_destroyed, "not in destroy");
     BGASSERT(!this.is_destroyed, "already destroyed");
     if (this.is_destroyed) {
       return;
     }
     this.is_destroyed = true;
-    while ((job = this.jobs.shift())) {
-      job.destroy(true);
-    }
-    window.clearInterval(this.timeout);
-    return this.timeout = 0;
+    return this.clear();
   };
   return _BGJobContainer;
 })();
