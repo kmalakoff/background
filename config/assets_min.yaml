@@ -7,4 +7,5 @@ javascripts:
     - build/parts/bg_job.js
     - build/parts/bg_job_queue.js
     - build/parts/bg_job_list.js
+    - build/parts/bg_range.js
     - build/parts/bg_array_iterator.js

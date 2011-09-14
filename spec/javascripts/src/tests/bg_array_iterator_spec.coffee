@@ -41,9 +41,9 @@ try
           no_op=true
       )
       it("should refer to the correct elements in nextByItem batch size 3", ->
-        test_array = [1,2,3,4, 5]
+        test_array = [1,2,3,4,5]
         test_count = 0
-        iterator = new BGArrayIterator(test_array,1)
+        iterator = new BGArrayIterator(test_array,3)
         while(not iterator.nextByItem((item)->
           expect(item == test_array[test_count]).toBeTruthy()
           test_count++ 
@@ -96,7 +96,7 @@ try
       it("should refer to the correct elements in nextBySlice batch size 3", ->
         test_array = [1,2,3,4,5]
         test_count = 0
-        iterator = new BGArrayIterator(test_array,1)
+        iterator = new BGArrayIterator(test_array,3)
         while(not iterator.nextBySlice((slice)->
           for item in slice
             do (item) ->
@@ -115,9 +115,9 @@ try
         test_count = 0
         iterator = new BGArrayIterator(test_array,1)
         while(not iterator.nextByRange((range)->
-          while(range.index<range.excluded_boundary) 
+          while(not range.isDone()) 
             test_count++
-            range.index++
+            range.step()
         ))
           no_op=true
         expect(test_count==test_array.length).toBeTruthy()
@@ -127,9 +127,9 @@ try
         test_count = 0
         iterator = new BGArrayIterator(test_array,2)
         while(not iterator.nextByRange((range)->
-          while(range.index<range.excluded_boundary) 
+          while(not range.isDone()) 
             test_count++
-            range.index++
+            range.step()
         ))
           no_op=true
         expect(test_count==test_array.length).toBeTruthy()
@@ -139,9 +139,9 @@ try
         test_count = 0
         iterator = new BGArrayIterator(test_array,3)
         while(not iterator.nextByRange((range)->
-          while(range.index<range.excluded_boundary) 
+          while(not range.isDone()) 
             test_count++
-            range.index++
+            range.step()
         ))
           no_op=true
         expect(test_count==test_array.length).toBeTruthy()
@@ -153,9 +153,9 @@ try
         test_count = 0
         iterator = new BGArrayIterator(test_array,1)
         while(not iterator.nextByRange((range, array)->
-          while(range.index<range.excluded_boundary) 
+          while(not range.isDone()) 
             expect(array[range.index] == test_array[test_count]).toBeTruthy()
-            range.index++
+            range.step()
             test_count++
         ))
           no_op=true
@@ -163,11 +163,11 @@ try
       it("should refer to the correct elements in nextByRange batch size 3", ->
         test_array = [1,2,3,4,5]
         test_count = 0
-        iterator = new BGArrayIterator(test_array,1)
+        iterator = new BGArrayIterator(test_array,3)
         while(not iterator.nextByRange((range, array)->
-          while(range.index<range.excluded_boundary) 
+          while(not range.isDone()) 
             expect(array[range.index] == test_array[test_count]).toBeTruthy()
-            range.index++
+            range.step()
             test_count++
         ))
           no_op=true
@@ -183,9 +183,9 @@ try
         iterator = new BGArrayIterator(test_array,1)
         while(not iterator.isDone())
           range = iterator.step()
-          while(range.index<range.excluded_boundary) 
+          while(not range.isDone()) 
             test_count++
-            range.index++
+            range.step()
         expect(test_count==test_array.length).toBeTruthy()
       )
       it("should count once for each element in the array with batch size 2", ->
@@ -194,9 +194,9 @@ try
         iterator = new BGArrayIterator(test_array,2)
         while(not iterator.isDone())
           range = iterator.step()
-          while(range.index<range.excluded_boundary) 
+          while(not range.isDone()) 
             test_count++
-            range.index++
+            range.step()
         expect(test_count==test_array.length).toBeTruthy()
       )
       it("should count once for each element in the array with batch size 3 and an odd number of elements", ->
@@ -205,9 +205,9 @@ try
         iterator = new BGArrayIterator(test_array,3)
         while(not iterator.isDone())
           range = iterator.step()
-          while(range.index<range.excluded_boundary) 
+          while(not range.isDone()) 
             test_count++
-            range.index++
+            range.step()
         expect(test_count==test_array.length).toBeTruthy()
       )
     )
@@ -218,20 +218,20 @@ try
         iterator = new BGArrayIterator(test_array,1)
         while(not iterator.isDone())
           range = iterator.step()
-          while(range.index<range.excluded_boundary) 
+          while(not range.isDone()) 
             expect(test_array[range.index] == test_array[test_count]).toBeTruthy()
-            range.index++
+            range.step()
             test_count++
       )
       it("should refer to the correct elements in step batch size 3", ->
         test_array = [1,2,3,4,5]
         test_count = 0
-        iterator = new BGArrayIterator(test_array,1)
+        iterator = new BGArrayIterator(test_array,3)
         while(not iterator.isDone())
           range = iterator.step()
-          while(range.index<range.excluded_boundary) 
+          while(not range.isDone()) 
             expect(test_array[range.index] == test_array[test_count]).toBeTruthy()
-            range.index++
+            range.step()
             test_count++
       )
     )

@@ -57,7 +57,7 @@ try {
         var iterator, no_op, test_array, test_count, _results;
         test_array = [1, 2, 3, 4, 5];
         test_count = 0;
-        iterator = new BGArrayIterator(test_array, 1);
+        iterator = new BGArrayIterator(test_array, 3);
         _results = [];
         while (!iterator.nextByItem(function(item) {
             expect(item === test_array[test_count]).toBeTruthy();
@@ -151,7 +151,7 @@ try {
         var iterator, no_op, test_array, test_count, _results;
         test_array = [1, 2, 3, 4, 5];
         test_count = 0;
-        iterator = new BGArrayIterator(test_array, 1);
+        iterator = new BGArrayIterator(test_array, 3);
         _results = [];
         while (!iterator.nextBySlice(function(slice) {
             var item, _i, _len, _results2;
@@ -179,9 +179,9 @@ try {
         while (!iterator.nextByRange(function(range) {
             var _results;
             _results = [];
-            while (range.index < range.excluded_boundary) {
+            while (!range.isDone()) {
               test_count++;
-              _results.push(range.index++);
+              _results.push(range.step());
             }
             return _results;
           })) {
@@ -197,9 +197,9 @@ try {
         while (!iterator.nextByRange(function(range) {
             var _results;
             _results = [];
-            while (range.index < range.excluded_boundary) {
+            while (!range.isDone()) {
               test_count++;
-              _results.push(range.index++);
+              _results.push(range.step());
             }
             return _results;
           })) {
@@ -215,9 +215,9 @@ try {
         while (!iterator.nextByRange(function(range) {
             var _results;
             _results = [];
-            while (range.index < range.excluded_boundary) {
+            while (!range.isDone()) {
               test_count++;
-              _results.push(range.index++);
+              _results.push(range.step());
             }
             return _results;
           })) {
@@ -236,9 +236,9 @@ try {
         while (!iterator.nextByRange(function(range, array) {
             var _results2;
             _results2 = [];
-            while (range.index < range.excluded_boundary) {
+            while (!range.isDone()) {
               expect(array[range.index] === test_array[test_count]).toBeTruthy();
-              range.index++;
+              range.step();
               _results2.push(test_count++);
             }
             return _results2;
@@ -251,14 +251,14 @@ try {
         var iterator, no_op, test_array, test_count, _results;
         test_array = [1, 2, 3, 4, 5];
         test_count = 0;
-        iterator = new BGArrayIterator(test_array, 1);
+        iterator = new BGArrayIterator(test_array, 3);
         _results = [];
         while (!iterator.nextByRange(function(range, array) {
             var _results2;
             _results2 = [];
-            while (range.index < range.excluded_boundary) {
+            while (!range.isDone()) {
               expect(array[range.index] === test_array[test_count]).toBeTruthy();
-              range.index++;
+              range.step();
               _results2.push(test_count++);
             }
             return _results2;
@@ -276,9 +276,9 @@ try {
         iterator = new BGArrayIterator(test_array, 1);
         while (!iterator.isDone()) {
           range = iterator.step();
-          while (range.index < range.excluded_boundary) {
+          while (!range.isDone()) {
             test_count++;
-            range.index++;
+            range.step();
           }
         }
         return expect(test_count === test_array.length).toBeTruthy();
@@ -290,9 +290,9 @@ try {
         iterator = new BGArrayIterator(test_array, 2);
         while (!iterator.isDone()) {
           range = iterator.step();
-          while (range.index < range.excluded_boundary) {
+          while (!range.isDone()) {
             test_count++;
-            range.index++;
+            range.step();
           }
         }
         return expect(test_count === test_array.length).toBeTruthy();
@@ -304,9 +304,9 @@ try {
         iterator = new BGArrayIterator(test_array, 3);
         while (!iterator.isDone()) {
           range = iterator.step();
-          while (range.index < range.excluded_boundary) {
+          while (!range.isDone()) {
             test_count++;
-            range.index++;
+            range.step();
           }
         }
         return expect(test_count === test_array.length).toBeTruthy();
@@ -324,9 +324,9 @@ try {
           _results.push((function() {
             var _results2;
             _results2 = [];
-            while (range.index < range.excluded_boundary) {
+            while (!range.isDone()) {
               expect(test_array[range.index] === test_array[test_count]).toBeTruthy();
-              range.index++;
+              range.step();
               _results2.push(test_count++);
             }
             return _results2;
@@ -338,16 +338,16 @@ try {
         var iterator, range, test_array, test_count, _results;
         test_array = [1, 2, 3, 4, 5];
         test_count = 0;
-        iterator = new BGArrayIterator(test_array, 1);
+        iterator = new BGArrayIterator(test_array, 3);
         _results = [];
         while (!iterator.isDone()) {
           range = iterator.step();
           _results.push((function() {
             var _results2;
             _results2 = [];
-            while (range.index < range.excluded_boundary) {
+            while (!range.isDone()) {
               expect(test_array[range.index] === test_array[test_count]).toBeTruthy();
-              range.index++;
+              range.step();
               _results2.push(test_count++);
             }
             return _results2;
