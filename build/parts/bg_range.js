@@ -3,6 +3,7 @@ BGRange = (function() {
   function BGRange(index, excluded_boundary) {
     this.index = index;
     this.excluded_boundary = excluded_boundary;
+    BGASSERT((typeof this.index !== 'undefined') && this.excluded_boundary, "missing parameters");
     return this;
   }
   BGRange.prototype.clone = function() {
@@ -13,15 +14,17 @@ BGRange = (function() {
     this.excluded_boundary = -1;
     return this;
   };
-  BGRange.prototype.set = function(index_or_range, excluded_boundary) {
-    if (BGRange.isARange(index_or_range)) {
-      this.index = index_or_range.index;
-      this.excluded_boundary = index_or_range.excluded_boundary;
-    } else {
-      this.index = index_or_range;
-      this.excluded_boundary = excluded_boundary;
-    }
+  BGRange.prototype.addBatchLength = function(batch_length) {
+    BGASSERT(batch_length, "missing parameters");
+    this.excluded_boundary += batch_length;
     return this;
+  };
+  BGRange.prototype.reset = function() {
+    this.index = 0;
+    return this;
+  };
+  BGRange.prototype.isDone = function() {
+    return this.index >= this.excluded_boundary;
   };
   BGRange.prototype.step = function() {
     this.index++;
@@ -31,8 +34,8 @@ BGRange = (function() {
       return this.index;
     }
   };
-  BGRange.prototype.isDone = function() {
-    return this.index >= this.excluded_boundary;
+  BGRange.prototype.stepToEnd = function() {
+    return this.index = this.excluded_boundary;
   };
   BGRange.prototype.sliceArray = function(array) {
     return array.slice(this.index, this.excluded_boundary);

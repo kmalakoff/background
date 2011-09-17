@@ -8,6 +8,6 @@ javascripts:
     - build/parts/bg_job_queue.js
     - build/parts/bg_job_list.js
     - build/parts/bg_range.js
-    - build/parts/bg_range_x2.js
+    - build/parts/bg_range_xN.js
     - build/parts/bg_array_iterator.js
-    - build/parts/bg_array_iterator_x2.js
+    - build/parts/bg_array_iterator_xN.js

@@ -1,4 +1,4 @@
-var _BGJobContainer;
+var _BGArrayIterator, _BGJobContainer;
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 window.BGDEBUG = true;
 window.BGASSERT_ACTION = function(message) {
@@ -82,6 +82,47 @@ _BGJobContainer = (function() {
     return this.clear();
   };
   return _BGJobContainer;
+})();
+_BGArrayIterator = (function() {
+  function _BGArrayIterator(batch_length, total_count, current_range) {
+    this.batch_length = batch_length;
+    this.total_count = total_count;
+    this.current_range = current_range;
+    BGASSERT(this.batch_length && this.total_count && this.current_range, "positive integer batch length and range required");
+    this.reset();
+  }
+  _BGArrayIterator.prototype.reset = function() {
+    this.batch_index = -1;
+    return this.batch_count = Math.ceil(this.total_count / this.batch_length);
+  };
+  _BGArrayIterator.prototype.isDone = function() {
+    return this.batch_index >= this.batch_count - 1;
+  };
+  _BGArrayIterator.prototype.updateCurrentRange = function() {
+    var excluded_boundary, index;
+    index = this.batch_index * this.batch_length;
+    excluded_boundary = index + this.batch_length;
+    if (excluded_boundary > this.total_count) {
+      excluded_boundary = this.total_count;
+    }
+    if (index >= excluded_boundary) {
+      return this.current_range.setIsDone();
+    }
+    this.current_range.addBatchLength(excluded_boundary - index);
+    return this.current_range;
+  };
+  _BGArrayIterator.prototype.step = function() {
+    if (this.isDone()) {
+      return this.current_range.setIsDone();
+    }
+    this.batch_index++;
+    if (this.batch_index === 0) {
+      return this.current_range;
+    } else {
+      return this.updateCurrentRange();
+    }
+  };
+  return _BGArrayIterator;
 })();
 var BGJob;
 BGJob = (function() {
@@ -227,6 +268,7 @@ BGRange = (function() {
   function BGRange(index, excluded_boundary) {
     this.index = index;
     this.excluded_boundary = excluded_boundary;
+    BGASSERT((typeof this.index !== 'undefined') && this.excluded_boundary, "missing parameters");
     return this;
   }
   BGRange.prototype.clone = function() {
@@ -237,15 +279,17 @@ BGRange = (function() {
     this.excluded_boundary = -1;
     return this;
   };
-  BGRange.prototype.set = function(index_or_range, excluded_boundary) {
-    if (BGRange.isARange(index_or_range)) {
-      this.index = index_or_range.index;
-      this.excluded_boundary = index_or_range.excluded_boundary;
-    } else {
-      this.index = index_or_range;
-      this.excluded_boundary = excluded_boundary;
-    }
+  BGRange.prototype.addBatchLength = function(batch_length) {
+    BGASSERT(batch_length, "missing parameters");
+    this.excluded_boundary += batch_length;
     return this;
+  };
+  BGRange.prototype.reset = function() {
+    this.index = 0;
+    return this;
+  };
+  BGRange.prototype.isDone = function() {
+    return this.index >= this.excluded_boundary;
   };
   BGRange.prototype.step = function() {
     this.index++;
@@ -255,8 +299,8 @@ BGRange = (function() {
       return this.index;
     }
   };
-  BGRange.prototype.isDone = function() {
-    return this.index >= this.excluded_boundary;
+  BGRange.prototype.stepToEnd = function() {
+    return this.index = this.excluded_boundary;
   };
   BGRange.prototype.sliceArray = function(array) {
     return array.slice(this.index, this.excluded_boundary);
@@ -269,102 +313,88 @@ BGRange = (function() {
 if (typeof exports !== 'undefined') {
   exports.BGRange = BGRange;
 }
-var BGRange_x2;
-BGRange_x2 = (function() {
-  function BGRange_x2(range2_length, batch_length, range1, range2) {
-    this.range2_length = range2_length;
+var BGRange_xN;
+BGRange_xN = (function() {
+  function BGRange_xN(ranges, batch_length) {
+    this.ranges = ranges;
     this.batch_length = batch_length;
-    this.range1 = range1;
-    this.range2 = range2;
-    BGASSERT(this.range2_length && this.batch_length, "a BGRange_x2 requires all of the parameters");
+    BGASSERT(this.ranges && this.batch_length, "missing parameters or invalid batch length");
     this.batch_index = 0;
     return this;
   }
-  BGRange_x2.prototype.setIsDone = function() {
+  BGRange_xN.prototype.clone = function() {
+    var range, ranges, _i, _len, _ref;
+    ranges = [];
+    _ref = this.ranges;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      range = _ref[_i];
+      ranges.push(range.clone());
+    }
+    return new BGRange_xN(ranges, this.batch_length);
+  };
+  BGRange_xN.prototype.setIsDone = function() {
     this.batch_index = -1;
     this.batch_length = -1;
     return this;
   };
-  BGRange_x2.prototype.set = function(batch_length_or_range, range1, range2, range2_length) {
-    if (BGRange_x2.isARange_x2(batch_length_or_range)) {
-      this.range2_length = batch_length_or_range.range2_length;
-      this.batch_length = batch_length_or_range.batch_length;
-      this.range1 = batch_length_or_range.range1;
-      this.range2 = batch_length_or_range.range2;
-    } else {
-      this.batch_length = batch_length_or_range;
-      if (range1) {
-        this.range1 = range1;
-      }
-      if (range2) {
-        this.range2 = range2;
-      }
-      if (range2_length) {
-        this.range2_length = range2_length;
-      }
-    }
-    return this.batch_index = 0;
+  BGRange_xN.prototype.addBatchLength = function(batch_length) {
+    BGASSERT(batch_length, "missing parameters");
+    this.batch_index = 0;
+    this.batch_length = batch_length;
+    return this;
   };
-  BGRange_x2.prototype.step = function() {
-    var range2_excluded_boundary;
-    this.batch_index++;
-    if (this.batch_index >= this.batch_length) {
-      return null;
-    }
-    this.range2.step();
-    if (this.range2.isDone()) {
-      range2_excluded_boundary = this.batch_length - this.batch_index;
-      if (range2_excluded_boundary > this.range2_length) {
-        range2_excluded_boundary = this.range2_length;
-      }
-      this.range2.set(0, range2_excluded_boundary);
-      return this.range1.step();
-    }
-  };
-  BGRange_x2.prototype.isDone = function() {
+  BGRange_xN.prototype.isDone = function() {
     return this.batch_index >= this.batch_length;
   };
-  BGRange_x2.isARange_x2 = function(range) {
-    return range && (typeof range === 'object') && ('constructor' in range) && ('name' in range.constructor) && (range.constructor.name === 'BGRange_x2');
+  BGRange_xN.prototype.step = function() {
+    var current_range, index;
+    this.batch_index++;
+    index = this.ranges.length - 1;
+    while (index >= 0) {
+      current_range = this.ranges[index];
+      current_range.step();
+      if (!current_range.isDone()) {
+        return this;
+      }
+      current_range.reset();
+      index--;
+    }
+    this.setIsDone();
+    return null;
   };
-  return BGRange_x2;
+  BGRange_xN.prototype.stepToEnd = function() {
+    var _results;
+    _results = [];
+    while (!this.isDone()) {
+      _results.push(this.step());
+    }
+    return _results;
+  };
+  BGRange_xN.isARange_xN = function(range) {
+    return range && (typeof range === 'object') && ('constructor' in range) && ('name' in range.constructor) && (range.constructor.name === 'BGRange_xN');
+  };
+  return BGRange_xN;
 })();
 if (typeof exports !== 'undefined') {
   exports.BGRange = BGRange;
 }
 var BGArrayIterator;
+var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
+  for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; }
+  function ctor() { this.constructor = child; }
+  ctor.prototype = parent.prototype;
+  child.prototype = new ctor;
+  child.__super__ = parent.prototype;
+  return child;
+};
 BGArrayIterator = (function() {
+  __extends(BGArrayIterator, _BGArrayIterator);
   function BGArrayIterator(array, batch_length) {
     this.array = array;
-    this.batch_length = batch_length;
-    BGASSERT(this.array && this.batch_length, "array and positive integer batch length required");
-    this.array_length = this.array.length;
+    BGASSERT(this.array, "array required");
     this.reset();
-    this.current_range = new BGRange();
+    BGArrayIterator.__super__.constructor.call(this, batch_length, this.array.length, new BGRange(0, batch_length));
   }
-  BGArrayIterator.prototype.reset = function() {
-    this.batch_index = 0;
-    return this.batch_count = Math.floor(this.array_length / this.batch_length) + 1;
-  };
-  BGArrayIterator.prototype.isDone = function() {
-    return this.batch_index >= this.batch_count;
-  };
-  BGArrayIterator.prototype.updateCurrentRange = function() {
-    var excluded_boundary, index;
-    index = (this.batch_index - 1) * this.batch_length;
-    excluded_boundary = index + this.batch_length;
-    if (excluded_boundary > this.array_length) {
-      excluded_boundary = this.array_length;
-    }
-    return this.current_range.set(index, excluded_boundary);
-  };
-  BGArrayIterator.prototype.step = function() {
-    if (this.isDone()) {
-      return this.current_range.setIsDone();
-    }
-    this.batch_index++;
-    return this.updateCurrentRange();
-  };
   BGArrayIterator.prototype.nextByItem = function(fn) {
     this.step();
     while (!this.current_range.isDone()) {
@@ -378,13 +408,15 @@ BGArrayIterator = (function() {
     if (!this.current_range.isDone()) {
       fn(this.current_range.sliceArray(this.array), this.current_range, this.array);
     }
+    this.current_range.stepToEnd();
     return this.isDone();
   };
   BGArrayIterator.prototype.nextByRange = function(fn) {
     this.step();
     if (!this.current_range.isDone()) {
-      fn(this.current_range, this.array);
+      fn(this.current_range.clone(), this.array);
     }
+    this.current_range.stepToEnd();
     return this.isDone();
   };
   return BGArrayIterator;
@@ -392,66 +424,60 @@ BGArrayIterator = (function() {
 if (typeof exports !== 'undefined') {
   exports.BGArrayIterator = BGArrayIterator;
 }
-var BGArrayIterator_x2;
-BGArrayIterator_x2 = (function() {
-  function BGArrayIterator_x2(array1, array2, batch_length) {
-    this.array1 = array1;
-    this.array2 = array2;
-    this.batch_length = batch_length;
-    BGASSERT(this.array1 && this.array2 && this.batch_length, "array and positive integer batch length required");
-    this.array1_length = this.array1.length;
-    this.array2_length = this.array2.length;
-    this.array_combination_count = this.array1_length * this.array2_length;
+var BGArrayIterator_xN;
+var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
+  for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; }
+  function ctor() { this.constructor = child; }
+  ctor.prototype = parent.prototype;
+  child.prototype = new ctor;
+  child.__super__ = parent.prototype;
+  return child;
+};
+BGArrayIterator_xN = (function() {
+  __extends(BGArrayIterator_xN, _BGArrayIterator);
+  function BGArrayIterator_xN(arrays, batch_length) {
+    var array, array_combination_count, ranges, _i, _j, _len, _len2, _ref, _ref2;
+    this.arrays = arrays;
+    BGASSERT(this.arrays, "arrays required");
+    array_combination_count = 1;
+    _ref = this.arrays;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      array = _ref[_i];
+      array_combination_count *= array.length;
+    }
     this.reset();
-    this.current_range = new BGRange_x2(this.array2_length, this.batch_length);
+    ranges = [];
+    _ref2 = this.arrays;
+    for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
+      array = _ref2[_j];
+      ranges.push(new BGRange(0, array.length));
+    }
+    BGArrayIterator_xN.__super__.constructor.call(this, batch_length, array_combination_count, new BGRange_xN(ranges, batch_length));
   }
-  BGArrayIterator_x2.prototype.reset = function() {
-    this.batch_index = 0;
-    return this.batch_count = Math.floor(this.array_combination_count / this.batch_length) + 1;
-  };
-  BGArrayIterator_x2.prototype.isDone = function() {
-    return this.batch_index >= this.batch_count;
-  };
-  BGArrayIterator_x2.prototype.updateCurrentRange = function() {
-    var excluded_boundary, excluded_boundary1, excluded_boundary2, index, index1, index2;
-    index = (this.batch_index - 1) * this.batch_length;
-    excluded_boundary = index + this.batch_length;
-    if (excluded_boundary > this.array_combination_count) {
-      excluded_boundary = this.array_combination_count;
-    }
-    if (index >= excluded_boundary) {
-      return this.current_range.setIsDone();
-    }
-    index1 = Math.floor(index / this.array2_length);
-    excluded_boundary1 = Math.floor(excluded_boundary / this.array2_length) + 1;
-    index2 = index % this.array2_length;
-    excluded_boundary2 = this.array2_length;
-    this.current_range.set(excluded_boundary - index, new BGRange(index1, excluded_boundary1), new BGRange(index2, excluded_boundary2));
-    return this.current_range;
-  };
-  BGArrayIterator_x2.prototype.step = function() {
-    if (this.isDone()) {
-      return this.current_range.setIsDone();
-    }
-    this.batch_index++;
-    return this.updateCurrentRange();
-  };
-  BGArrayIterator_x2.prototype.nextByItems = function(fn) {
+  BGArrayIterator_xN.prototype.nextByItems = function(fn) {
+    var array, index, items, _ref;
     this.step();
     while (!this.current_range.isDone()) {
-      fn(this.array1[this.current_range.range1.index], this.array2[this.current_range.range2.index], this.current_range, this.array1, this.array2);
+      items = [];
+      _ref = this.arrays;
+      for (index in _ref) {
+        array = _ref[index];
+        items.push(array[this.current_range.ranges[index].index]);
+      }
+      fn(items, this.current_range, this.arrays);
       this.current_range.step();
     }
     return this.isDone();
   };
-  BGArrayIterator_x2.prototype.nextByRange = function(fn) {
+  BGArrayIterator_xN.prototype.nextByRange = function(fn) {
     this.step();
     if (!this.current_range.isDone()) {
-      fn(this.current_range, this.array1, this.array2);
+      fn(this.current_range.clone(), this.arrays);
     }
+    this.current_range.stepToEnd();
     return this.isDone();
   };
-  return BGArrayIterator_x2;
+  return BGArrayIterator_xN;
 })();
 if (typeof exports !== 'undefined') {
   exports.BGArrayIterator = BGArrayIterator;

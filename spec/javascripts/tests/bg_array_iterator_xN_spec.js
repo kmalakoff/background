@@ -7,7 +7,7 @@ try {
         test_array2 = [1, 2, 3, 4, 5];
         total_count = test_array1.length * test_array2.length;
         test_count = 0;
-        iterator = new BGArrayIterator_xN(test_array1, test_array2, 1);
+        iterator = new BGArrayIterator_xN([test_array1, test_array2], 1);
         while (!iterator.nextByItems(function() {
             return test_count++;
           })) {
@@ -21,7 +21,7 @@ try {
         test_array2 = [1, 2, 3, 4, 5];
         total_count = test_array1.length * test_array2.length;
         test_count = 0;
-        iterator = new BGArrayIterator_xN(test_array1, test_array2, 2);
+        iterator = new BGArrayIterator_xN([test_array1, test_array2], 2);
         while (!iterator.nextByItems(function() {
             return test_count++;
           })) {
@@ -35,7 +35,7 @@ try {
         test_array2 = [1, 2, 3, 4, 5];
         total_count = test_array1.length * test_array2.length;
         test_count = 0;
-        iterator = new BGArrayIterator_xN(test_array1, test_array2, 3);
+        iterator = new BGArrayIterator_xN([test_array1, test_array2], 3);
         while (!iterator.nextByItems(function() {
             return test_count++;
           })) {
@@ -51,14 +51,14 @@ try {
         test_array2 = [1, 2, 3, 4, 5];
         total_count = test_array1.length * test_array2.length;
         test_count = 0;
-        iterator = new BGArrayIterator_xN(test_array1, test_array2, 1);
+        iterator = new BGArrayIterator_xN([test_array1, test_array2], 1);
         _results = [];
-        while (!iterator.nextByItems(function(item[0], item[1]) {
+        while (!iterator.nextByItems(function(items) {
             var index1, index2;
             index1 = Math.floor(test_count / test_array2.length);
             index2 = test_count % test_array2.length;
-            expect(item[0] === test_array1[index1]).toBeTruthy();
-            expect(item[1] === test_array2[index2]).toBeTruthy();
+            expect(items[0] === test_array1[index1]).toBeTruthy();
+            expect(items[1] === test_array2[index2]).toBeTruthy();
             return test_count++;
           })) {
           _results.push(no_op = true);
@@ -71,14 +71,14 @@ try {
         test_array2 = [1, 2, 3, 4, 5];
         total_count = test_array1.length * test_array2.length;
         test_count = 0;
-        iterator = new BGArrayIterator_xN(test_array1, test_array2, 3);
+        iterator = new BGArrayIterator_xN([test_array1, test_array2], 3);
         _results = [];
-        while (!iterator.nextByItems(function(item[0], item[1]) {
+        while (!iterator.nextByItems(function(items) {
             var index1, index2;
             index1 = Math.floor(test_count / test_array2.length);
             index2 = test_count % test_array2.length;
-            expect(item[0] === test_array1[index1]).toBeTruthy();
-            expect(item[1] === test_array2[index2]).toBeTruthy();
+            expect(items[0] === test_array1[index1]).toBeTruthy();
+            expect(items[1] === test_array2[index2]).toBeTruthy();
             return test_count++;
           })) {
           _results.push(no_op = true);
@@ -93,7 +93,7 @@ try {
         test_array2 = [1, 2, 3, 4, 5];
         total_count = test_array1.length * test_array2.length;
         test_count = 0;
-        iterator = new BGArrayIterator_xN(test_array1, test_array2, 1);
+        iterator = new BGArrayIterator_xN([test_array1, test_array2], 1);
         while (!iterator.nextByRange(function(range) {
             var _results;
             _results = [];
@@ -113,7 +113,7 @@ try {
         test_array2 = [1, 2, 3, 4, 5];
         total_count = test_array1.length * test_array2.length;
         test_count = 0;
-        iterator = new BGArrayIterator_xN(test_array1, test_array2, 2);
+        iterator = new BGArrayIterator_xN([test_array1, test_array2], 2);
         while (!iterator.nextByRange(function(range) {
             var _results;
             _results = [];
@@ -133,7 +133,7 @@ try {
         test_array2 = [1, 2, 3, 4, 5];
         total_count = test_array1.length * test_array2.length;
         test_count = 0;
-        iterator = new BGArrayIterator_xN(test_array1, test_array2, 3);
+        iterator = new BGArrayIterator_xN([test_array1, test_array2], 3);
         while (!iterator.nextByRange(function(range) {
             var _results;
             _results = [];
@@ -155,7 +155,7 @@ try {
         test_array2 = [1, 2, 3, 4, 5];
         total_count = test_array1.length * test_array2.length;
         test_count = 0;
-        iterator = new BGArrayIterator_xN(test_array1, test_array2, 1);
+        iterator = new BGArrayIterator_xN([test_array1, test_array2], 1);
         _results = [];
         while (!iterator.nextByRange(function(range, arrays) {
             var index1, index2, _results2;
@@ -163,10 +163,10 @@ try {
             while (!range.isDone()) {
               index1 = Math.floor(test_count / test_array2.length);
               index2 = test_count % test_array2.length;
-              expect(ranges[0].index === index1).toBeTruthy();
-              expect(test_array1[ranges[0].index] === test_array1[index1]).toBeTruthy();
-              expect(ranges[1].index === index2).toBeTruthy();
-              expect(test_array2[ranges[1].index] === test_array2[index2]).toBeTruthy();
+              expect(range.ranges[0].index === index1).toBeTruthy();
+              expect(arrays[0][range.ranges[0].index] === test_array1[index1]).toBeTruthy();
+              expect(range.ranges[1].index === index2).toBeTruthy();
+              expect(arrays[1][range.ranges[1].index] === test_array2[index2]).toBeTruthy();
               range.step();
               _results2.push(test_count++);
             }
@@ -182,7 +182,7 @@ try {
         test_array2 = [1, 2, 3, 4, 5];
         total_count = test_array1.length * test_array2.length;
         test_count = 0;
-        iterator = new BGArrayIterator_xN(test_array1, test_array2, 3);
+        iterator = new BGArrayIterator_xN([test_array1, test_array2], 3);
         _results = [];
         while (!iterator.nextByRange(function(range, arrays) {
             var index1, index2, _results2;
@@ -190,10 +190,10 @@ try {
             while (!range.isDone()) {
               index1 = Math.floor(test_count / test_array2.length);
               index2 = test_count % test_array2.length;
-              expect(ranges[0].index === index1).toBeTruthy();
-              expect(test_array1[ranges[0].index] === test_array1[index1]).toBeTruthy();
-              expect(ranges[1].index === index2).toBeTruthy();
-              expect(test_array2[ranges[1].index] === test_array2[index2]).toBeTruthy();
+              expect(range.ranges[0].index === index1).toBeTruthy();
+              expect(arrays[0][range.ranges[0].index] === test_array1[index1]).toBeTruthy();
+              expect(range.ranges[1].index === index2).toBeTruthy();
+              expect(arrays[1][range.ranges[1].index] === test_array2[index2]).toBeTruthy();
               range.step();
               _results2.push(test_count++);
             }
@@ -211,7 +211,7 @@ try {
         test_array2 = [1, 2, 3, 4, 5];
         total_count = test_array1.length * test_array2.length;
         test_count = 0;
-        iterator = new BGArrayIterator_xN(test_array1, test_array2, 1);
+        iterator = new BGArrayIterator_xN([test_array1, test_array2], 1);
         while (!iterator.isDone()) {
           range = iterator.step();
           while (!range.isDone()) {
@@ -227,7 +227,7 @@ try {
         test_array2 = [1, 2, 3, 4, 5];
         total_count = test_array1.length * test_array2.length;
         test_count = 0;
-        iterator = new BGArrayIterator_xN(test_array1, test_array2, 2);
+        iterator = new BGArrayIterator_xN([test_array1, test_array2], 2);
         while (!iterator.isDone()) {
           range = iterator.step();
           while (!range.isDone()) {
@@ -243,7 +243,7 @@ try {
         test_array2 = [1, 2, 3, 4, 5];
         total_count = test_array1.length * test_array2.length;
         test_count = 0;
-        iterator = new BGArrayIterator_xN(test_array1, test_array2, 3);
+        iterator = new BGArrayIterator_xN([test_array1, test_array2], 3);
         while (!iterator.isDone()) {
           range = iterator.step();
           while (!range.isDone()) {
@@ -261,7 +261,7 @@ try {
         test_array2 = [1, 2, 3, 4, 5];
         total_count = test_array1.length * test_array2.length;
         test_count = 0;
-        iterator = new BGArrayIterator_xN(test_array1, test_array2, 1);
+        iterator = new BGArrayIterator_xN([test_array1, test_array2], 1);
         _results = [];
         while (!iterator.isDone()) {
           range = iterator.step();
@@ -271,10 +271,10 @@ try {
             while (!range.isDone()) {
               index1 = Math.floor(test_count / test_array2.length);
               index2 = test_count % test_array2.length;
-              expect(ranges[0].index === index1).toBeTruthy();
-              expect(test_array1[ranges[0].index] === test_array1[index1]).toBeTruthy();
-              expect(ranges[1].index === index2).toBeTruthy();
-              expect(test_array2[ranges[1].index] === test_array2[index2]).toBeTruthy();
+              expect(range.ranges[0].index === index1).toBeTruthy();
+              expect(test_array1[range.ranges[0].index] === test_array1[index1]).toBeTruthy();
+              expect(range.ranges[1].index === index2).toBeTruthy();
+              expect(test_array2[range.ranges[1].index] === test_array2[index2]).toBeTruthy();
               range.step();
               _results2.push(test_count++);
             }
@@ -289,7 +289,7 @@ try {
         test_array2 = [1, 2, 3, 4, 5];
         total_count = test_array1.length * test_array2.length;
         test_count = 0;
-        iterator = new BGArrayIterator_xN(test_array1, test_array2, 3);
+        iterator = new BGArrayIterator_xN([test_array1, test_array2], 3);
         _results = [];
         while (!iterator.isDone()) {
           range = iterator.step();
@@ -299,10 +299,10 @@ try {
             while (!range.isDone()) {
               index1 = Math.floor(test_count / test_array2.length);
               index2 = test_count % test_array2.length;
-              expect(ranges[0].index === index1).toBeTruthy();
-              expect(test_array1[ranges[0].index] === test_array1[index1]).toBeTruthy();
-              expect(ranges[1].index === index2).toBeTruthy();
-              expect(test_array2[ranges[1].index] === test_array2[index2]).toBeTruthy();
+              expect(range.ranges[0].index === index1).toBeTruthy();
+              expect(test_array1[range.ranges[0].index] === test_array1[index1]).toBeTruthy();
+              expect(range.ranges[1].index === index2).toBeTruthy();
+              expect(test_array2[range.ranges[1].index] === test_array2[index2]).toBeTruthy();
               range.step();
               _results2.push(test_count++);
             }

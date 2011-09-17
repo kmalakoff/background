@@ -61,4 +61,32 @@ class _BGJobContainer
     @is_destroyed = true
     
     # clear the jobs
-    @clear()  
+    @clear()
+
+class _BGArrayIterator
+
+  constructor: (@batch_length, @total_count, @current_range) ->
+    BGASSERT(@batch_length and @total_count and @current_range, "positive integer batch length and range required")
+    @reset()
+
+  reset: ->
+    @batch_index = -1
+    @batch_count = Math.ceil(@total_count/@batch_length)
+
+  # checks whether all the steps are done
+  isDone: -> return (@batch_index >= @batch_count-1) 
+  updateCurrentRange: -> 
+    index = @batch_index * @batch_length
+    excluded_boundary = index + @batch_length
+    excluded_boundary = @total_count if(excluded_boundary>@total_count)
+
+    return @current_range.setIsDone() if(index>=excluded_boundary)
+    @current_range.addBatchLength(excluded_boundary-index)
+    return @current_range
+
+  # updates the iteration and returns a range {index: , excluded_boundary: }
+  step: -> 
+    return @current_range.setIsDone() if @isDone()
+    @batch_index++
+    return if(@batch_index==0) then @current_range else @updateCurrentRange()
+

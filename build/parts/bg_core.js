@@ -1,4 +1,4 @@
-var _BGJobContainer;
+var _BGArrayIterator, _BGJobContainer;
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 window.BGDEBUG = true;
 window.BGASSERT_ACTION = function(message) {
@@ -82,4 +82,45 @@ _BGJobContainer = (function() {
     return this.clear();
   };
   return _BGJobContainer;
+})();
+_BGArrayIterator = (function() {
+  function _BGArrayIterator(batch_length, total_count, current_range) {
+    this.batch_length = batch_length;
+    this.total_count = total_count;
+    this.current_range = current_range;
+    BGASSERT(this.batch_length && this.total_count && this.current_range, "positive integer batch length and range required");
+    this.reset();
+  }
+  _BGArrayIterator.prototype.reset = function() {
+    this.batch_index = -1;
+    return this.batch_count = Math.ceil(this.total_count / this.batch_length);
+  };
+  _BGArrayIterator.prototype.isDone = function() {
+    return this.batch_index >= this.batch_count - 1;
+  };
+  _BGArrayIterator.prototype.updateCurrentRange = function() {
+    var excluded_boundary, index;
+    index = this.batch_index * this.batch_length;
+    excluded_boundary = index + this.batch_length;
+    if (excluded_boundary > this.total_count) {
+      excluded_boundary = this.total_count;
+    }
+    if (index >= excluded_boundary) {
+      return this.current_range.setIsDone();
+    }
+    this.current_range.addBatchLength(excluded_boundary - index);
+    return this.current_range;
+  };
+  _BGArrayIterator.prototype.step = function() {
+    if (this.isDone()) {
+      return this.current_range.setIsDone();
+    }
+    this.batch_index++;
+    if (this.batch_index === 0) {
+      return this.current_range;
+    } else {
+      return this.updateCurrentRange();
+    }
+  };
+  return _BGArrayIterator;
 })();

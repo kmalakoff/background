@@ -1,20 +1,24 @@
 class BGRange
 
-  constructor: (@index, @excluded_boundary) -> return this
+  constructor: (@index, @excluded_boundary) -> 
+    BGASSERT((typeof @index != 'undefined') and @excluded_boundary, "missing parameters")
+    return this
   clone: -> return new BGRange(@index, @excluded_boundary)
 
   setIsDone: -> 
     @index = -1; @excluded_boundary = -1
     return this
-  set: (index_or_range, excluded_boundary) -> 
-    if(BGRange.isARange(index_or_range))
-      @index = index_or_range.index; @excluded_boundary = index_or_range.excluded_boundary
-    else
-      @index = index_or_range; @excluded_boundary = excluded_boundary
+  addBatchLength: (batch_length) -> 
+    BGASSERT(batch_length, "missing parameters")
+    @excluded_boundary += batch_length
+    return this
+  reset:  -> 
+    @index = 0
     return this
 
-  step:   -> @index++; return if(@index>=@excluded_boundary) then -1 else @index
-  isDone: -> return (@index>=@excluded_boundary)
+  isDone:       -> return (@index>=@excluded_boundary)
+  step:         -> @index++; return if(@index>=@excluded_boundary) then -1 else @index
+  stepToEnd:    -> @index = @excluded_boundary
 
   sliceArray: (array) -> return array.slice(@index, @excluded_boundary)
 
