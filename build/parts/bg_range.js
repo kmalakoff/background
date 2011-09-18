@@ -6,23 +6,6 @@ BGRange = (function() {
     BGASSERT((typeof this.index !== 'undefined') && this.excluded_boundary, "missing parameters");
     return this;
   }
-  BGRange.prototype.clone = function() {
-    return new BGRange(this.index, this.excluded_boundary);
-  };
-  BGRange.prototype.setIsDone = function() {
-    this.index = -1;
-    this.excluded_boundary = -1;
-    return this;
-  };
-  BGRange.prototype.addBatchLength = function(batch_length) {
-    BGASSERT(batch_length, "missing parameters");
-    this.excluded_boundary += batch_length;
-    return this;
-  };
-  BGRange.prototype.reset = function() {
-    this.index = 0;
-    return this;
-  };
   BGRange.prototype.isDone = function() {
     return this.index >= this.excluded_boundary;
   };
@@ -34,14 +17,28 @@ BGRange = (function() {
       return this.index;
     }
   };
-  BGRange.prototype.stepToEnd = function() {
-    return this.index = this.excluded_boundary;
+  BGRange.prototype.getItem = function(array) {
+    return array[this.index];
   };
-  BGRange.prototype.sliceArray = function(array) {
+  BGRange.prototype.getSlice = function(array) {
     return array.slice(this.index, this.excluded_boundary);
   };
-  BGRange.isARange = function(range) {
-    return range && (typeof range === 'object') && ('constructor' in range) && ('name' in range.constructor) && (range.constructor.name === 'BGRange');
+  BGRange.prototype._setIsDone = function() {
+    this.index = -1;
+    this.excluded_boundary = -1;
+    return this;
+  };
+  BGRange.prototype._addBatchLength = function(batch_length) {
+    BGASSERT(batch_length, "missing parameters");
+    this.excluded_boundary += batch_length;
+    return this;
+  };
+  BGRange.prototype.reset = function() {
+    this.index = 0;
+    return this;
+  };
+  BGRange.prototype._stepToEnd = function() {
+    return this.index = this.excluded_boundary;
   };
   return BGRange;
 })();

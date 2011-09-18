@@ -10,15 +10,17 @@ var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, par
 BGArrayIterator = (function() {
   __extends(BGArrayIterator, _BGArrayIterator);
   function BGArrayIterator(array, batch_length) {
+    var excluded_boundary;
     this.array = array;
     BGASSERT(this.array, "array required");
     this.reset();
-    BGArrayIterator.__super__.constructor.call(this, batch_length, this.array.length, new BGRange(0, batch_length));
+    excluded_boundary = batch_length < this.array.length ? batch_length : this.array.length;
+    BGArrayIterator.__super__.constructor.call(this, batch_length, this.array.length, new BGRange(0, excluded_boundary));
   }
   BGArrayIterator.prototype.nextByItem = function(fn) {
     this.step();
     while (!this.current_range.isDone()) {
-      fn(this.array[this.current_range.index], this.current_range.index, this.array);
+      fn(this.current_range.getItem(this.array), this.current_range.index, this.array);
       this.current_range.step();
     }
     return this.isDone();
@@ -26,17 +28,16 @@ BGArrayIterator = (function() {
   BGArrayIterator.prototype.nextBySlice = function(fn) {
     this.step();
     if (!this.current_range.isDone()) {
-      fn(this.current_range.sliceArray(this.array), this.current_range, this.array);
+      fn(this.current_range.getSlice(this.array), this.current_range, this.array);
     }
-    this.current_range.stepToEnd();
+    this.current_range._stepToEnd();
     return this.isDone();
   };
   BGArrayIterator.prototype.nextByRange = function(fn) {
     this.step();
     if (!this.current_range.isDone()) {
-      fn(this.current_range.clone(), this.array);
+      fn(this.current_range, this.array);
     }
-    this.current_range.stepToEnd();
     return this.isDone();
   };
   return BGArrayIterator;

@@ -106,14 +106,14 @@ _BGArrayIterator = (function() {
       excluded_boundary = this.total_count;
     }
     if (index >= excluded_boundary) {
-      return this.current_range.setIsDone();
+      return this.current_range._setIsDone();
     }
-    this.current_range.addBatchLength(excluded_boundary - index);
+    this.current_range._addBatchLength(excluded_boundary - index);
     return this.current_range;
   };
   _BGArrayIterator.prototype.step = function() {
     if (this.isDone()) {
-      return this.current_range.setIsDone();
+      return this.current_range._setIsDone();
     }
     this.batch_index++;
     if (this.batch_index === 0) {

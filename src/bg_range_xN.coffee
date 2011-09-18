@@ -4,18 +4,6 @@ class BGRange_xN
     BGASSERT(@ranges and @batch_length, "missing parameters or invalid batch length")
     @batch_index = 0
     return this
-  clone: -> 
-    ranges = []; ranges.push(range.clone()) for range in @ranges
-    return new BGRange_xN(ranges, @batch_length)
-
-  setIsDone: -> 
-    @batch_index = -1; @batch_length = -1
-    return this
-  addBatchLength: (batch_length) -> 
-    BGASSERT(batch_length, "missing parameters")
-    @batch_index = 0
-    @batch_length = batch_length
-    return this
 
   isDone: -> return (@batch_index>=@batch_length)
   step: -> 
@@ -27,16 +15,30 @@ class BGRange_xN
       return this if not current_range.isDone() # done an iteration
       current_range.reset()
       index--
-
     # done iterating over all the ranges
-    @setIsDone()
+    @_setIsDone()
     return null
-  stepToEnd: -> 
+  getItems: (arrays) -> 
+    items = []
+    items.push(array[@ranges[index].index]) for index, array of arrays
+    return items
+  getCombinations: (arrays) -> 
+    combinations = []
     while not @isDone()
+      combination = []
+      combination.push(range.getItem(arrays[index])) for index, range of @ranges
+      combinations.push(combination)
       @step()
+    return combinations
 
-  @isARange_xN: (range) ->
-    return (range and (typeof range == 'object') and ('constructor' of range) and ('name' of range.constructor) and (range.constructor.name == 'BGRange_xN'))
+  _setIsDone: -> 
+    @batch_index = -1; @batch_length = -1
+    return this
+  _addBatchLength: (batch_length) -> 
+    BGASSERT(batch_length, "missing parameters")
+    @batch_index = 0
+    @batch_length = batch_length
+    return this
 
 ####################################################
 # CommonJS

@@ -29,26 +29,25 @@ BGArrayIterator_xN = (function() {
     BGArrayIterator_xN.__super__.constructor.call(this, batch_length, array_combination_count, new BGRange_xN(ranges, batch_length));
   }
   BGArrayIterator_xN.prototype.nextByItems = function(fn) {
-    var array, index, items, _ref;
     this.step();
     while (!this.current_range.isDone()) {
-      items = [];
-      _ref = this.arrays;
-      for (index in _ref) {
-        array = _ref[index];
-        items.push(array[this.current_range.ranges[index].index]);
-      }
-      fn(items, this.current_range, this.arrays);
+      fn(this.current_range.getItems(this.arrays), this.current_range, this.arrays);
       this.current_range.step();
+    }
+    return this.isDone();
+  };
+  BGArrayIterator_xN.prototype.nextByCombinations = function(fn) {
+    this.step();
+    if (!this.current_range.isDone()) {
+      fn(this.current_range.getCombinations(this.arrays), this.current_range, this.array);
     }
     return this.isDone();
   };
   BGArrayIterator_xN.prototype.nextByRange = function(fn) {
     this.step();
     if (!this.current_range.isDone()) {
-      fn(this.current_range.clone(), this.arrays);
+      fn(this.current_range, this.arrays);
     }
-    this.current_range.stepToEnd();
     return this.isDone();
   };
   return BGArrayIterator_xN;

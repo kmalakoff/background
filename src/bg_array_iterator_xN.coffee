@@ -12,16 +12,20 @@ class BGArrayIterator_xN extends _BGArrayIterator
   nextByItems: (fn) ->
     @step()
     while(not @current_range.isDone())
-      items = []; items.push(array[@current_range.ranges[index].index]) for index, array of @arrays
-      fn(items, @current_range, @arrays)
+      fn(@current_range.getItems(@arrays), @current_range, @arrays)
       @current_range.step()
+    return @isDone()
+
+  # iterates passing (array_combinations, range, arrays) once per call (but you should only need array_combinations)
+  nextByCombinations: (fn) ->
+    @step()
+    fn(@current_range.getCombinations(@arrays), @current_range, @array) if(not @current_range.isDone())
     return @isDone()
 
   # iterates passing range and arrays once per call
   nextByRange: (fn) ->
     @step()
-    fn(@current_range.clone(), @arrays) if(not @current_range.isDone())
-    @current_range.stepToEnd()
+    fn(@current_range, @arrays) if(not @current_range.isDone())
     return @isDone()
 
 ####################################################

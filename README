@@ -19,12 +19,30 @@ The library is composed of the following classes:
   2) BGJobList - a sequentially-processed background job list. When you 'append' a job on a list, it and the rest of the jobs in the list are run on each 'tick' in the order they were appended until they signal that they are done.
 
   3) BGArrayIterator - a helper to iterate over a subset of an array on each 'tick'. You can either process the subset per iteration:
-    a) callback per array item - by calling 'nextByItem' with a function of the form (item) -> do_something
-    b) callback per array slice - by calling 'nextBySlice' with a function of the form (slice) -> do_something
-    c) callback per range (in the form: {index:, excluded_boundary:}) - by calling 'nextByRange' with a function of the form (range) -> do_something
-    d) manually using step() which returns a range (in the form: {index:, excluded_boundary:}) and isDone() after manually processing the range
+    a) callback per array item - by calling 'nextByItem' with a function of the form: (item) -> do_something
+    b) callback per array slice - by calling 'nextBySlice' with a function of the form: (slice) -> do_something
+    c) callback per range  (of type BGRange)- by calling 'nextByRange' with a function of the form: (range) -> do_something
+    d) manually using step() which returns a range (of type BGRange) and isDone() after manually processing the range
 
-  4) BGJob - a job class which requires a run_fn and can optionally be provided an init_fn and/or a destroy_fn. 
+  4) BGRange - a single array range iterator which is used per iteration to access array items. Public interfaces:
+    - isDone(): returns boolean indicating whether the iteration is complete or you need to keep calling step()
+    - step(): keeps stepping through indices until done
+    - getItem(array): used to get the item that the range iterator is currently referring to  
+    - getSlice(array): used to get all the items that the range is referring to
+
+  5) BGArrayIterator_xN - a helper to iterate over a collection of arrays on each 'tick'. It is used to iterate through all combinations between the given arrays in equal steps on each tick; for example, you can apply M transformations to each of N elements giving N*M operations in arbitrary equal sized batches per tick. You can either process the subset per iteration:
+    a) callback per array item - by calling 'nextByItems' with a function of the form: (items_array) -> do_something
+    b) callback per array combinations - by calling 'nextByCombinations' with a function of the form: (combinations) -> do_something
+    c) callback per range (of type BGRange_xN) - by calling 'nextByRange' with a function of the form: (range) -> do_something
+    d) manually using step() which returns a range (of type BGRange_xN) and isDone() after manually processing the range
+
+  6) BGRange_xN - a multiple array range iterator which is used per iteration to access array items. Public interfaces:
+  - isDone(): returns boolean indicating whether the iteration is complete or you need to keep calling step()
+  - step(): keeps stepping through indices until done
+  - getItems(arrays): used to get the items that all of the range iterators are currently referring to  
+  - getCombinations(arrays): used to get all the pair combinations of the arrays items that the range is referring to
+
+  7) BGJob - a job class which requires a run_fn and can optionally be provided an init_fn and/or a destroy_fn. 
 
 Other notes:
 

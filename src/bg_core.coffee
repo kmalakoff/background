@@ -80,13 +80,13 @@ class _BGArrayIterator
     excluded_boundary = index + @batch_length
     excluded_boundary = @total_count if(excluded_boundary>@total_count)
 
-    return @current_range.setIsDone() if(index>=excluded_boundary)
-    @current_range.addBatchLength(excluded_boundary-index)
+    return @current_range._setIsDone() if(index>=excluded_boundary)
+    @current_range._addBatchLength(excluded_boundary-index)
     return @current_range
 
   # updates the iteration and returns a range {index: , excluded_boundary: }
   step: -> 
-    return @current_range.setIsDone() if @isDone()
+    return @current_range._setIsDone() if @isDone()
     @batch_index++
     return if(@batch_index==0) then @current_range else @updateCurrentRange()
 

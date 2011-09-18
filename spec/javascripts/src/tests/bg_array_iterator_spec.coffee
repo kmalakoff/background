@@ -28,6 +28,14 @@ try
           no_op=true
         expect(test_count==test_array.length).toBeTruthy()
       )
+      it("should count once for each element in the array with batch size greater than the number of elements", ->
+        test_array = [1,2,3,4,5]
+        test_count = 0
+        iterator = new BGArrayIterator(test_array,test_array.length+5)
+        while(not iterator.nextByItem(->test_count++)) 
+          no_op=true
+        expect(test_count==test_array.length).toBeTruthy()
+      )
     )
     describe("checking element values match in nextByItem", ->
       it("should refer to the correct elements in nextByItem batch size 1", ->
@@ -106,6 +114,40 @@ try
           no_op=true
       )
     )
+    describe("checking results match in nextBySlice", ->
+      test_array = [1,2,3,4,5]
+      test_count = 0
+      expected_result = 1 + 2 + 3 + 4 + 5
+
+      it("should calculate the correct result with batch size 1", ->
+        test_result = 0
+        iterator = new BGArrayIterator(test_array,1)
+        while(not iterator.nextBySlice((slice)->
+          test_result += item for item in slice
+        ))
+          no_op=true
+        expect(test_result == expected_result).toBeTruthy()
+      )
+      it("should calculate the correct result with batch size 4", ->
+        test_result = 0
+        iterator = new BGArrayIterator(test_array,4)
+        while(not iterator.nextBySlice((slice)->
+          test_result += item for item in slice
+        ))
+          no_op=true
+        expect(test_result == expected_result).toBeTruthy()
+      )
+      it("should calculate the correct result with batch size greater than the number of elements", ->
+        test_result = 0
+        iterator = new BGArrayIterator(test_array,test_array.length+5)
+        while(not iterator.nextBySlice((slice)->
+          test_result += item for item in slice
+        ))
+          no_op=true
+        expect(test_result == expected_result).toBeTruthy()
+      )
+    )
+
     ##############################
     # nextByRange
     ##############################
@@ -154,7 +196,7 @@ try
         iterator = new BGArrayIterator(test_array,1)
         while(not iterator.nextByRange((range, array)->
           while(not range.isDone()) 
-            expect(array[range.index] == test_array[test_count]).toBeTruthy()
+            expect(range.getItem(array) == test_array[test_count]).toBeTruthy()
             range.step()
             test_count++
         ))
@@ -166,11 +208,50 @@ try
         iterator = new BGArrayIterator(test_array,3)
         while(not iterator.nextByRange((range, array)->
           while(not range.isDone()) 
-            expect(array[range.index] == test_array[test_count]).toBeTruthy()
+            expect(range.getItem(array) == test_array[test_count]).toBeTruthy()
             range.step()
             test_count++
         ))
           no_op=true
+      )
+    )
+    describe("checking results match in nextByRange", ->
+      test_array = [1,2,3,4,5]
+      test_count = 0
+      expected_result = 1 + 2 + 3 + 4 + 5
+
+      it("should calculate the correct result with batch size 1", ->
+        test_result = 0
+        iterator = new BGArrayIterator(test_array,1)
+        while(not iterator.nextByRange((range, array)->
+          while(not range.isDone()) 
+            test_result += range.getItem(array)
+            range.step()
+        ))
+          no_op=true
+        expect(test_result == expected_result).toBeTruthy()
+      )
+      it("should calculate the correct result with batch size 4", ->
+        test_result = 0
+        iterator = new BGArrayIterator(test_array,4)
+        while(not iterator.nextByRange((range, array)->
+          while(not range.isDone()) 
+            test_result += range.getItem(array)
+            range.step()
+        ))
+          no_op=true
+        expect(test_result == expected_result).toBeTruthy()
+      )
+      it("should calculate the correct result with batch size greater than the number of elements", ->
+        test_result = 0
+        iterator = new BGArrayIterator(test_array,test_array.length+5)
+        while(not iterator.nextByRange((range, array)->
+          while(not range.isDone()) 
+            test_result += range.getItem(array)
+            range.step()
+        ))
+          no_op=true
+        expect(test_result == expected_result).toBeTruthy()
       )
     )
     ##############################
@@ -219,7 +300,7 @@ try
         while(not iterator.isDone())
           range = iterator.step()
           while(not range.isDone()) 
-            expect(test_array[range.index] == test_array[test_count]).toBeTruthy()
+            expect(range.getItem(test_array) == test_array[test_count]).toBeTruthy()
             range.step()
             test_count++
       )
@@ -230,9 +311,45 @@ try
         while(not iterator.isDone())
           range = iterator.step()
           while(not range.isDone()) 
-            expect(test_array[range.index] == test_array[test_count]).toBeTruthy()
+            expect(range.getItem(test_array) == test_array[test_count]).toBeTruthy()
             range.step()
             test_count++
+      )
+    )
+    describe("checking results match using step()", ->
+      test_array = [1,2,3,4,5]
+      test_count = 0
+      expected_result = 1 + 2 + 3 + 4 + 5
+
+      it("should calculate the correct result with batch size 1", ->
+        test_result = 0
+        iterator = new BGArrayIterator(test_array,1)
+        while(not iterator.isDone())
+          range = iterator.step()
+          while(not range.isDone()) 
+            test_result += range.getItem(test_array)
+            range.step()
+        expect(test_result == expected_result).toBeTruthy()
+      )
+      it("should calculate the correct result with batch size 4", ->
+        test_result = 0
+        iterator = new BGArrayIterator(test_array,4)
+        while(not iterator.isDone())
+          range = iterator.step()
+          while(not range.isDone()) 
+            test_result += range.getItem(test_array)
+            range.step()
+        expect(test_result == expected_result).toBeTruthy()
+      )
+      it("should calculate the correct result with batch size greater than the number of elements", ->
+        test_result = 0
+        iterator = new BGArrayIterator(test_array,test_array.length+5)
+        while(not iterator.isDone())
+          range = iterator.step()
+          while(not range.isDone()) 
+            test_result += range.getItem(test_array)
+            range.step()
+        expect(test_result == expected_result).toBeTruthy()
       )
     )
   )

@@ -106,14 +106,14 @@ _BGArrayIterator = (function() {
       excluded_boundary = this.total_count;
     }
     if (index >= excluded_boundary) {
-      return this.current_range.setIsDone();
+      return this.current_range._setIsDone();
     }
-    this.current_range.addBatchLength(excluded_boundary - index);
+    this.current_range._addBatchLength(excluded_boundary - index);
     return this.current_range;
   };
   _BGArrayIterator.prototype.step = function() {
     if (this.isDone()) {
-      return this.current_range.setIsDone();
+      return this.current_range._setIsDone();
     }
     this.batch_index++;
     if (this.batch_index === 0) {
@@ -271,23 +271,6 @@ BGRange = (function() {
     BGASSERT((typeof this.index !== 'undefined') && this.excluded_boundary, "missing parameters");
     return this;
   }
-  BGRange.prototype.clone = function() {
-    return new BGRange(this.index, this.excluded_boundary);
-  };
-  BGRange.prototype.setIsDone = function() {
-    this.index = -1;
-    this.excluded_boundary = -1;
-    return this;
-  };
-  BGRange.prototype.addBatchLength = function(batch_length) {
-    BGASSERT(batch_length, "missing parameters");
-    this.excluded_boundary += batch_length;
-    return this;
-  };
-  BGRange.prototype.reset = function() {
-    this.index = 0;
-    return this;
-  };
   BGRange.prototype.isDone = function() {
     return this.index >= this.excluded_boundary;
   };
@@ -299,14 +282,28 @@ BGRange = (function() {
       return this.index;
     }
   };
-  BGRange.prototype.stepToEnd = function() {
-    return this.index = this.excluded_boundary;
+  BGRange.prototype.getItem = function(array) {
+    return array[this.index];
   };
-  BGRange.prototype.sliceArray = function(array) {
+  BGRange.prototype.getSlice = function(array) {
     return array.slice(this.index, this.excluded_boundary);
   };
-  BGRange.isARange = function(range) {
-    return range && (typeof range === 'object') && ('constructor' in range) && ('name' in range.constructor) && (range.constructor.name === 'BGRange');
+  BGRange.prototype._setIsDone = function() {
+    this.index = -1;
+    this.excluded_boundary = -1;
+    return this;
+  };
+  BGRange.prototype._addBatchLength = function(batch_length) {
+    BGASSERT(batch_length, "missing parameters");
+    this.excluded_boundary += batch_length;
+    return this;
+  };
+  BGRange.prototype.reset = function() {
+    this.index = 0;
+    return this;
+  };
+  BGRange.prototype._stepToEnd = function() {
+    return this.index = this.excluded_boundary;
   };
   return BGRange;
 })();
@@ -322,27 +319,6 @@ BGRange_xN = (function() {
     this.batch_index = 0;
     return this;
   }
-  BGRange_xN.prototype.clone = function() {
-    var range, ranges, _i, _len, _ref;
-    ranges = [];
-    _ref = this.ranges;
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      range = _ref[_i];
-      ranges.push(range.clone());
-    }
-    return new BGRange_xN(ranges, this.batch_length);
-  };
-  BGRange_xN.prototype.setIsDone = function() {
-    this.batch_index = -1;
-    this.batch_length = -1;
-    return this;
-  };
-  BGRange_xN.prototype.addBatchLength = function(batch_length) {
-    BGASSERT(batch_length, "missing parameters");
-    this.batch_index = 0;
-    this.batch_length = batch_length;
-    return this;
-  };
   BGRange_xN.prototype.isDone = function() {
     return this.batch_index >= this.batch_length;
   };
@@ -359,19 +335,43 @@ BGRange_xN = (function() {
       current_range.reset();
       index--;
     }
-    this.setIsDone();
+    this._setIsDone();
     return null;
   };
-  BGRange_xN.prototype.stepToEnd = function() {
-    var _results;
-    _results = [];
-    while (!this.isDone()) {
-      _results.push(this.step());
+  BGRange_xN.prototype.getItems = function(arrays) {
+    var array, index, items;
+    items = [];
+    for (index in arrays) {
+      array = arrays[index];
+      items.push(array[this.ranges[index].index]);
     }
-    return _results;
+    return items;
   };
-  BGRange_xN.isARange_xN = function(range) {
-    return range && (typeof range === 'object') && ('constructor' in range) && ('name' in range.constructor) && (range.constructor.name === 'BGRange_xN');
+  BGRange_xN.prototype.getCombinations = function(arrays) {
+    var combination, combinations, index, range, _ref;
+    combinations = [];
+    while (!this.isDone()) {
+      combination = [];
+      _ref = this.ranges;
+      for (index in _ref) {
+        range = _ref[index];
+        combination.push(range.getItem(arrays[index]));
+      }
+      combinations.push(combination);
+      this.step();
+    }
+    return combinations;
+  };
+  BGRange_xN.prototype._setIsDone = function() {
+    this.batch_index = -1;
+    this.batch_length = -1;
+    return this;
+  };
+  BGRange_xN.prototype._addBatchLength = function(batch_length) {
+    BGASSERT(batch_length, "missing parameters");
+    this.batch_index = 0;
+    this.batch_length = batch_length;
+    return this;
   };
   return BGRange_xN;
 })();
@@ -390,15 +390,17 @@ var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, par
 BGArrayIterator = (function() {
   __extends(BGArrayIterator, _BGArrayIterator);
   function BGArrayIterator(array, batch_length) {
+    var excluded_boundary;
     this.array = array;
     BGASSERT(this.array, "array required");
     this.reset();
-    BGArrayIterator.__super__.constructor.call(this, batch_length, this.array.length, new BGRange(0, batch_length));
+    excluded_boundary = batch_length < this.array.length ? batch_length : this.array.length;
+    BGArrayIterator.__super__.constructor.call(this, batch_length, this.array.length, new BGRange(0, excluded_boundary));
   }
   BGArrayIterator.prototype.nextByItem = function(fn) {
     this.step();
     while (!this.current_range.isDone()) {
-      fn(this.array[this.current_range.index], this.current_range.index, this.array);
+      fn(this.current_range.getItem(this.array), this.current_range.index, this.array);
       this.current_range.step();
     }
     return this.isDone();
@@ -406,17 +408,16 @@ BGArrayIterator = (function() {
   BGArrayIterator.prototype.nextBySlice = function(fn) {
     this.step();
     if (!this.current_range.isDone()) {
-      fn(this.current_range.sliceArray(this.array), this.current_range, this.array);
+      fn(this.current_range.getSlice(this.array), this.current_range, this.array);
     }
-    this.current_range.stepToEnd();
+    this.current_range._stepToEnd();
     return this.isDone();
   };
   BGArrayIterator.prototype.nextByRange = function(fn) {
     this.step();
     if (!this.current_range.isDone()) {
-      fn(this.current_range.clone(), this.array);
+      fn(this.current_range, this.array);
     }
-    this.current_range.stepToEnd();
     return this.isDone();
   };
   return BGArrayIterator;
@@ -455,26 +456,25 @@ BGArrayIterator_xN = (function() {
     BGArrayIterator_xN.__super__.constructor.call(this, batch_length, array_combination_count, new BGRange_xN(ranges, batch_length));
   }
   BGArrayIterator_xN.prototype.nextByItems = function(fn) {
-    var array, index, items, _ref;
     this.step();
     while (!this.current_range.isDone()) {
-      items = [];
-      _ref = this.arrays;
-      for (index in _ref) {
-        array = _ref[index];
-        items.push(array[this.current_range.ranges[index].index]);
-      }
-      fn(items, this.current_range, this.arrays);
+      fn(this.current_range.getItems(this.arrays), this.current_range, this.arrays);
       this.current_range.step();
+    }
+    return this.isDone();
+  };
+  BGArrayIterator_xN.prototype.nextByCombinations = function(fn) {
+    this.step();
+    if (!this.current_range.isDone()) {
+      fn(this.current_range.getCombinations(this.arrays), this.current_range, this.array);
     }
     return this.isDone();
   };
   BGArrayIterator_xN.prototype.nextByRange = function(fn) {
     this.step();
     if (!this.current_range.isDone()) {
-      fn(this.current_range.clone(), this.arrays);
+      fn(this.current_range, this.arrays);
     }
-    this.current_range.stepToEnd();
     return this.isDone();
   };
   return BGArrayIterator_xN;
