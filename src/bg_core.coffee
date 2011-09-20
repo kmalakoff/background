@@ -66,7 +66,7 @@ class _BGJobContainer
 class _BGArrayIterator
 
   constructor: (@batch_length, @total_count, @current_range) ->
-    BGASSERT(@batch_length and @total_count and @current_range, "positive integer batch length and range required")
+    BGASSERT(@batch_length and (typeof @total_count != 'undefined') and @current_range, "positive integer batch length and range required")
     @reset()
 
   reset: ->

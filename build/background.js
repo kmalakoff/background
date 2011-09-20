@@ -88,7 +88,7 @@ _BGArrayIterator = (function() {
     this.batch_length = batch_length;
     this.total_count = total_count;
     this.current_range = current_range;
-    BGASSERT(this.batch_length && this.total_count && this.current_range, "positive integer batch length and range required");
+    BGASSERT(this.batch_length && (typeof this.total_count !== 'undefined') && this.current_range, "positive integer batch length and range required");
     this.reset();
   }
   _BGArrayIterator.prototype.reset = function() {
@@ -394,7 +394,7 @@ BGArrayIterator = (function() {
     this.array = array;
     BGASSERT(this.array, "array required");
     this.reset();
-    excluded_boundary = batch_length < this.array.length ? batch_length : this.array.length;
+    excluded_boundary = batch_length < this.array.length ? batch_length : (this.array.length ? this.array.length : 1);
     BGArrayIterator.__super__.constructor.call(this, batch_length, this.array.length, new BGRange(0, excluded_boundary));
   }
   BGArrayIterator.prototype.nextByItem = function(fn) {

@@ -3,7 +3,7 @@ class BGArrayIterator extends _BGArrayIterator
   constructor: (@array, batch_length) ->
     BGASSERT(@array, "array required")
     @reset()
-    excluded_boundary = if batch_length < @array.length then batch_length else @array.length
+    excluded_boundary = if batch_length < @array.length then batch_length else (if @array.length then @array.length else 1)
     super(batch_length, @array.length, new BGRange(0, excluded_boundary))
 
   # iterates passing (item, index, array) for each element per call (but you should only need item)

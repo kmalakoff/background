@@ -88,7 +88,7 @@ _BGArrayIterator = (function() {
     this.batch_length = batch_length;
     this.total_count = total_count;
     this.current_range = current_range;
-    BGASSERT(this.batch_length && this.total_count && this.current_range, "positive integer batch length and range required");
+    BGASSERT(this.batch_length && (typeof this.total_count !== 'undefined') && this.current_range, "positive integer batch length and range required");
     this.reset();
   }
   _BGArrayIterator.prototype.reset = function() {
