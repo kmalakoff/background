@@ -8,7 +8,7 @@ PROJECT_ROOT = File.expand_path('../..', __FILE__)
 SRC_DIRS = ['src/**/*.coffee', 'examples/src/**/*.coffee', 'spec/javascripts/src/**/*.coffee']
 
 dw = DirectoryWatcher.new(PROJECT_ROOT, :glob => SRC_DIRS, :scanner => :em, :pre_load => true)
-dw.add_observer {|*args| args.each do |event| 
+dw.add_observer {|*args| args.each do |event|
   puts "#{File.basename(event.path)} changed. Rebuilding"
   `cd #{PROJECT_ROOT}; ruby script/build.rb`
   puts "Rebuilding finished. Now watching..."
@@ -18,10 +18,6 @@ end}
 puts "Build started"
 `cd #{PROJECT_ROOT}; ruby script/build.rb`
 puts "Build finished. Now watching..."
-
-# start Jasmine
-p = fork { `cd #{PROJECT_ROOT}; rake jasmine:server` }
-Process.detach(p)
 
 # start watching
 EM.kqueue
