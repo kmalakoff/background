@@ -3,9 +3,9 @@ compress_assets: on
 
 javascripts:
   'background.min':
-    - build/parts/bg_core.js
-    - build/parts/bg_job.js
-    - build/parts/bg_job_queue.js
-    - build/parts/bg_job_list.js
-    - build/parts/bg_range.js
-    - build/parts/bg_array_iterator.js
+    - build/background_core.js
+    - build/background_job.js
+    - build/background_job_queue.js
+    - build/background_job_list.js
+    - build/background_range.js
+    - build/background_array_iterator.js

@@ -24,7 +24,7 @@ try
         test_array = [1,2,3,4,5]
         test_count = 0
         iterator = new BGArrayIterator(test_array,3)
-        while(not iterator.nextByItem(->test_count++)) 
+        while(not iterator.nextByItem(->test_count++))
           no_op=true
         expect(test_count==test_array.length).toBeTruthy()
       )
@@ -32,7 +32,7 @@ try
         test_array = [1,2,3,4,5]
         test_count = 0
         iterator = new BGArrayIterator(test_array,test_array.length+5)
-        while(not iterator.nextByItem(->test_count++)) 
+        while(not iterator.nextByItem(->test_count++))
           no_op=true
         expect(test_count==test_array.length).toBeTruthy()
       )
@@ -44,7 +44,7 @@ try
         iterator = new BGArrayIterator(test_array,1)
         while(not iterator.nextByItem((item)->
           expect(item == test_array[test_count]).toBeTruthy()
-          test_count++ 
+          test_count++
         ))
           no_op=true
       )
@@ -54,7 +54,7 @@ try
         iterator = new BGArrayIterator(test_array,3)
         while(not iterator.nextByItem((item)->
           expect(item == test_array[test_count]).toBeTruthy()
-          test_count++ 
+          test_count++
         ))
           no_op=true
       )
@@ -97,7 +97,7 @@ try
           for item in slice
             do (item) ->
               expect(item == test_array[test_count]).toBeTruthy()
-              test_count++ 
+              test_count++
         ))
           no_op=true
       )
@@ -109,7 +109,7 @@ try
           for item in slice
             do (item) ->
               expect(item == test_array[test_count]).toBeTruthy()
-              test_count++ 
+              test_count++
         ))
           no_op=true
       )
@@ -157,7 +157,7 @@ try
         test_count = 0
         iterator = new BGArrayIterator(test_array,1)
         while(not iterator.nextByRange((range)->
-          while(not range.isDone()) 
+          while(not range.isDone())
             test_count++
             range.step()
         ))
@@ -169,7 +169,7 @@ try
         test_count = 0
         iterator = new BGArrayIterator(test_array,2)
         while(not iterator.nextByRange((range)->
-          while(not range.isDone()) 
+          while(not range.isDone())
             test_count++
             range.step()
         ))
@@ -181,7 +181,7 @@ try
         test_count = 0
         iterator = new BGArrayIterator(test_array,3)
         while(not iterator.nextByRange((range)->
-          while(not range.isDone()) 
+          while(not range.isDone())
             test_count++
             range.step()
         ))
@@ -195,7 +195,7 @@ try
         test_count = 0
         iterator = new BGArrayIterator(test_array,1)
         while(not iterator.nextByRange((range, array)->
-          while(not range.isDone()) 
+          while(not range.isDone())
             expect(range.getItem(array) == test_array[test_count]).toBeTruthy()
             range.step()
             test_count++
@@ -207,7 +207,7 @@ try
         test_count = 0
         iterator = new BGArrayIterator(test_array,3)
         while(not iterator.nextByRange((range, array)->
-          while(not range.isDone()) 
+          while(not range.isDone())
             expect(range.getItem(array) == test_array[test_count]).toBeTruthy()
             range.step()
             test_count++
@@ -224,7 +224,7 @@ try
         test_result = 0
         iterator = new BGArrayIterator(test_array,1)
         while(not iterator.nextByRange((range, array)->
-          while(not range.isDone()) 
+          while(not range.isDone())
             test_result += range.getItem(array)
             range.step()
         ))
@@ -235,7 +235,7 @@ try
         test_result = 0
         iterator = new BGArrayIterator(test_array,4)
         while(not iterator.nextByRange((range, array)->
-          while(not range.isDone()) 
+          while(not range.isDone())
             test_result += range.getItem(array)
             range.step()
         ))
@@ -246,7 +246,7 @@ try
         test_result = 0
         iterator = new BGArrayIterator(test_array,test_array.length+5)
         while(not iterator.nextByRange((range, array)->
-          while(not range.isDone()) 
+          while(not range.isDone())
             test_result += range.getItem(array)
             range.step()
         ))
@@ -264,7 +264,7 @@ try
         iterator = new BGArrayIterator(test_array,1)
         while(not iterator.isDone())
           range = iterator.step()
-          while(not range.isDone()) 
+          while(not range.isDone())
             test_count++
             range.step()
         expect(test_count==test_array.length).toBeTruthy()
@@ -275,7 +275,7 @@ try
         iterator = new BGArrayIterator(test_array,2)
         while(not iterator.isDone())
           range = iterator.step()
-          while(not range.isDone()) 
+          while(not range.isDone())
             test_count++
             range.step()
         expect(test_count==test_array.length).toBeTruthy()
@@ -286,7 +286,7 @@ try
         iterator = new BGArrayIterator(test_array,3)
         while(not iterator.isDone())
           range = iterator.step()
-          while(not range.isDone()) 
+          while(not range.isDone())
             test_count++
             range.step()
         expect(test_count==test_array.length).toBeTruthy()
@@ -299,7 +299,7 @@ try
         iterator = new BGArrayIterator(test_array,1)
         while(not iterator.isDone())
           range = iterator.step()
-          while(not range.isDone()) 
+          while(not range.isDone())
             expect(range.getItem(test_array) == test_array[test_count]).toBeTruthy()
             range.step()
             test_count++
@@ -310,7 +310,7 @@ try
         iterator = new BGArrayIterator(test_array,3)
         while(not iterator.isDone())
           range = iterator.step()
-          while(not range.isDone()) 
+          while(not range.isDone())
             expect(range.getItem(test_array) == test_array[test_count]).toBeTruthy()
             range.step()
             test_count++
@@ -326,7 +326,7 @@ try
         iterator = new BGArrayIterator(test_array,1)
         while(not iterator.isDone())
           range = iterator.step()
-          while(not range.isDone()) 
+          while(not range.isDone())
             test_result += range.getItem(test_array)
             range.step()
         expect(test_result == expected_result).toBeTruthy()
@@ -336,7 +336,7 @@ try
         iterator = new BGArrayIterator(test_array,4)
         while(not iterator.isDone())
           range = iterator.step()
-          while(not range.isDone()) 
+          while(not range.isDone())
             test_result += range.getItem(test_array)
             range.step()
         expect(test_result == expected_result).toBeTruthy()
@@ -346,7 +346,7 @@ try
         iterator = new BGArrayIterator(test_array,test_array.length+5)
         while(not iterator.isDone())
           range = iterator.step()
-          while(not range.isDone()) 
+          while(not range.isDone())
             test_result += range.getItem(test_array)
             range.step()
         expect(test_result == expected_result).toBeTruthy()

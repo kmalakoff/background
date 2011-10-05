@@ -6,11 +6,11 @@
                       |___/                             |__/
                       
                       
-This library provides a sequentially-processed job queue and per tick job list for doing jobs in the background on a periodic timer in a JavaScript application.
+Background.js provides a background job queue and list with array iterators for Javascript applications.
 
 You can get the library here:
-  - Development version: https://github.com/kmalakoff/background/raw/master/build/background.js
-  - Production version: https://github.com/kmalakoff/background/raw/master/build/background.min.js
+  - Development version: https://github.com/kmalakoff/background/raw/master/background.js
+  - Production version: https://github.com/kmalakoff/background/raw/master/background.min.js
 
 The library is composed of the following classes:
 

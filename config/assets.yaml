@@ -3,11 +3,11 @@ compress_assets: off
 
 javascripts:
   'background':
-    - build/parts/bg_core.js
-    - build/parts/bg_job.js
-    - build/parts/bg_job_queue.js
-    - build/parts/bg_job_list.js
-    - build/parts/bg_range.js
-    - build/parts/bg_range_xN.js
-    - build/parts/bg_array_iterator.js
-    - build/parts/bg_array_iterator_xN.js
+    - build/background_core.js
+    - build/background_job.js
+    - build/background_job_queue.js
+    - build/background_job_list.js
+    - build/background_range.js
+    - build/background_range_xN.js
+    - build/background_array_iterator.js
+    - build/background_array_iterator_xN.js

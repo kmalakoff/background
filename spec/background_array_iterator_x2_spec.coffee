@@ -27,7 +27,7 @@ try
         total_count = test_array1.length * test_array2.length
         test_count = 0
         iterator = new BGArrayIterator_xN([test_array1,test_array2],3)
-        while(not iterator.nextByItems(->test_count++)) 
+        while(not iterator.nextByItems(->test_count++))
           no_op=true
         expect(test_count==total_count).toBeTruthy()
       )
@@ -36,7 +36,7 @@ try
         total_count = test_array1.length * test_array2.length
         test_count = 0
         iterator = new BGArrayIterator_xN([test_array1,test_array2],test_array1.length*test_array2.length+5)
-        while(not iterator.nextByItems(->test_count++)) 
+        while(not iterator.nextByItems(->test_count++))
           no_op=true
         expect(test_count==total_count).toBeTruthy()
       )
@@ -52,7 +52,7 @@ try
           index2 = test_count%test_array2.length
           expect(items[0] == test_array1[index1]).toBeTruthy()
           expect(items[1] == test_array2[index2]).toBeTruthy()
-          test_count++ 
+          test_count++
         ))
           no_op=true
       )
@@ -66,7 +66,7 @@ try
           index2 = test_count%test_array2.length
           expect(items[0] == test_array1[index1]).toBeTruthy()
           expect(items[1] == test_array2[index2]).toBeTruthy()
-          test_count++ 
+          test_count++
         ))
           no_op=true
       )
@@ -181,7 +181,7 @@ try
         test_count = 0
         iterator = new BGArrayIterator_xN([test_array1,test_array2],1)
         while(not iterator.nextByRange((range)->
-          while(not range.isDone()) 
+          while(not range.isDone())
             test_count++
             range.step()
         ))
@@ -194,7 +194,7 @@ try
         test_count = 0
         iterator = new BGArrayIterator_xN([test_array1,test_array2],2)
         while(not iterator.nextByRange((range)->
-          while(not range.isDone()) 
+          while(not range.isDone())
             test_count++
             range.step()
         ))
@@ -207,7 +207,7 @@ try
         test_count = 0
         iterator = new BGArrayIterator_xN([test_array1,test_array2],3)
         while(not iterator.nextByRange((range)->
-          while(not range.isDone()) 
+          while(not range.isDone())
             test_count++
             range.step()
         ))
@@ -222,7 +222,7 @@ try
         test_count = 0
         iterator = new BGArrayIterator_xN([test_array1,test_array2],1)
         while(not iterator.nextByRange((range, arrays)->
-          while(not range.isDone()) 
+          while(not range.isDone())
             index1 = Math.floor(test_count/test_array2.length)
             index2 = test_count%test_array2.length
             expect(range.ranges[0].index == index1).toBeTruthy()
@@ -240,7 +240,7 @@ try
         test_count = 0
         iterator = new BGArrayIterator_xN([test_array1,test_array2],3)
         while(not iterator.nextByRange((range, arrays)->
-          while(not range.isDone()) 
+          while(not range.isDone())
             index1 = Math.floor(test_count/test_array2.length)
             index2 = test_count%test_array2.length
             expect(range.ranges[0].index == index1).toBeTruthy()
@@ -262,7 +262,7 @@ try
         test_result = 0
         iterator = new BGArrayIterator_xN([test_array1,test_array2],1)
         while(not iterator.nextByRange((range, arrays)->
-          while(not range.isDone()) 
+          while(not range.isDone())
             test_result += range.ranges[0].getItem(arrays[0])*range.ranges[1].getItem(arrays[1])
             range.step()
         ))
@@ -273,7 +273,7 @@ try
         test_result = 0
         iterator = new BGArrayIterator_xN([test_array1,test_array2],4)
         while(not iterator.nextByRange((range, arrays)->
-          while(not range.isDone()) 
+          while(not range.isDone())
             test_result += range.ranges[0].getItem(arrays[0])*range.ranges[1].getItem(arrays[1])
             range.step()
         ))
@@ -284,7 +284,7 @@ try
         test_result = 0
         iterator = new BGArrayIterator_xN([test_array1,test_array2],test_array1.length*test_array2.length+5)
         while(not iterator.nextByRange((range, arrays)->
-          while(not range.isDone()) 
+          while(not range.isDone())
             test_result += range.ranges[0].getItem(arrays[0])*range.ranges[1].getItem(arrays[1])
             range.step()
         ))
@@ -303,7 +303,7 @@ try
         iterator = new BGArrayIterator_xN([test_array1,test_array2],1)
         while(not iterator.isDone())
           range = iterator.step()
-          while(not range.isDone()) 
+          while(not range.isDone())
             test_count++
             range.step()
         expect(test_count==total_count).toBeTruthy()
@@ -315,7 +315,7 @@ try
         iterator = new BGArrayIterator_xN([test_array1,test_array2],2)
         while(not iterator.isDone())
           range = iterator.step()
-          while(not range.isDone()) 
+          while(not range.isDone())
             test_count++
             range.step()
         expect(test_count==total_count).toBeTruthy()
@@ -327,7 +327,7 @@ try
         iterator = new BGArrayIterator_xN([test_array1,test_array2],3)
         while(not iterator.isDone())
           range = iterator.step()
-          while(not range.isDone()) 
+          while(not range.isDone())
             test_count++
             range.step()
         expect(test_count==total_count).toBeTruthy()
@@ -341,7 +341,7 @@ try
         iterator = new BGArrayIterator_xN([test_array1,test_array2],1)
         while(not iterator.isDone())
           range = iterator.step()
-          while(not range.isDone()) 
+          while(not range.isDone())
             index1 = Math.floor(test_count/test_array2.length)
             index2 = test_count%test_array2.length
             expect(range.ranges[0].index == index1).toBeTruthy()
@@ -358,7 +358,7 @@ try
         iterator = new BGArrayIterator_xN([test_array1,test_array2],3)
         while(not iterator.isDone())
           range = iterator.step()
-          while(not range.isDone()) 
+          while(not range.isDone())
             index1 = Math.floor(test_count/test_array2.length)
             index2 = test_count%test_array2.length
             expect(range.ranges[0].index == index1).toBeTruthy()
@@ -379,7 +379,7 @@ try
         iterator = new BGArrayIterator_xN([test_array1,test_array2],1)
         while(not iterator.isDone())
           range = iterator.step()
-          while(not range.isDone()) 
+          while(not range.isDone())
             test_result += test_array1[range.ranges[0].index]*test_array2[range.ranges[1].index]
             range.step()
         expect(test_result == expected_result).toBeTruthy()
@@ -389,7 +389,7 @@ try
         iterator = new BGArrayIterator_xN([test_array1,test_array2],4)
         while(not iterator.isDone())
           range = iterator.step()
-          while(not range.isDone()) 
+          while(not range.isDone())
             test_result += test_array1[range.ranges[0].index]*test_array2[range.ranges[1].index]
             range.step()
         expect(test_result == expected_result).toBeTruthy()
@@ -399,7 +399,7 @@ try
         iterator = new BGArrayIterator_xN([test_array1,test_array2],test_array1.length*test_array2.length+5)
         while(not iterator.isDone())
           range = iterator.step()
-          while(not range.isDone()) 
+          while(not range.isDone())
             test_result += test_array1[range.ranges[0].index]*test_array2[range.ranges[1].index]
             range.step()
         expect(test_result == expected_result).toBeTruthy()

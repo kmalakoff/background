@@ -1,7 +1,7 @@
 class BGJob
-  # 1) init_fn: () -> 
+  # 1) init_fn: () ->
   # 2) run_fn: () -> return true when finished and so will be destroyed
-  # 3) destroy_fn: (was_completed) -> 
+  # 3) destroy_fn: (was_completed) ->
   #     (if not completed, you might want to stop your planned post_execution code)
   constructor: (@init_fn, @run_fn, @destroy_fn) ->
     throw new Error('run_fn is mandatory') if not @run_fn
@@ -9,7 +9,7 @@ class BGJob
 
   destroy: ->
     @_cleanup()
-    @run_fn = null 
+    @run_fn = null
     @init_fn = null
     @destroy_fn = null
 
@@ -17,7 +17,7 @@ class BGJob
     # set up the job
     if @init_fn
       try
-        @init_fn() 
+        @init_fn()
       catch error
         BGASSERT(null, "init_fn failed because of '#{error.message}'")
         return true
@@ -36,7 +36,7 @@ class BGJob
     # clean up the job
     if @destroy_fn
       try
-        @destroy_fn(@was_completed) 
+        @destroy_fn(@was_completed)
       catch error
         BGASSERT(null, "init_fn failed because of '#{error.message}'")
       @destroy_fn = null

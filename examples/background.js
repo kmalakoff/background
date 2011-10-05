@@ -1,3 +1,11 @@
+/*
+  background.js 1.0.0
+  (c) 2011 Kevin Malakoff.
+  Mixin is freely distributable under the MIT license.
+  See the following for full license details:
+    https://github.com/kmalakoff/background/blob/master/LICENSE
+  Dependencies: None.
+*/
 var _BGArrayIterator, _BGJobContainer;
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 window.BGDEBUG = true;

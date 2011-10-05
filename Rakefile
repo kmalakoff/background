@@ -1,9 +1,11 @@
 require 'rubygems'
+require 'yaml'
+PROJECT_ROOT = File.expand_path('..', __FILE__)
 
 desc "build background.js and background.min.js"
 task :build do
   begin
-    load 'script/build.rb'
+    exec "cd #{PROJECT_ROOT}; ruby script/build.rb"
   rescue LoadError
     puts "build failed: ensure you have coffee-script ('npm install coffee-script -g') and jammit ('(sudo) gem install jammit') installed"
     exit
@@ -13,7 +15,7 @@ end
 desc "watch for file changes, and rebuild all src and spec files when they do"
 task :watch do
   begin
-    exec 'ruby script/watch.rb'
+    exec "cd #{PROJECT_ROOT}; ruby script/watch.rb"
   rescue LoadError
     puts "build failed: ensure you have coffee-script ('npm install coffee-script -g') and jammit ('(sudo) gem install jammit') installed"
     exit
@@ -23,17 +25,29 @@ end
 desc "clean all the temporary files in background.js"
 task :clean do
   begin
-    exec 'ruby script/clean.rb'
+    exec "cd #{PROJECT_ROOT}; ruby script/clean.rb"
   end
 end
 
-desc "start the jasmine server"
-task :jasmine do
+def transfer_header(source_filename, destination_filename)
+  source      = File.read(source_filename)
+  comment_block = source.split('*/')
+  destination = File.read(destination_filename)
+  header = (comment_block[0] + "*/\n").squeeze(' ')
+  File.open(destination_filename, 'w+') do |file|
+    file.write header + destination
+  end
+end
+
+desc "clean, build, and minimize"
+task :package do
   begin
-    require 'jasmine'
-    load 'jasmine/tasks/jasmine.rake'
+    fork { exec "cd #{PROJECT_ROOT} ruby script/clean.rb; ruby script/build.rb; jammit -c config/assets_min.yaml -o #{PROJECT_ROOT}" }
+    Process.waitall
+    config = YAML::load( File.open( 'config/assets_min.yaml' ) )
+    config['javascripts'].each{|key, value| transfer_header(key.chomp('.min')+'.js', key+'.js')}
   rescue LoadError
-    puts "Jasmine is not available. In order to run jasmine, you must: (sudo) gem install jasmine"
+    puts "build failed: ensure you have coffee-script ('npm install coffee-script -g') and jammit ('(sudo) gem install jammit') installed"
     exit
   end
 end

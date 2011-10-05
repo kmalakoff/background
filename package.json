@@ -1,0 +1,12 @@
+{
+  "name"          : "background",
+  "description"   : "Background.js provides a background job queue and list with array iterators for Javascript applications",
+  "homepage"      : "https://github.com/kmalakoff/background",
+  "keywords"      : ["util", "functional", "server", "client", "browser"],
+  "author"        : "Kevin Malakoff <xmann.intl@gmail.com>",
+  "contributors"  : [],
+  "dependencies"  : [],
+  "repository"    : {"type": "git", "url": "git://github.com/kmalakoff/background.git"},
+  "main"          : "background.js",
+  "version"       : "1.0.0"
+}
