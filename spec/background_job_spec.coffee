@@ -1,21 +1,21 @@
 try
 
-  describe("BGJob", ->
+  describe("Background.Job", ->
     ##############################
-    # new BGJob()
+    # new Background.Job()
     ##############################
-    describe("new BGJob()", ->
+    describe("new Background.Job()", ->
       it("should not require an init_fn", ->
-        expect(->new BGJob(null, ->)).not.toThrow()
+        expect(->new Background.Job(null, ->)).not.toThrow()
       )
       it("should require a run_fn", ->
-        expect(->new BGJob(null, null)).toThrow('run_fn is mandatory')
+        expect(->new Background.Job(null, null)).toThrow('run_fn is mandatory')
       )
       it("should not require a destroy_fn", ->
-        expect(->new BGJob(null, (->), null)).not.toThrow()
+        expect(->new Background.Job(null, (->), null)).not.toThrow()
       )
     )
   )
 
 catch error
-  alert("BGJob specs failed: '#{error}'")
+  alert("Background.Job specs failed: '#{error}'")

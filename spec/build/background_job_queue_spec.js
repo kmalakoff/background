@@ -1,9 +1,9 @@
 try {
-  describe("BGJobQueue", function() {
+  describe("Background.JobQueue", function() {
     describe("init_fn is called when expected", function() {
       it("should not call init_fn without a tick", function() {
         var init_fn, job_queue;
-        job_queue = new BGJobQueue(10000);
+        job_queue = new Background.JobQueue(10000);
         init_fn = jasmine.createSpy("init_fn");
         expect(function() {
           return job_queue.push(init_fn, (function() {
@@ -14,7 +14,7 @@ try {
       });
       it("should call init_fn once for one tick", function() {
         var init_fn, job_queue;
-        job_queue = new BGJobQueue(10000);
+        job_queue = new Background.JobQueue(10000);
         init_fn = jasmine.createSpy("init_fn");
         expect(function() {
           return job_queue.push(init_fn, (function() {
@@ -27,7 +27,7 @@ try {
       return it("should call init_fn once for multiple ticks", function() {
         var call_count, init_fn, job_queue;
         call_count = 0;
-        job_queue = new BGJobQueue(10000);
+        job_queue = new Background.JobQueue(10000);
         init_fn = jasmine.createSpy("init_fn").andCallFake(function() {
           return call_count++;
         });
@@ -46,7 +46,7 @@ try {
     describe("run_fn is called when expected", function() {
       it("should not call run_fn without a tick", function() {
         var job_queue, run_fn;
-        job_queue = new BGJobQueue(10000);
+        job_queue = new Background.JobQueue(10000);
         run_fn = jasmine.createSpy("run_fn").andCallFake(function() {
           return false;
         });
@@ -57,7 +57,7 @@ try {
       });
       it("should call run_fn once for one tick", function() {
         var job_queue, run_fn;
-        job_queue = new BGJobQueue(10000);
+        job_queue = new Background.JobQueue(10000);
         run_fn = jasmine.createSpy("run_fn").andCallFake(function() {
           return false;
         });
@@ -70,7 +70,7 @@ try {
       it("should call run_fn once per tick for multiple ticks when told to continue", function() {
         var call_count, job_queue, run_fn;
         call_count = 0;
-        job_queue = new BGJobQueue(10000);
+        job_queue = new Background.JobQueue(10000);
         run_fn = jasmine.createSpy("run_fn").andCallFake(function() {
           call_count++;
           return false;
@@ -87,7 +87,7 @@ try {
       return it("should call run_fn once for multiple ticks when told to finish", function() {
         var call_count, job_queue, run_fn;
         call_count = 0;
-        job_queue = new BGJobQueue(10000);
+        job_queue = new Background.JobQueue(10000);
         run_fn = jasmine.createSpy("run_fn").andCallFake(function() {
           call_count++;
           return true;
@@ -105,7 +105,7 @@ try {
     describe("destroy_fn is called when expected", function() {
       it("should not call destroy_fn without a tick", function() {
         var destroy_fn, job_queue;
-        job_queue = new BGJobQueue(10000);
+        job_queue = new Background.JobQueue(10000);
         destroy_fn = jasmine.createSpy("destroy_fn");
         expect(function() {
           return job_queue.push(null, (function() {
@@ -116,7 +116,7 @@ try {
       });
       it("should not call destroy_fn with a tick and non-finished task", function() {
         var destroy_fn, job_queue;
-        job_queue = new BGJobQueue(10000);
+        job_queue = new Background.JobQueue(10000);
         destroy_fn = jasmine.createSpy("destroy_fn");
         expect(function() {
           return job_queue.push(null, (function() {
@@ -127,7 +127,7 @@ try {
       });
       it("should call destroy_fn once for one tick for a finished task", function() {
         var destroy_fn, job_queue;
-        job_queue = new BGJobQueue(10000);
+        job_queue = new Background.JobQueue(10000);
         destroy_fn = jasmine.createSpy("destroy_fn");
         expect(function() {
           return job_queue.push(null, (function() {
@@ -140,7 +140,7 @@ try {
       it("should call destroy_fn once for multiple ticks when told to finish", function() {
         var call_count, destroy_fn, job_queue;
         call_count = 0;
-        job_queue = new BGJobQueue(10000);
+        job_queue = new Background.JobQueue(10000);
         destroy_fn = jasmine.createSpy("destroy_fn").andCallFake(function() {
           return call_count++;
         });
@@ -158,7 +158,7 @@ try {
       it("should call destroy_fn once for multiple ticks when destroyed", function() {
         var call_count, destroy_fn, job_queue;
         call_count = 0;
-        job_queue = new BGJobQueue(30);
+        job_queue = new Background.JobQueue(30);
         destroy_fn = jasmine.createSpy("destroy_fn").andCallFake(function() {
           return call_count++;
         });
@@ -181,7 +181,7 @@ try {
       it("should indicate the task was completed when completed", function() {
         var destroy_fn, job_queue, param_was_completed;
         param_was_completed = false;
-        job_queue = new BGJobQueue(10000);
+        job_queue = new Background.JobQueue(10000);
         destroy_fn = jasmine.createSpy("destroy_fn").andCallFake(function(was_completed) {
           return param_was_completed = was_completed;
         });
@@ -197,7 +197,7 @@ try {
       return it("should indicate the task was not completed when destroyed", function() {
         var destroy_fn, job_queue, param_was_completed;
         param_was_completed = true;
-        job_queue = new BGJobQueue(30);
+        job_queue = new Background.JobQueue(30);
         destroy_fn = jasmine.createSpy("destroy_fn").andCallFake(function(was_completed) {
           return param_was_completed = was_completed;
         });
@@ -222,7 +222,7 @@ try {
     describe("checking job run_fn is called for each tick", function() {
       it("should call once for one tick", function() {
         var call_count, job_queue;
-        job_queue = new BGJobQueue(10000);
+        job_queue = new Background.JobQueue(10000);
         call_count = 0;
         job_queue.push(null, (function() {
           call_count++;
@@ -233,7 +233,7 @@ try {
       });
       return it("should call three times for three ticks", function() {
         var call_count, job_queue;
-        job_queue = new BGJobQueue(10000);
+        job_queue = new Background.JobQueue(10000);
         call_count = 0;
         job_queue.push(null, (function() {
           call_count++;
@@ -248,9 +248,9 @@ try {
     return describe("checking job run_fn is called for each tick", function() {
       it("should call once for one tick", function() {
         var call_count, job, job_queue;
-        job_queue = new BGJobQueue(10000);
+        job_queue = new Background.JobQueue(10000);
         call_count = 0;
-        job = new BGJob(null, (function() {
+        job = new Background.Job(null, (function() {
           call_count++;
           return false;
         }));
@@ -260,9 +260,9 @@ try {
       });
       return it("should call three times for three ticks", function() {
         var call_count, job, job_queue;
-        job_queue = new BGJobQueue(10000);
+        job_queue = new Background.JobQueue(10000);
         call_count = 0;
-        job = new BGJob(null, (function() {
+        job = new Background.Job(null, (function() {
           call_count++;
           return false;
         }));
@@ -275,5 +275,5 @@ try {
     });
   });
 } catch (error) {
-  alert("BGJobQueue specs failed: '" + error + "'");
+  alert("Background.JobQueue specs failed: '" + error + "'");
 }

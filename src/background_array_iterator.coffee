@@ -1,10 +1,10 @@
-class BGArrayIterator extends _BGArrayIterator
+class Background.ArrayIterator extends Background._ArrayIterator
 
   constructor: (@array, batch_length) ->
-    throw new Error("BGArrayIterator: missing array") if not @array
+    throw new Error("Background.ArrayIterator: missing array") if not @array
     @reset()
     excluded_boundary = if batch_length < @array.length then batch_length else (if @array.length then @array.length else 1)
-    super(batch_length, @array.length, new BGRange(0, excluded_boundary))
+    super(batch_length, @array.length, new Background.Range(0, excluded_boundary))
 
   # iterates passing (item, index, array) for each element per call (but you should only need item)
   nextByItem: (fn) ->
@@ -30,4 +30,4 @@ class BGArrayIterator extends _BGArrayIterator
 ####################################################
 # CommonJS
 ####################################################
-exports.BGArrayIterator = BGArrayIterator if (typeof exports != 'undefined')
+exports.Background.ArrayIterator = Background.ArrayIterator if (typeof exports != 'undefined')

@@ -1,5 +1,5 @@
 var iteration_count, job_list, tick_result;
-job_list = new BGJobList(20);
+job_list = new Background.JobList(20);
 tick_result = [];
 iteration_count = 0;
 job_list.append(null, (function() {

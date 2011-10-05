@@ -1,4 +1,4 @@
-class BGJob
+class Background.Job
   # 1) init_fn: () ->
   # 2) run_fn: () -> return true when finished and so will be destroyed
   # 3) destroy_fn: (was_completed) ->
@@ -31,9 +31,9 @@ class BGJob
       @destroy_fn = null
 
   @isAJob: (job) ->
-    return (job and (typeof job == 'object') and ('constructor' of job) and ('name' of job.constructor) and (job.constructor.name == 'BGJob'))
+    return (job and (typeof job == 'object') and ('constructor' of job) and ('name' of job.constructor) and (job.constructor.name == 'Job'))
 
 ####################################################
 # CommonJS
 ####################################################
-exports.BGJob = BGJob if (typeof exports != 'undefined')
+exports.Background.Job = Background.Job if (typeof exports != 'undefined')

@@ -1,5 +1,5 @@
 try
-  describe("BGArrayIterator", ->
+  describe("Background.ArrayIterator", ->
     ##############################
     # nextByItem
     ##############################
@@ -7,7 +7,7 @@ try
       it("should count once for each element in the array", ->
         test_array = [1,2,3,4]
         test_count = 0
-        iterator = new BGArrayIterator(test_array,1)
+        iterator = new Background.ArrayIterator(test_array,1)
         while(not iterator.nextByItem(->test_count++))
           no_op=true
         expect(test_count==test_array.length).toBeTruthy()
@@ -15,7 +15,7 @@ try
       it("should count once for each element in the array with batch size 2", ->
         test_array = [1,2,3,4]
         test_count = 0
-        iterator = new BGArrayIterator(test_array,2)
+        iterator = new Background.ArrayIterator(test_array,2)
         while(not iterator.nextByItem(->test_count++))
           no_op=true
         expect(test_count==test_array.length).toBeTruthy()
@@ -23,7 +23,7 @@ try
       it("should count once for each element in the array with batch size 3 and an odd number of elements", ->
         test_array = [1,2,3,4,5]
         test_count = 0
-        iterator = new BGArrayIterator(test_array,3)
+        iterator = new Background.ArrayIterator(test_array,3)
         while(not iterator.nextByItem(->test_count++))
           no_op=true
         expect(test_count==test_array.length).toBeTruthy()
@@ -31,7 +31,7 @@ try
       it("should count once for each element in the array with batch size greater than the number of elements", ->
         test_array = [1,2,3,4,5]
         test_count = 0
-        iterator = new BGArrayIterator(test_array,test_array.length+5)
+        iterator = new Background.ArrayIterator(test_array,test_array.length+5)
         while(not iterator.nextByItem(->test_count++))
           no_op=true
         expect(test_count==test_array.length).toBeTruthy()
@@ -41,7 +41,7 @@ try
       it("should refer to the correct elements in nextByItem batch size 1", ->
         test_array = [1,2,3,4]
         test_count = 0
-        iterator = new BGArrayIterator(test_array,1)
+        iterator = new Background.ArrayIterator(test_array,1)
         while(not iterator.nextByItem((item)->
           expect(item == test_array[test_count]).toBeTruthy()
           test_count++
@@ -51,7 +51,7 @@ try
       it("should refer to the correct elements in nextByItem batch size 3", ->
         test_array = [1,2,3,4,5]
         test_count = 0
-        iterator = new BGArrayIterator(test_array,3)
+        iterator = new Background.ArrayIterator(test_array,3)
         while(not iterator.nextByItem((item)->
           expect(item == test_array[test_count]).toBeTruthy()
           test_count++
@@ -66,7 +66,7 @@ try
       it("should count once for each element in the array", ->
         test_array = [1,2,3,4]
         test_count = 0
-        iterator = new BGArrayIterator(test_array,1)
+        iterator = new Background.ArrayIterator(test_array,1)
         while(not iterator.nextBySlice((slice)->test_count++ for item in slice))
           no_op=true
         expect(test_count==test_array.length).toBeTruthy()
@@ -74,7 +74,7 @@ try
       it("should count once for each element in the array with batch size 2", ->
         test_array = [1,2,3,4]
         test_count = 0
-        iterator = new BGArrayIterator(test_array,2)
+        iterator = new Background.ArrayIterator(test_array,2)
         while(not iterator.nextBySlice((slice)->test_count++ for item in slice))
           no_op=true
         expect(test_count==test_array.length).toBeTruthy()
@@ -82,7 +82,7 @@ try
       it("should count once for each element in the array with batch size 3 and an odd number of elements", ->
         test_array = [1,2,3,4,5]
         test_count = 0
-        iterator = new BGArrayIterator(test_array,3)
+        iterator = new Background.ArrayIterator(test_array,3)
         while(not iterator.nextBySlice((slice)->test_count++ for item in slice))
           no_op=true
         expect(test_count==test_array.length).toBeTruthy()
@@ -92,7 +92,7 @@ try
       it("should refer to the correct elements in nextByItem batch size 1", ->
         test_array = [1,2,3,4]
         test_count = 0
-        iterator = new BGArrayIterator(test_array,1)
+        iterator = new Background.ArrayIterator(test_array,1)
         while(not iterator.nextBySlice((slice)->
           for item in slice
             do (item) ->
@@ -104,7 +104,7 @@ try
       it("should refer to the correct elements in nextBySlice batch size 3", ->
         test_array = [1,2,3,4,5]
         test_count = 0
-        iterator = new BGArrayIterator(test_array,3)
+        iterator = new Background.ArrayIterator(test_array,3)
         while(not iterator.nextBySlice((slice)->
           for item in slice
             do (item) ->
@@ -121,7 +121,7 @@ try
 
       it("should calculate the correct result with batch size 1", ->
         test_result = 0
-        iterator = new BGArrayIterator(test_array,1)
+        iterator = new Background.ArrayIterator(test_array,1)
         while(not iterator.nextBySlice((slice)->
           test_result += item for item in slice
         ))
@@ -130,7 +130,7 @@ try
       )
       it("should calculate the correct result with batch size 4", ->
         test_result = 0
-        iterator = new BGArrayIterator(test_array,4)
+        iterator = new Background.ArrayIterator(test_array,4)
         while(not iterator.nextBySlice((slice)->
           test_result += item for item in slice
         ))
@@ -139,7 +139,7 @@ try
       )
       it("should calculate the correct result with batch size greater than the number of elements", ->
         test_result = 0
-        iterator = new BGArrayIterator(test_array,test_array.length+5)
+        iterator = new Background.ArrayIterator(test_array,test_array.length+5)
         while(not iterator.nextBySlice((slice)->
           test_result += item for item in slice
         ))
@@ -155,7 +155,7 @@ try
       it("should count once for each element in the array", ->
         test_array = [1,2,3,4]
         test_count = 0
-        iterator = new BGArrayIterator(test_array,1)
+        iterator = new Background.ArrayIterator(test_array,1)
         while(not iterator.nextByRange((range)->
           while(not range.isDone())
             test_count++
@@ -167,7 +167,7 @@ try
       it("should count once for each element in the array with batch size 2", ->
         test_array = [1,2,3,4]
         test_count = 0
-        iterator = new BGArrayIterator(test_array,2)
+        iterator = new Background.ArrayIterator(test_array,2)
         while(not iterator.nextByRange((range)->
           while(not range.isDone())
             test_count++
@@ -179,7 +179,7 @@ try
       it("should count once for each element in the array with batch size 3 and an odd number of elements", ->
         test_array = [1,2,3,4,5]
         test_count = 0
-        iterator = new BGArrayIterator(test_array,3)
+        iterator = new Background.ArrayIterator(test_array,3)
         while(not iterator.nextByRange((range)->
           while(not range.isDone())
             test_count++
@@ -193,7 +193,7 @@ try
       it("should refer to the correct elements in nextByItem batch size 1", ->
         test_array = [1,2,3,4]
         test_count = 0
-        iterator = new BGArrayIterator(test_array,1)
+        iterator = new Background.ArrayIterator(test_array,1)
         while(not iterator.nextByRange((range, array)->
           while(not range.isDone())
             expect(range.getItem(array) == test_array[test_count]).toBeTruthy()
@@ -205,7 +205,7 @@ try
       it("should refer to the correct elements in nextByRange batch size 3", ->
         test_array = [1,2,3,4,5]
         test_count = 0
-        iterator = new BGArrayIterator(test_array,3)
+        iterator = new Background.ArrayIterator(test_array,3)
         while(not iterator.nextByRange((range, array)->
           while(not range.isDone())
             expect(range.getItem(array) == test_array[test_count]).toBeTruthy()
@@ -222,7 +222,7 @@ try
 
       it("should calculate the correct result with batch size 1", ->
         test_result = 0
-        iterator = new BGArrayIterator(test_array,1)
+        iterator = new Background.ArrayIterator(test_array,1)
         while(not iterator.nextByRange((range, array)->
           while(not range.isDone())
             test_result += range.getItem(array)
@@ -233,7 +233,7 @@ try
       )
       it("should calculate the correct result with batch size 4", ->
         test_result = 0
-        iterator = new BGArrayIterator(test_array,4)
+        iterator = new Background.ArrayIterator(test_array,4)
         while(not iterator.nextByRange((range, array)->
           while(not range.isDone())
             test_result += range.getItem(array)
@@ -244,7 +244,7 @@ try
       )
       it("should calculate the correct result with batch size greater than the number of elements", ->
         test_result = 0
-        iterator = new BGArrayIterator(test_array,test_array.length+5)
+        iterator = new Background.ArrayIterator(test_array,test_array.length+5)
         while(not iterator.nextByRange((range, array)->
           while(not range.isDone())
             test_result += range.getItem(array)
@@ -261,7 +261,7 @@ try
       it("should count once for each element in the array", ->
         test_array = [1,2,3,4]
         test_count = 0
-        iterator = new BGArrayIterator(test_array,1)
+        iterator = new Background.ArrayIterator(test_array,1)
         while(not iterator.isDone())
           range = iterator.step()
           while(not range.isDone())
@@ -272,7 +272,7 @@ try
       it("should count once for each element in the array with batch size 2", ->
         test_array = [1,2,3,4]
         test_count = 0
-        iterator = new BGArrayIterator(test_array,2)
+        iterator = new Background.ArrayIterator(test_array,2)
         while(not iterator.isDone())
           range = iterator.step()
           while(not range.isDone())
@@ -283,7 +283,7 @@ try
       it("should count once for each element in the array with batch size 3 and an odd number of elements", ->
         test_array = [1,2,3,4,5]
         test_count = 0
-        iterator = new BGArrayIterator(test_array,3)
+        iterator = new Background.ArrayIterator(test_array,3)
         while(not iterator.isDone())
           range = iterator.step()
           while(not range.isDone())
@@ -296,7 +296,7 @@ try
       it("should refer to the correct elements in nextByItem batch size 1", ->
         test_array = [1,2,3,4]
         test_count = 0
-        iterator = new BGArrayIterator(test_array,1)
+        iterator = new Background.ArrayIterator(test_array,1)
         while(not iterator.isDone())
           range = iterator.step()
           while(not range.isDone())
@@ -307,7 +307,7 @@ try
       it("should refer to the correct elements in step batch size 3", ->
         test_array = [1,2,3,4,5]
         test_count = 0
-        iterator = new BGArrayIterator(test_array,3)
+        iterator = new Background.ArrayIterator(test_array,3)
         while(not iterator.isDone())
           range = iterator.step()
           while(not range.isDone())
@@ -323,7 +323,7 @@ try
 
       it("should calculate the correct result with batch size 1", ->
         test_result = 0
-        iterator = new BGArrayIterator(test_array,1)
+        iterator = new Background.ArrayIterator(test_array,1)
         while(not iterator.isDone())
           range = iterator.step()
           while(not range.isDone())
@@ -333,7 +333,7 @@ try
       )
       it("should calculate the correct result with batch size 4", ->
         test_result = 0
-        iterator = new BGArrayIterator(test_array,4)
+        iterator = new Background.ArrayIterator(test_array,4)
         while(not iterator.isDone())
           range = iterator.step()
           while(not range.isDone())
@@ -343,7 +343,7 @@ try
       )
       it("should calculate the correct result with batch size greater than the number of elements", ->
         test_result = 0
-        iterator = new BGArrayIterator(test_array,test_array.length+5)
+        iterator = new Background.ArrayIterator(test_array,test_array.length+5)
         while(not iterator.isDone())
           range = iterator.step()
           while(not range.isDone())
@@ -355,4 +355,4 @@ try
   )
 
 catch error
-  alert("BGArrayIterator specs failed: '#{error}'")
+  alert("Background.ArrayIterator specs failed: '#{error}'")

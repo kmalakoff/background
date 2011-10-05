@@ -1,5 +1,5 @@
 try {
-  describe("BGArrayIterator_x3", function() {
+  describe("Background.ArrayIterator_x3", function() {
     describe("checking element counts in nextByItems", function() {
       it("should count once for each element in the arrays", function() {
         var iterator, no_op, test_array1, test_array2, test_array3, test_count, total_count;
@@ -8,7 +8,7 @@ try {
         test_array3 = [13, 3, 23];
         total_count = test_array1.length * test_array2.length * test_array3.length;
         test_count = 0;
-        iterator = new BGArrayIterator_xN([test_array1, test_array2, test_array3], 1);
+        iterator = new Background.ArrayIterator_xN([test_array1, test_array2, test_array3], 1);
         while (!iterator.nextByItems(function() {
             return test_count++;
           })) {
@@ -23,7 +23,7 @@ try {
         test_array3 = [13, 3, 23];
         total_count = test_array1.length * test_array2.length * test_array3.length;
         test_count = 0;
-        iterator = new BGArrayIterator_xN([test_array1, test_array2, test_array3], 2);
+        iterator = new Background.ArrayIterator_xN([test_array1, test_array2, test_array3], 2);
         while (!iterator.nextByItems(function() {
             return test_count++;
           })) {
@@ -38,7 +38,7 @@ try {
         test_array3 = [13, 3, 23];
         total_count = test_array1.length * test_array2.length * test_array3.length;
         test_count = 0;
-        iterator = new BGArrayIterator_xN([test_array1, test_array2, test_array3], 3);
+        iterator = new Background.ArrayIterator_xN([test_array1, test_array2, test_array3], 3);
         while (!iterator.nextByItems(function() {
             return test_count++;
           })) {
@@ -53,7 +53,7 @@ try {
         test_array3 = [13, 3, 23];
         total_count = test_array1.length * test_array2.length * test_array3.length;
         test_count = 0;
-        iterator = new BGArrayIterator_xN([test_array1, test_array2, test_array3], test_array1.length * test_array2.length + 5);
+        iterator = new Background.ArrayIterator_xN([test_array1, test_array2, test_array3], test_array1.length * test_array2.length + 5);
         while (!iterator.nextByItems(function() {
             return test_count++;
           })) {
@@ -73,7 +73,7 @@ try {
       it("should calculate the correct result with batch size 1", function() {
         var iterator, no_op, test_result;
         test_result = 0;
-        iterator = new BGArrayIterator_xN([test_array1, test_array2, test_array3], 1);
+        iterator = new Background.ArrayIterator_xN([test_array1, test_array2, test_array3], 1);
         while (!iterator.nextByItems(function(items) {
             return test_result += items[0] * items[1] * items[2];
           })) {
@@ -84,7 +84,7 @@ try {
       it("should calculate the correct result with batch size 4", function() {
         var iterator, no_op, test_result;
         test_result = 0;
-        iterator = new BGArrayIterator_xN([test_array1, test_array2, test_array3], 4);
+        iterator = new Background.ArrayIterator_xN([test_array1, test_array2, test_array3], 4);
         while (!iterator.nextByItems(function(items) {
             return test_result += items[0] * items[1] * items[2];
           })) {
@@ -95,7 +95,7 @@ try {
       return it("should calculate the correct result with batch size greater than the number of elements", function() {
         var iterator, no_op, test_result;
         test_result = 0;
-        iterator = new BGArrayIterator_xN([test_array1, test_array2, test_array3], test_array1.length * test_array2.length + 5);
+        iterator = new Background.ArrayIterator_xN([test_array1, test_array2, test_array3], test_array1.length * test_array2.length + 5);
         while (!iterator.nextByItems(function(items) {
             return test_result += items[0] * items[1] * items[2];
           })) {
@@ -112,7 +112,7 @@ try {
         test_array3 = [13, 3, 23];
         total_count = test_array1.length * test_array2.length * test_array3.length;
         test_count = 0;
-        iterator = new BGArrayIterator_xN([test_array1, test_array2, test_array3], 1);
+        iterator = new Background.ArrayIterator_xN([test_array1, test_array2, test_array3], 1);
         while (!iterator.nextByCombinations(function(combinations) {
             return test_count += combinations.length;
           })) {
@@ -127,7 +127,7 @@ try {
         test_array3 = [13, 3, 23];
         total_count = test_array1.length * test_array2.length * test_array3.length;
         test_count = 0;
-        iterator = new BGArrayIterator_xN([test_array1, test_array2, test_array3], 2);
+        iterator = new Background.ArrayIterator_xN([test_array1, test_array2, test_array3], 2);
         while (!iterator.nextByCombinations(function(combinations) {
             return test_count += combinations.length;
           })) {
@@ -142,7 +142,7 @@ try {
         test_array3 = [13, 3, 23];
         total_count = test_array1.length * test_array2.length * test_array3.length;
         test_count = 0;
-        iterator = new BGArrayIterator_xN([test_array1, test_array2, test_array3], 3);
+        iterator = new Background.ArrayIterator_xN([test_array1, test_array2, test_array3], 3);
         while (!iterator.nextByCombinations(function(combinations) {
             return test_count += combinations.length;
           })) {
@@ -162,7 +162,7 @@ try {
       it("should calculate the correct result with batch size 1", function() {
         var iterator, no_op, test_result;
         test_result = 0;
-        iterator = new BGArrayIterator_xN([test_array1, test_array2, test_array3], 1);
+        iterator = new Background.ArrayIterator_xN([test_array1, test_array2, test_array3], 1);
         while (!iterator.nextByCombinations(function(combinations) {
             var combination, _i, _len, _results;
             _results = [];
@@ -179,7 +179,7 @@ try {
       it("should calculate the correct result with batch size 4", function() {
         var iterator, no_op, test_result;
         test_result = 0;
-        iterator = new BGArrayIterator_xN([test_array1, test_array2, test_array3], 4);
+        iterator = new Background.ArrayIterator_xN([test_array1, test_array2, test_array3], 4);
         while (!iterator.nextByCombinations(function(combinations) {
             var combination, _i, _len, _results;
             _results = [];
@@ -196,7 +196,7 @@ try {
       return it("should calculate the correct result with batch size greater than the number of elements", function() {
         var iterator, no_op, test_result;
         test_result = 0;
-        iterator = new BGArrayIterator_xN([test_array1, test_array2, test_array3], test_array1.length * test_array2.length + 5);
+        iterator = new Background.ArrayIterator_xN([test_array1, test_array2, test_array3], test_array1.length * test_array2.length + 5);
         while (!iterator.nextByCombinations(function(combinations) {
             var combination, _i, _len, _results;
             _results = [];
@@ -219,7 +219,7 @@ try {
         test_array3 = [13, 3, 23];
         total_count = test_array1.length * test_array2.length * test_array3.length;
         test_count = 0;
-        iterator = new BGArrayIterator_xN([test_array1, test_array2, test_array3], 1);
+        iterator = new Background.ArrayIterator_xN([test_array1, test_array2, test_array3], 1);
         while (!iterator.nextByRange(function(range) {
             var _results;
             _results = [];
@@ -240,7 +240,7 @@ try {
         test_array3 = [13, 3, 23];
         total_count = test_array1.length * test_array2.length * test_array3.length;
         test_count = 0;
-        iterator = new BGArrayIterator_xN([test_array1, test_array2, test_array3], 2);
+        iterator = new Background.ArrayIterator_xN([test_array1, test_array2, test_array3], 2);
         while (!iterator.nextByRange(function(range) {
             var _results;
             _results = [];
@@ -261,7 +261,7 @@ try {
         test_array3 = [13, 3, 23];
         total_count = test_array1.length * test_array2.length * test_array3.length;
         test_count = 0;
-        iterator = new BGArrayIterator_xN([test_array1, test_array2, test_array3], 3);
+        iterator = new Background.ArrayIterator_xN([test_array1, test_array2, test_array3], 3);
         while (!iterator.nextByRange(function(range) {
             var _results;
             _results = [];
@@ -287,7 +287,7 @@ try {
       it("should calculate the correct result with batch size 1", function() {
         var iterator, no_op, test_result;
         test_result = 0;
-        iterator = new BGArrayIterator_xN([test_array1, test_array2, test_array3], 1);
+        iterator = new Background.ArrayIterator_xN([test_array1, test_array2, test_array3], 1);
         while (!iterator.nextByRange(function(range, arrays) {
             var _results;
             _results = [];
@@ -304,7 +304,7 @@ try {
       it("should calculate the correct result with batch size 4", function() {
         var iterator, no_op, test_result;
         test_result = 0;
-        iterator = new BGArrayIterator_xN([test_array1, test_array2, test_array3], 4);
+        iterator = new Background.ArrayIterator_xN([test_array1, test_array2, test_array3], 4);
         while (!iterator.nextByRange(function(range, arrays) {
             var _results;
             _results = [];
@@ -321,7 +321,7 @@ try {
       return it("should calculate the correct result with batch size greater than the number of elements", function() {
         var iterator, no_op, test_result;
         test_result = 0;
-        iterator = new BGArrayIterator_xN([test_array1, test_array2, test_array3], test_array1.length * test_array2.length + 5);
+        iterator = new Background.ArrayIterator_xN([test_array1, test_array2, test_array3], test_array1.length * test_array2.length + 5);
         while (!iterator.nextByRange(function(range, arrays) {
             var _results;
             _results = [];
@@ -344,7 +344,7 @@ try {
         test_array3 = [13, 3, 23];
         total_count = test_array1.length * test_array2.length * test_array3.length;
         test_count = 0;
-        iterator = new BGArrayIterator_xN([test_array1, test_array2, test_array3], 1);
+        iterator = new Background.ArrayIterator_xN([test_array1, test_array2, test_array3], 1);
         while (!iterator.isDone()) {
           range = iterator.step();
           while (!range.isDone()) {
@@ -361,7 +361,7 @@ try {
         test_array3 = [13, 3, 23];
         total_count = test_array1.length * test_array2.length * test_array3.length;
         test_count = 0;
-        iterator = new BGArrayIterator_xN([test_array1, test_array2, test_array3], 2);
+        iterator = new Background.ArrayIterator_xN([test_array1, test_array2, test_array3], 2);
         while (!iterator.isDone()) {
           range = iterator.step();
           while (!range.isDone()) {
@@ -378,7 +378,7 @@ try {
         test_array3 = [13, 3, 23];
         total_count = test_array1.length * test_array2.length * test_array3.length;
         test_count = 0;
-        iterator = new BGArrayIterator_xN([test_array1, test_array2, test_array3], 3);
+        iterator = new Background.ArrayIterator_xN([test_array1, test_array2, test_array3], 3);
         while (!iterator.isDone()) {
           range = iterator.step();
           while (!range.isDone()) {
@@ -400,7 +400,7 @@ try {
       it("should calculate the correct result with batch size 1", function() {
         var iterator, range, test_result;
         test_result = 0;
-        iterator = new BGArrayIterator_xN([test_array1, test_array2, test_array3], 1);
+        iterator = new Background.ArrayIterator_xN([test_array1, test_array2, test_array3], 1);
         while (!iterator.isDone()) {
           range = iterator.step();
           while (!range.isDone()) {
@@ -413,7 +413,7 @@ try {
       it("should calculate the correct result with batch size 4", function() {
         var iterator, range, test_result;
         test_result = 0;
-        iterator = new BGArrayIterator_xN([test_array1, test_array2, test_array3], 4);
+        iterator = new Background.ArrayIterator_xN([test_array1, test_array2, test_array3], 4);
         while (!iterator.isDone()) {
           range = iterator.step();
           while (!range.isDone()) {
@@ -426,7 +426,7 @@ try {
       return it("should calculate the correct result with batch size greater than the number of elements", function() {
         var iterator, range, test_result;
         test_result = 0;
-        iterator = new BGArrayIterator_xN([test_array1, test_array2, test_array3], test_array1.length * test_array2.length + 5);
+        iterator = new Background.ArrayIterator_xN([test_array1, test_array2, test_array3], test_array1.length * test_array2.length + 5);
         while (!iterator.isDone()) {
           range = iterator.step();
           while (!range.isDone()) {
@@ -439,5 +439,5 @@ try {
     });
   });
 } catch (error) {
-  alert("BGArrayIterator_xN specs failed: '" + error + "'");
+  alert("Background.ArrayIterator_xN specs failed: '" + error + "'");
 }

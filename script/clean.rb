@@ -3,7 +3,7 @@ require 'rubygems'
 require 'fileutils'
 
 PROJECT_ROOT = File.expand_path('../..', __FILE__)
-CLEAN_PATTERNS = ['**.js', 'build/**.js', 'examples/build/**.js', 'spec/build/**.js']
+CLEAN_PATTERNS = ['**.js', 'build/**.js', 'examples/**.js', 'examples/build/**.js', 'spec/build/**.js']
 
 CLEAN_PATTERNS.each do |pattern|
   full_dir = "#{PROJECT_ROOT}/pattern"

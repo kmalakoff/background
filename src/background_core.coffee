@@ -1,5 +1,5 @@
 ###
-  background.js 1.0.0
+  background.js 0.2.0
   (c) 2011 Kevin Malakoff.
   Mixin is freely distributable under the MIT license.
   See the following for full license details:
@@ -11,9 +11,9 @@ this.Background||this.Background={} # define namspace
 root = this # save the root
 
 # Current version.
-Background.VERSION = '0.1.0'
+Background.VERSION = '0.2.0'
 
-class _BGJobContainer
+class Background._JobContainer
 
   constructor: (@frequency) ->
     @jobs = [];
@@ -45,12 +45,12 @@ class _BGJobContainer
       @timeout = null
 
   _appendJob: (init_fn_or_job, run_fn, destroy_fn) ->
-    throw new Error("_BGJobContainer._appendJob: trying to append a job to a destroyed container") if @isDestroyed()
+    throw new Error("Background._JobContainer._appendJob: trying to append a job to a destroyed container") if @isDestroyed()
 
-    if BGJob.isAJob(init_fn_or_job)
+    if Background.Job.isAJob(init_fn_or_job)
       job = init_fn_or_job
     else
-      job = new BGJob(init_fn_or_job, run_fn, destroy_fn)
+      job = new Background.Job(init_fn_or_job, run_fn, destroy_fn)
 
     # add the job and set a timeout if needed
     @jobs.push(job)
@@ -62,16 +62,16 @@ class _BGJobContainer
       @timeout = null
 
   _doDestroy: ->
-    throw new Error("_BGJobContainer.destroy: destroy state is corrupted") if not @being_destroyed or @is_destroyed
+    throw new Error("Background._JobContainer.destroy: destroy state is corrupted") if not @being_destroyed or @is_destroyed
     @is_destroyed = true
 
     # clear the jobs
     @clear()
 
-class _BGArrayIterator
+class Background._ArrayIterator
 
   constructor: (@batch_length, @total_count, @current_range) ->
-    throw new Error("_BGArrayIterator: parameters invalid") if not @batch_length or (@total_count==undefined) or not @current_range
+    throw new Error("Background._ArrayIterator: parameters invalid") if not @batch_length or (@total_count==undefined) or not @current_range
     @reset()
 
   reset: ->

@@ -1,5 +1,5 @@
 try
-  describe("BGArrayIterator_x3", ->
+  describe("Background.ArrayIterator_x3", ->
     ##############################
     # nextByItems
     ##############################
@@ -8,7 +8,7 @@ try
         test_array1 = [3,7,11]; test_array2 = [3,5]; test_array3 = [13,3,23]
         total_count = test_array1.length * test_array2.length * test_array3.length
         test_count = 0
-        iterator = new BGArrayIterator_xN([test_array1,test_array2,test_array3],1)
+        iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],1)
         while(not iterator.nextByItems(->test_count++))
           no_op=true
         expect(test_count==total_count).toBeTruthy()
@@ -17,7 +17,7 @@ try
         test_array1 = [3,7,11]; test_array2 = [3,5]; test_array3 = [13,3,23]
         total_count = test_array1.length * test_array2.length * test_array3.length
         test_count = 0
-        iterator = new BGArrayIterator_xN([test_array1,test_array2,test_array3],2)
+        iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],2)
         while(not iterator.nextByItems(->test_count++))
           no_op=true
         expect(test_count==total_count).toBeTruthy()
@@ -26,7 +26,7 @@ try
         test_array1 = [3,7,11]; test_array2 = [3,5]; test_array3 = [13,3,23]
         total_count = test_array1.length * test_array2.length * test_array3.length
         test_count = 0
-        iterator = new BGArrayIterator_xN([test_array1,test_array2,test_array3],3)
+        iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],3)
         while(not iterator.nextByItems(->test_count++)) 
           no_op=true
         expect(test_count==total_count).toBeTruthy()
@@ -35,7 +35,7 @@ try
         test_array1 = [3,7,11]; test_array2 = [3,5]; test_array3 = [13,3,23]
         total_count = test_array1.length * test_array2.length * test_array3.length
         test_count = 0
-        iterator = new BGArrayIterator_xN([test_array1,test_array2,test_array3],test_array1.length*test_array2.length+5)
+        iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],test_array1.length*test_array2.length+5)
         while(not iterator.nextByItems(->test_count++)) 
           no_op=true
         expect(test_count==total_count).toBeTruthy()
@@ -49,7 +49,7 @@ try
 
       it("should calculate the correct result with batch size 1", ->
         test_result = 0
-        iterator = new BGArrayIterator_xN([test_array1,test_array2,test_array3],1)
+        iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],1)
         while(not iterator.nextByItems((items)->
           test_result += items[0]*items[1]*items[2]
         ))
@@ -58,7 +58,7 @@ try
       )
       it("should calculate the correct result with batch size 4", ->
         test_result = 0
-        iterator = new BGArrayIterator_xN([test_array1,test_array2,test_array3],4)
+        iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],4)
         while(not iterator.nextByItems((items)->
           test_result += items[0]*items[1]*items[2]
         ))
@@ -67,7 +67,7 @@ try
       )
       it("should calculate the correct result with batch size greater than the number of elements", ->
         test_result = 0
-        iterator = new BGArrayIterator_xN([test_array1,test_array2,test_array3],test_array1.length*test_array2.length+5)
+        iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],test_array1.length*test_array2.length+5)
         while(not iterator.nextByItems((items)->
           test_result += items[0]*items[1]*items[2]
         ))
@@ -84,7 +84,7 @@ try
         test_array1 = [3,7,11]; test_array2 = [3,5]; test_array3 = [13,3,23]
         total_count = test_array1.length * test_array2.length * test_array3.length
         test_count = 0
-        iterator = new BGArrayIterator_xN([test_array1,test_array2,test_array3],1)
+        iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],1)
         while(not iterator.nextByCombinations((combinations)->test_count+=combinations.length))
           no_op=true
         expect(test_count==total_count).toBeTruthy()
@@ -93,7 +93,7 @@ try
         test_array1 = [3,7,11]; test_array2 = [3,5]; test_array3 = [13,3,23]
         total_count = test_array1.length * test_array2.length * test_array3.length
         test_count = 0
-        iterator = new BGArrayIterator_xN([test_array1,test_array2,test_array3],2)
+        iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],2)
         while(not iterator.nextByCombinations((combinations)->test_count+=combinations.length))
           no_op=true
         expect(test_count==total_count).toBeTruthy()
@@ -102,7 +102,7 @@ try
         test_array1 = [3,7,11]; test_array2 = [3,5]; test_array3 = [13,3,23]
         total_count = test_array1.length * test_array2.length * test_array3.length
         test_count = 0
-        iterator = new BGArrayIterator_xN([test_array1,test_array2,test_array3],3)
+        iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],3)
         while(not iterator.nextByCombinations((combinations)->test_count+=combinations.length))
           no_op=true
         expect(test_count==total_count).toBeTruthy()
@@ -116,7 +116,7 @@ try
 
       it("should calculate the correct result with batch size 1", ->
         test_result = 0
-        iterator = new BGArrayIterator_xN([test_array1,test_array2,test_array3],1)
+        iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],1)
         while(not iterator.nextByCombinations((combinations)->
           test_result += combination[0]*combination[1]*combination[2] for combination in combinations
         ))
@@ -125,7 +125,7 @@ try
       )
       it("should calculate the correct result with batch size 4", ->
         test_result = 0
-        iterator = new BGArrayIterator_xN([test_array1,test_array2,test_array3],4)
+        iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],4)
         while(not iterator.nextByCombinations((combinations)->
           test_result += combination[0]*combination[1]*combination[2] for combination in combinations
         ))
@@ -134,7 +134,7 @@ try
       )
       it("should calculate the correct result with batch size greater than the number of elements", ->
         test_result = 0
-        iterator = new BGArrayIterator_xN([test_array1,test_array2,test_array3],test_array1.length*test_array2.length+5)
+        iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],test_array1.length*test_array2.length+5)
         while(not iterator.nextByCombinations((combinations)->
           test_result += combination[0]*combination[1]*combination[2] for combination in combinations
         ))
@@ -151,7 +151,7 @@ try
         test_array1 = [3,7,11]; test_array2 = [3,5]; test_array3 = [13,3,23]
         total_count = test_array1.length * test_array2.length * test_array3.length
         test_count = 0
-        iterator = new BGArrayIterator_xN([test_array1,test_array2,test_array3],1)
+        iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],1)
         while(not iterator.nextByRange((range)->
           while(not range.isDone()) 
             test_count++
@@ -164,7 +164,7 @@ try
         test_array1 = [3,7,11]; test_array2 = [3,5]; test_array3 = [13,3,23]
         total_count = test_array1.length * test_array2.length * test_array3.length
         test_count = 0
-        iterator = new BGArrayIterator_xN([test_array1,test_array2,test_array3],2)
+        iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],2)
         while(not iterator.nextByRange((range)->
           while(not range.isDone()) 
             test_count++
@@ -177,7 +177,7 @@ try
         test_array1 = [3,7,11]; test_array2 = [3,5]; test_array3 = [13,3,23]
         total_count = test_array1.length * test_array2.length * test_array3.length
         test_count = 0
-        iterator = new BGArrayIterator_xN([test_array1,test_array2,test_array3],3)
+        iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],3)
         while(not iterator.nextByRange((range)->
           while(not range.isDone()) 
             test_count++
@@ -195,7 +195,7 @@ try
 
       it("should calculate the correct result with batch size 1", ->
         test_result = 0
-        iterator = new BGArrayIterator_xN([test_array1,test_array2,test_array3],1)
+        iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],1)
         while(not iterator.nextByRange((range, arrays)->
           while(not range.isDone()) 
             test_result += range.ranges[0].getItem(arrays[0])*range.ranges[1].getItem(arrays[1])*range.ranges[2].getItem(arrays[2])
@@ -206,7 +206,7 @@ try
       )
       it("should calculate the correct result with batch size 4", ->
         test_result = 0
-        iterator = new BGArrayIterator_xN([test_array1,test_array2,test_array3],4)
+        iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],4)
         while(not iterator.nextByRange((range, arrays)->
           while(not range.isDone()) 
             test_result += range.ranges[0].getItem(arrays[0])*range.ranges[1].getItem(arrays[1])*range.ranges[2].getItem(arrays[2])
@@ -217,7 +217,7 @@ try
       )
       it("should calculate the correct result with batch size greater than the number of elements", ->
         test_result = 0
-        iterator = new BGArrayIterator_xN([test_array1,test_array2,test_array3],test_array1.length*test_array2.length+5)
+        iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],test_array1.length*test_array2.length+5)
         while(not iterator.nextByRange((range, arrays)->
           while(not range.isDone()) 
             test_result += range.ranges[0].getItem(arrays[0])*range.ranges[1].getItem(arrays[1])*range.ranges[2].getItem(arrays[2])
@@ -235,7 +235,7 @@ try
         test_array1 = [3,7,11]; test_array2 = [3,5]; test_array3 = [13,3,23]
         total_count = test_array1.length * test_array2.length * test_array3.length
         test_count = 0
-        iterator = new BGArrayIterator_xN([test_array1,test_array2,test_array3],1)
+        iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],1)
         while(not iterator.isDone())
           range = iterator.step()
           while(not range.isDone()) 
@@ -247,7 +247,7 @@ try
         test_array1 = [3,7,11]; test_array2 = [3,5]; test_array3 = [13,3,23]
         total_count = test_array1.length * test_array2.length * test_array3.length
         test_count = 0
-        iterator = new BGArrayIterator_xN([test_array1,test_array2,test_array3],2)
+        iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],2)
         while(not iterator.isDone())
           range = iterator.step()
           while(not range.isDone()) 
@@ -259,7 +259,7 @@ try
         test_array1 = [3,7,11]; test_array2 = [3,5]; test_array3 = [13,3,23]
         total_count = test_array1.length * test_array2.length * test_array3.length
         test_count = 0
-        iterator = new BGArrayIterator_xN([test_array1,test_array2,test_array3],3)
+        iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],3)
         while(not iterator.isDone())
           range = iterator.step()
           while(not range.isDone()) 
@@ -276,7 +276,7 @@ try
 
       it("should calculate the correct result with batch size 1", ->
         test_result = 0
-        iterator = new BGArrayIterator_xN([test_array1,test_array2,test_array3],1)
+        iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],1)
         while(not iterator.isDone())
           range = iterator.step()
           while(not range.isDone()) 
@@ -286,7 +286,7 @@ try
       )
       it("should calculate the correct result with batch size 4", ->
         test_result = 0
-        iterator = new BGArrayIterator_xN([test_array1,test_array2,test_array3],4)
+        iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],4)
         while(not iterator.isDone())
           range = iterator.step()
           while(not range.isDone()) 
@@ -296,7 +296,7 @@ try
       )
       it("should calculate the correct result with batch size greater than the number of elements", ->
         test_result = 0
-        iterator = new BGArrayIterator_xN([test_array1,test_array2,test_array3],test_array1.length*test_array2.length+5)
+        iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],test_array1.length*test_array2.length+5)
         while(not iterator.isDone())
           range = iterator.step()
           while(not range.isDone()) 
@@ -308,4 +308,4 @@ try
   )
 
 catch error
-  alert("BGArrayIterator_xN specs failed: '#{error}'")
+  alert("Background.ArrayIterator_xN specs failed: '#{error}'")

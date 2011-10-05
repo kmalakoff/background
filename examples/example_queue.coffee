@@ -1,4 +1,4 @@
-job_queue = new BGJobQueue(10) # timeslice of 10ms per iteration
+job_queue = new Background.JobQueue(10) # timeslice of 10ms per iteration
 some_data = [{text:'I'}, {text:'was'}, {text:'processed'}, {text:'on'}, {text:'a'}, {text:'job'}, {text:'queue'}]
 
 # batch set up
@@ -18,7 +18,7 @@ job_queue.push(
 job_queue.push(
   (-> 
     results = []; timeslice_count = 0
-    iterator = new BGArrayIterator(some_data, 2)     # process 2 items per job timeslice
+    iterator = new Background.ArrayIterator(some_data, 2)     # process 2 items per job timeslice
   ), 
   (-> timeslice_count++; return iterator.nextByItem((item) -> results.push(item.text)) ),
   (-> alert("#{timeslice_count} timeslices. Results: '#{results.join(' ')}'") )
@@ -27,7 +27,7 @@ job_queue.push(
 job_queue.push(
   (-> 
     results = []; timeslice_count = 0
-    iterator = new BGArrayIterator(some_data, 3)     # process 3 items per job timeslice
+    iterator = new Background.ArrayIterator(some_data, 3)     # process 3 items per job timeslice
   ), 
   (-> timeslice_count++; return iterator.nextBySlice((items) -> 
     results.push(item.text) for item in items) 
@@ -38,7 +38,7 @@ job_queue.push(
 job_queue.push(
   (-> 
     results = []; timeslice_count = 0
-    iterator = new BGArrayIterator(some_data, 1)     # process 1 item per job timeslice
+    iterator = new Background.ArrayIterator(some_data, 1)     # process 1 item per job timeslice
   ), 
   (-> 
     timeslice_count++
@@ -47,7 +47,7 @@ job_queue.push(
 
       # push another job
       was_run = false
-      test_job = new BGJob(
+      test_job = new Background.Job(
         null, 
         (->was_run = true), 
         ((was_completed)-> alert("Cancelled: #{if was_run then 'I was run' else 'I was never run'}") if not was_completed)

@@ -1,33 +1,33 @@
 /*
-  background.js 1.0.0
+  background.js 0.2.0
   (c) 2011 Kevin Malakoff.
   Mixin is freely distributable under the MIT license.
   See the following for full license details:
     https://github.com/kmalakoff/background/blob/master/LICENSE
   Dependencies: None.
 */
-var root, _BGArrayIterator, _BGJobContainer;
+var root;
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 this.Background || (this.Background = {});
 root = this;
-Background.VERSION = '0.1.0';
-_BGJobContainer = (function() {
-  function _BGJobContainer(frequency) {
+Background.VERSION = '0.2.0';
+Background._JobContainer = (function() {
+  function _JobContainer(frequency) {
     this.frequency = frequency;
     this.jobs = [];
     this.timeout = 0;
     this.being_destroyed = false;
   }
-  _BGJobContainer.prototype.destroy = function() {
+  _JobContainer.prototype.destroy = function() {
     return this.being_destroyed = true;
   };
-  _BGJobContainer.prototype.isDestroyed = function() {
+  _JobContainer.prototype.isDestroyed = function() {
     return this.being_destroyed || this.destroyed;
   };
-  _BGJobContainer.prototype.isEmpty = function() {
+  _JobContainer.prototype.isEmpty = function() {
     return this.jobs.length === 0;
   };
-  _BGJobContainer.prototype.tick = function() {
+  _JobContainer.prototype.tick = function() {
     if (this.being_destroyed) {
       this._doDestroy();
       return;
@@ -37,7 +37,7 @@ _BGJobContainer = (function() {
       this._doDestroy();
     }
   };
-  _BGJobContainer.prototype.clear = function() {
+  _JobContainer.prototype.clear = function() {
     var job;
     while ((job = this.jobs.shift())) {
       job.destroy(true);
@@ -47,15 +47,15 @@ _BGJobContainer = (function() {
       return this.timeout = null;
     }
   };
-  _BGJobContainer.prototype._appendJob = function(init_fn_or_job, run_fn, destroy_fn) {
+  _JobContainer.prototype._appendJob = function(init_fn_or_job, run_fn, destroy_fn) {
     var job;
     if (this.isDestroyed()) {
-      throw new Error("_BGJobContainer._appendJob: trying to append a job to a destroyed container");
+      throw new Error("Background._JobContainer._appendJob: trying to append a job to a destroyed container");
     }
-    if (BGJob.isAJob(init_fn_or_job)) {
+    if (Background.Job.isAJob(init_fn_or_job)) {
       job = init_fn_or_job;
     } else {
-      job = new BGJob(init_fn_or_job, run_fn, destroy_fn);
+      job = new Background.Job(init_fn_or_job, run_fn, destroy_fn);
     }
     this.jobs.push(job);
     if (!this.timeout) {
@@ -64,39 +64,39 @@ _BGJobContainer = (function() {
       }, this)), this.frequency);
     }
   };
-  _BGJobContainer.prototype._waitForJobs = function() {
+  _JobContainer.prototype._waitForJobs = function() {
     if (this.timeout) {
       root.clearInterval(this.timeout);
       return this.timeout = null;
     }
   };
-  _BGJobContainer.prototype._doDestroy = function() {
+  _JobContainer.prototype._doDestroy = function() {
     if (!this.being_destroyed || this.is_destroyed) {
-      throw new Error("_BGJobContainer.destroy: destroy state is corrupted");
+      throw new Error("Background._JobContainer.destroy: destroy state is corrupted");
     }
     this.is_destroyed = true;
     return this.clear();
   };
-  return _BGJobContainer;
+  return _JobContainer;
 })();
-_BGArrayIterator = (function() {
-  function _BGArrayIterator(batch_length, total_count, current_range) {
+Background._ArrayIterator = (function() {
+  function _ArrayIterator(batch_length, total_count, current_range) {
     this.batch_length = batch_length;
     this.total_count = total_count;
     this.current_range = current_range;
     if (!this.batch_length || (this.total_count === void 0) || !this.current_range) {
-      throw new Error("_BGArrayIterator: parameters invalid");
+      throw new Error("Background._ArrayIterator: parameters invalid");
     }
     this.reset();
   }
-  _BGArrayIterator.prototype.reset = function() {
+  _ArrayIterator.prototype.reset = function() {
     this.batch_index = -1;
     return this.batch_count = Math.ceil(this.total_count / this.batch_length);
   };
-  _BGArrayIterator.prototype.isDone = function() {
+  _ArrayIterator.prototype.isDone = function() {
     return this.batch_index >= this.batch_count - 1;
   };
-  _BGArrayIterator.prototype.updateCurrentRange = function() {
+  _ArrayIterator.prototype.updateCurrentRange = function() {
     var excluded_boundary, index;
     index = this.batch_index * this.batch_length;
     excluded_boundary = index + this.batch_length;
@@ -109,7 +109,7 @@ _BGArrayIterator = (function() {
     this.current_range._addBatchLength(excluded_boundary - index);
     return this.current_range;
   };
-  _BGArrayIterator.prototype.step = function() {
+  _ArrayIterator.prototype.step = function() {
     if (this.isDone()) {
       return this.current_range._setIsDone();
     }
@@ -120,5 +120,5 @@ _BGArrayIterator = (function() {
       return this.updateCurrentRange();
     }
   };
-  return _BGArrayIterator;
+  return _ArrayIterator;
 })();

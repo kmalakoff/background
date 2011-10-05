@@ -1,5 +1,5 @@
 var iterator, job_queue, results, some_data, timeslice_count;
-job_queue = new BGJobQueue(10);
+job_queue = new Background.JobQueue(10);
 some_data = [
   {
     text: 'I'
@@ -33,7 +33,7 @@ job_queue.push(null, (function() {
 job_queue.push((function() {
   results = [];
   timeslice_count = 0;
-  return iterator = new BGArrayIterator(some_data, 2);
+  return iterator = new Background.ArrayIterator(some_data, 2);
 }), (function() {
   timeslice_count++;
   return iterator.nextByItem(function(item) {
@@ -45,7 +45,7 @@ job_queue.push((function() {
 job_queue.push((function() {
   results = [];
   timeslice_count = 0;
-  return iterator = new BGArrayIterator(some_data, 3);
+  return iterator = new Background.ArrayIterator(some_data, 3);
 }), (function() {
   timeslice_count++;
   return iterator.nextBySlice(function(items) {
@@ -63,14 +63,14 @@ job_queue.push((function() {
 job_queue.push((function() {
   results = [];
   timeslice_count = 0;
-  return iterator = new BGArrayIterator(some_data, 1);
+  return iterator = new Background.ArrayIterator(some_data, 1);
 }), (function() {
   timeslice_count++;
   iterator.nextByItem(function(item) {
     var test_job, was_run;
     results.push(item.text);
     was_run = false;
-    test_job = new BGJob(null, (function() {
+    test_job = new Background.Job(null, (function() {
       return was_run = true;
     }), (function(was_completed) {
       if (!was_completed) {

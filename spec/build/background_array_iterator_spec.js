@@ -1,11 +1,11 @@
 try {
-  describe("BGArrayIterator", function() {
+  describe("Background.ArrayIterator", function() {
     describe("checking element counts in nextByItem", function() {
       it("should count once for each element in the array", function() {
         var iterator, no_op, test_array, test_count;
         test_array = [1, 2, 3, 4];
         test_count = 0;
-        iterator = new BGArrayIterator(test_array, 1);
+        iterator = new Background.ArrayIterator(test_array, 1);
         while (!iterator.nextByItem(function() {
             return test_count++;
           })) {
@@ -17,7 +17,7 @@ try {
         var iterator, no_op, test_array, test_count;
         test_array = [1, 2, 3, 4];
         test_count = 0;
-        iterator = new BGArrayIterator(test_array, 2);
+        iterator = new Background.ArrayIterator(test_array, 2);
         while (!iterator.nextByItem(function() {
             return test_count++;
           })) {
@@ -29,7 +29,7 @@ try {
         var iterator, no_op, test_array, test_count;
         test_array = [1, 2, 3, 4, 5];
         test_count = 0;
-        iterator = new BGArrayIterator(test_array, 3);
+        iterator = new Background.ArrayIterator(test_array, 3);
         while (!iterator.nextByItem(function() {
             return test_count++;
           })) {
@@ -41,7 +41,7 @@ try {
         var iterator, no_op, test_array, test_count;
         test_array = [1, 2, 3, 4, 5];
         test_count = 0;
-        iterator = new BGArrayIterator(test_array, test_array.length + 5);
+        iterator = new Background.ArrayIterator(test_array, test_array.length + 5);
         while (!iterator.nextByItem(function() {
             return test_count++;
           })) {
@@ -55,7 +55,7 @@ try {
         var iterator, no_op, test_array, test_count, _results;
         test_array = [1, 2, 3, 4];
         test_count = 0;
-        iterator = new BGArrayIterator(test_array, 1);
+        iterator = new Background.ArrayIterator(test_array, 1);
         _results = [];
         while (!iterator.nextByItem(function(item) {
             expect(item === test_array[test_count]).toBeTruthy();
@@ -69,7 +69,7 @@ try {
         var iterator, no_op, test_array, test_count, _results;
         test_array = [1, 2, 3, 4, 5];
         test_count = 0;
-        iterator = new BGArrayIterator(test_array, 3);
+        iterator = new Background.ArrayIterator(test_array, 3);
         _results = [];
         while (!iterator.nextByItem(function(item) {
             expect(item === test_array[test_count]).toBeTruthy();
@@ -85,7 +85,7 @@ try {
         var iterator, no_op, test_array, test_count;
         test_array = [1, 2, 3, 4];
         test_count = 0;
-        iterator = new BGArrayIterator(test_array, 1);
+        iterator = new Background.ArrayIterator(test_array, 1);
         while (!iterator.nextBySlice(function(slice) {
             var item, _i, _len, _results;
             _results = [];
@@ -103,7 +103,7 @@ try {
         var iterator, no_op, test_array, test_count;
         test_array = [1, 2, 3, 4];
         test_count = 0;
-        iterator = new BGArrayIterator(test_array, 2);
+        iterator = new Background.ArrayIterator(test_array, 2);
         while (!iterator.nextBySlice(function(slice) {
             var item, _i, _len, _results;
             _results = [];
@@ -121,7 +121,7 @@ try {
         var iterator, no_op, test_array, test_count;
         test_array = [1, 2, 3, 4, 5];
         test_count = 0;
-        iterator = new BGArrayIterator(test_array, 3);
+        iterator = new Background.ArrayIterator(test_array, 3);
         while (!iterator.nextBySlice(function(slice) {
             var item, _i, _len, _results;
             _results = [];
@@ -141,7 +141,7 @@ try {
         var iterator, no_op, test_array, test_count, _results;
         test_array = [1, 2, 3, 4];
         test_count = 0;
-        iterator = new BGArrayIterator(test_array, 1);
+        iterator = new Background.ArrayIterator(test_array, 1);
         _results = [];
         while (!iterator.nextBySlice(function(slice) {
             var item, _i, _len, _results2;
@@ -163,7 +163,7 @@ try {
         var iterator, no_op, test_array, test_count, _results;
         test_array = [1, 2, 3, 4, 5];
         test_count = 0;
-        iterator = new BGArrayIterator(test_array, 3);
+        iterator = new Background.ArrayIterator(test_array, 3);
         _results = [];
         while (!iterator.nextBySlice(function(slice) {
             var item, _i, _len, _results2;
@@ -190,7 +190,7 @@ try {
       it("should calculate the correct result with batch size 1", function() {
         var iterator, no_op, test_result;
         test_result = 0;
-        iterator = new BGArrayIterator(test_array, 1);
+        iterator = new Background.ArrayIterator(test_array, 1);
         while (!iterator.nextBySlice(function(slice) {
             var item, _i, _len, _results;
             _results = [];
@@ -207,7 +207,7 @@ try {
       it("should calculate the correct result with batch size 4", function() {
         var iterator, no_op, test_result;
         test_result = 0;
-        iterator = new BGArrayIterator(test_array, 4);
+        iterator = new Background.ArrayIterator(test_array, 4);
         while (!iterator.nextBySlice(function(slice) {
             var item, _i, _len, _results;
             _results = [];
@@ -224,7 +224,7 @@ try {
       return it("should calculate the correct result with batch size greater than the number of elements", function() {
         var iterator, no_op, test_result;
         test_result = 0;
-        iterator = new BGArrayIterator(test_array, test_array.length + 5);
+        iterator = new Background.ArrayIterator(test_array, test_array.length + 5);
         while (!iterator.nextBySlice(function(slice) {
             var item, _i, _len, _results;
             _results = [];
@@ -244,7 +244,7 @@ try {
         var iterator, no_op, test_array, test_count;
         test_array = [1, 2, 3, 4];
         test_count = 0;
-        iterator = new BGArrayIterator(test_array, 1);
+        iterator = new Background.ArrayIterator(test_array, 1);
         while (!iterator.nextByRange(function(range) {
             var _results;
             _results = [];
@@ -262,7 +262,7 @@ try {
         var iterator, no_op, test_array, test_count;
         test_array = [1, 2, 3, 4];
         test_count = 0;
-        iterator = new BGArrayIterator(test_array, 2);
+        iterator = new Background.ArrayIterator(test_array, 2);
         while (!iterator.nextByRange(function(range) {
             var _results;
             _results = [];
@@ -280,7 +280,7 @@ try {
         var iterator, no_op, test_array, test_count;
         test_array = [1, 2, 3, 4, 5];
         test_count = 0;
-        iterator = new BGArrayIterator(test_array, 3);
+        iterator = new Background.ArrayIterator(test_array, 3);
         while (!iterator.nextByRange(function(range) {
             var _results;
             _results = [];
@@ -300,7 +300,7 @@ try {
         var iterator, no_op, test_array, test_count, _results;
         test_array = [1, 2, 3, 4];
         test_count = 0;
-        iterator = new BGArrayIterator(test_array, 1);
+        iterator = new Background.ArrayIterator(test_array, 1);
         _results = [];
         while (!iterator.nextByRange(function(range, array) {
             var _results2;
@@ -320,7 +320,7 @@ try {
         var iterator, no_op, test_array, test_count, _results;
         test_array = [1, 2, 3, 4, 5];
         test_count = 0;
-        iterator = new BGArrayIterator(test_array, 3);
+        iterator = new Background.ArrayIterator(test_array, 3);
         _results = [];
         while (!iterator.nextByRange(function(range, array) {
             var _results2;
@@ -345,7 +345,7 @@ try {
       it("should calculate the correct result with batch size 1", function() {
         var iterator, no_op, test_result;
         test_result = 0;
-        iterator = new BGArrayIterator(test_array, 1);
+        iterator = new Background.ArrayIterator(test_array, 1);
         while (!iterator.nextByRange(function(range, array) {
             var _results;
             _results = [];
@@ -362,7 +362,7 @@ try {
       it("should calculate the correct result with batch size 4", function() {
         var iterator, no_op, test_result;
         test_result = 0;
-        iterator = new BGArrayIterator(test_array, 4);
+        iterator = new Background.ArrayIterator(test_array, 4);
         while (!iterator.nextByRange(function(range, array) {
             var _results;
             _results = [];
@@ -379,7 +379,7 @@ try {
       return it("should calculate the correct result with batch size greater than the number of elements", function() {
         var iterator, no_op, test_result;
         test_result = 0;
-        iterator = new BGArrayIterator(test_array, test_array.length + 5);
+        iterator = new Background.ArrayIterator(test_array, test_array.length + 5);
         while (!iterator.nextByRange(function(range, array) {
             var _results;
             _results = [];
@@ -399,7 +399,7 @@ try {
         var iterator, range, test_array, test_count;
         test_array = [1, 2, 3, 4];
         test_count = 0;
-        iterator = new BGArrayIterator(test_array, 1);
+        iterator = new Background.ArrayIterator(test_array, 1);
         while (!iterator.isDone()) {
           range = iterator.step();
           while (!range.isDone()) {
@@ -413,7 +413,7 @@ try {
         var iterator, range, test_array, test_count;
         test_array = [1, 2, 3, 4];
         test_count = 0;
-        iterator = new BGArrayIterator(test_array, 2);
+        iterator = new Background.ArrayIterator(test_array, 2);
         while (!iterator.isDone()) {
           range = iterator.step();
           while (!range.isDone()) {
@@ -427,7 +427,7 @@ try {
         var iterator, range, test_array, test_count;
         test_array = [1, 2, 3, 4, 5];
         test_count = 0;
-        iterator = new BGArrayIterator(test_array, 3);
+        iterator = new Background.ArrayIterator(test_array, 3);
         while (!iterator.isDone()) {
           range = iterator.step();
           while (!range.isDone()) {
@@ -443,7 +443,7 @@ try {
         var iterator, range, test_array, test_count, _results;
         test_array = [1, 2, 3, 4];
         test_count = 0;
-        iterator = new BGArrayIterator(test_array, 1);
+        iterator = new Background.ArrayIterator(test_array, 1);
         _results = [];
         while (!iterator.isDone()) {
           range = iterator.step();
@@ -464,7 +464,7 @@ try {
         var iterator, range, test_array, test_count, _results;
         test_array = [1, 2, 3, 4, 5];
         test_count = 0;
-        iterator = new BGArrayIterator(test_array, 3);
+        iterator = new Background.ArrayIterator(test_array, 3);
         _results = [];
         while (!iterator.isDone()) {
           range = iterator.step();
@@ -490,7 +490,7 @@ try {
       it("should calculate the correct result with batch size 1", function() {
         var iterator, range, test_result;
         test_result = 0;
-        iterator = new BGArrayIterator(test_array, 1);
+        iterator = new Background.ArrayIterator(test_array, 1);
         while (!iterator.isDone()) {
           range = iterator.step();
           while (!range.isDone()) {
@@ -503,7 +503,7 @@ try {
       it("should calculate the correct result with batch size 4", function() {
         var iterator, range, test_result;
         test_result = 0;
-        iterator = new BGArrayIterator(test_array, 4);
+        iterator = new Background.ArrayIterator(test_array, 4);
         while (!iterator.isDone()) {
           range = iterator.step();
           while (!range.isDone()) {
@@ -516,7 +516,7 @@ try {
       return it("should calculate the correct result with batch size greater than the number of elements", function() {
         var iterator, range, test_result;
         test_result = 0;
-        iterator = new BGArrayIterator(test_array, test_array.length + 5);
+        iterator = new Background.ArrayIterator(test_array, test_array.length + 5);
         while (!iterator.isDone()) {
           range = iterator.step();
           while (!range.isDone()) {
@@ -529,5 +529,5 @@ try {
     });
   });
 } catch (error) {
-  alert("BGArrayIterator specs failed: '" + error + "'");
+  alert("Background.ArrayIterator specs failed: '" + error + "'");
 }

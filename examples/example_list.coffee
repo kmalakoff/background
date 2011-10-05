@@ -1,4 +1,4 @@
-job_list = new BGJobList(20) # timeslice of 20ms per iteration
+job_list = new Background.JobList(20) # timeslice of 20ms per iteration
 
 # batch set up
 tick_result=[]

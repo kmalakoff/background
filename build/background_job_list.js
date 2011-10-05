@@ -1,4 +1,3 @@
-var BGJobList;
 var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
   for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; }
   function ctor() { this.constructor = child; }
@@ -7,12 +6,12 @@ var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, par
   child.__super__ = parent.prototype;
   return child;
 }, __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-BGJobList = (function() {
-  __extends(BGJobList, _BGJobContainer);
-  function BGJobList(frequency) {
-    BGJobList.__super__.constructor.call(this, frequency);
+Background.JobList = (function() {
+  __extends(JobList, Background._JobContainer);
+  function JobList(frequency) {
+    JobList.__super__.constructor.call(this, frequency);
   }
-  BGJobList.prototype._doTick = function() {
+  JobList.prototype._doTick = function() {
     var job, jobs, _i, _len, _results;
     if (!this.jobs.length) {
       this._waitForJobs();
@@ -31,11 +30,11 @@ BGJobList = (function() {
     }
     return _results;
   };
-  BGJobList.prototype.append = function(init_fn_or_job, run_fn, destroy_fn) {
+  JobList.prototype.append = function(init_fn_or_job, run_fn, destroy_fn) {
     return this._appendJob(init_fn_or_job, run_fn, destroy_fn);
   };
-  return BGJobList;
+  return JobList;
 })();
 if (typeof exports !== 'undefined') {
-  exports.BGJobList = BGJobList;
+  exports.Background.JobList = Background.JobList;
 }

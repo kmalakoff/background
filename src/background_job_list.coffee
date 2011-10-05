@@ -1,4 +1,4 @@
-class BGJobList extends _BGJobContainer
+class Background.JobList extends Background._JobContainer
 
   constructor: (frequency) ->
     super(frequency)
@@ -24,4 +24,4 @@ class BGJobList extends _BGJobContainer
 ####################################################
 # CommonJS
 ####################################################
-exports.BGJobList = BGJobList if (typeof exports != 'undefined')
+exports.Background.JobList = Background.JobList if (typeof exports != 'undefined')
