@@ -1,22 +1,22 @@
 class BGRange
 
-  constructor: (@index, @excluded_boundary) -> 
-    BGASSERT((typeof @index != 'undefined') and @excluded_boundary, "missing parameters")
+  constructor: (@index, @excluded_boundary) ->
+    throw new Error("BGRange: parameters invalid") if (@index == undefined) or not @excluded_boundary
     return this
 
   isDone:             -> return (@index>=@excluded_boundary)
-  step:               -> @index++; return if(@index>=@excluded_boundary) then -1 else @index
+  step:               -> @index++; return if (@index>=@excluded_boundary) then -1 else @index
   getItem: (array)    -> return array[@index]
   getSlice: (array) -> return array.slice(@index, @excluded_boundary)
 
-  _setIsDone: -> 
+  _setIsDone: ->
     @index = -1; @excluded_boundary = -1
     return this
-  _addBatchLength: (batch_length) -> 
-    BGASSERT(batch_length, "missing parameters")
+  _addBatchLength: (batch_length) ->
+    throw new Error("BGRange._addBatchLength: batch_length invalid") if not batch_length
     @excluded_boundary += batch_length
     return this
-  reset: -> 
+  reset: ->
     @index = 0
     return this
   _stepToEnd:    -> @index = @excluded_boundary

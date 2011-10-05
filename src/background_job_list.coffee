@@ -5,7 +5,7 @@ class BGJobList extends _BGJobContainer
 
   _doTick: ->
     # no jobs, wait for next append
-    if(not @jobs.length)
+    if not @jobs.length
       @_waitForJobs()
       return
 
@@ -14,7 +14,7 @@ class BGJobList extends _BGJobContainer
     for job in jobs
       do (job) =>
         # done so destroy and remove from list
-        if(job.run())
+        if job.run()
           @jobs.splice(@jobs.indexOf(job), 1)
           job.destroy(false)
 

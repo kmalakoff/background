@@ -7,7 +7,6 @@ PROJECT_ROOT = File.expand_path('../..', __FILE__)
 ####################################################
 `cd #{PROJECT_ROOT}; coffee -b -o build -c #{PROJECT_ROOT}/src`
 `cd #{PROJECT_ROOT}; jammit -c config/assets.yaml -o #{PROJECT_ROOT}`
-`cd #{PROJECT_ROOT}; jammit -c config/assets_min.yaml -o #{PROJECT_ROOT}`
 
 ####################################################
 # Tests

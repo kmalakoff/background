@@ -1,7 +1,7 @@
 class BGArrayIterator_xN extends _BGArrayIterator
 
   constructor: (@arrays, batch_length) ->
-    BGASSERT(@arrays, "arrays required")
+    throw new Error("BGArrayIterator_xN: missing arrays") if not @arrays
     array_combination_count = 1
     array_combination_count *= array.length for array in @arrays
     @reset()
@@ -19,13 +19,13 @@ class BGArrayIterator_xN extends _BGArrayIterator
   # iterates passing (array_combinations, range, arrays) once per call (but you should only need array_combinations)
   nextByCombinations: (fn) ->
     @step()
-    fn(@current_range.getCombinations(@arrays), @current_range, @array) if(not @current_range.isDone())
+    fn(@current_range.getCombinations(@arrays), @current_range, @array) if not @current_range.isDone()
     return @isDone()
 
   # iterates passing range and arrays once per call
   nextByRange: (fn) ->
     @step()
-    fn(@current_range, @arrays) if(not @current_range.isDone())
+    fn(@current_range, @arrays) if not @current_range.isDone()
     return @isDone()
 
 ####################################################

@@ -12,7 +12,9 @@ BGArrayIterator = (function() {
   function BGArrayIterator(array, batch_length) {
     var excluded_boundary;
     this.array = array;
-    BGASSERT(this.array, "array required");
+    if (!this.array) {
+      throw new Error("BGArrayIterator: missing array");
+    }
     this.reset();
     excluded_boundary = batch_length < this.array.length ? batch_length : (this.array.length ? this.array.length : 1);
     BGArrayIterator.__super__.constructor.call(this, batch_length, this.array.length, new BGRange(0, excluded_boundary));

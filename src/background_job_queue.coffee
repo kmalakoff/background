@@ -6,9 +6,9 @@ class BGJobQueue extends _BGJobContainer
 
   _doTick: ->
     # get a new job
-    if(not @current_job)
+    if not @current_job
       # no jobs, wait for next push
-      if(not @jobs.length)
+      if not @jobs.length
         @_waitForJobs()
         return
 
@@ -16,7 +16,7 @@ class BGJobQueue extends _BGJobContainer
       @current_job = @jobs.shift()
 
     # done
-    if(@current_job.run())
+    if @current_job.run()
       @current_job.destroy(false)
       @current_job = null 
 
@@ -25,10 +25,7 @@ class BGJobQueue extends _BGJobContainer
 
   _doDestroy: ->
     # destroy the current job
-    if(@current_job)
-      @current_job.destroy(true)
-      @current_job = null 
-
+    (@current_job.destroy(true); @current_job = null) if @current_job
     super()
 
 ####################################################

@@ -3,7 +3,9 @@ BGRange = (function() {
   function BGRange(index, excluded_boundary) {
     this.index = index;
     this.excluded_boundary = excluded_boundary;
-    BGASSERT((typeof this.index !== 'undefined') && this.excluded_boundary, "missing parameters");
+    if ((this.index === void 0) || !this.excluded_boundary) {
+      throw new Error("BGRange: parameters invalid");
+    }
     return this;
   }
   BGRange.prototype.isDone = function() {
@@ -29,7 +31,9 @@ BGRange = (function() {
     return this;
   };
   BGRange.prototype._addBatchLength = function(batch_length) {
-    BGASSERT(batch_length, "missing parameters");
+    if (!batch_length) {
+      throw new Error("BGRange._addBatchLength: batch_length invalid");
+    }
     this.excluded_boundary += batch_length;
     return this;
   };

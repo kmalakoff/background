@@ -32,6 +32,7 @@ end
 def transfer_header(source_filename, destination_filename)
   source      = File.read(source_filename)
   comment_block = source.split('*/')
+  return if not comment_block
   destination = File.read(destination_filename)
   header = (comment_block[0] + "*/\n").squeeze(' ')
   File.open(destination_filename, 'w+') do |file|

@@ -16,29 +16,18 @@ class BGJob
   run: ->
     # set up the job
     if @init_fn
-      try
-        @init_fn()
-      catch error
-        BGASSERT(null, "init_fn failed because of '#{error.message}'")
-        return true
+      @init_fn()
       @init_fn = null
 
     # run the run_fn
-    try
-      @was_completed = @run_fn()
-    catch error
-      BGASSERT(null, "run_fn failed because of '#{error.message}'")
-
-    @_cleanup() if(@was_completed)
+    @was_completed = @run_fn()
+    @_cleanup() if @was_completed
     return @was_completed
 
   _cleanup: ->
     # clean up the job
     if @destroy_fn
-      try
-        @destroy_fn(@was_completed)
-      catch error
-        BGASSERT(null, "init_fn failed because of '#{error.message}'")
+      @destroy_fn(@was_completed)
       @destroy_fn = null
 
   @isAJob: (job) ->

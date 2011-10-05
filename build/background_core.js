@@ -6,20 +6,11 @@
     https://github.com/kmalakoff/background/blob/master/LICENSE
   Dependencies: None.
 */
-var _BGArrayIterator, _BGJobContainer;
+var root, _BGArrayIterator, _BGJobContainer;
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-window.BGDEBUG = true;
-window.BGASSERT_ACTION = function(message) {
-  return alert(message);
-};
-window.BGASSERT = function(check_condition, message) {
-  if (!window.BGDEBUG) {
-    return;
-  }
-  if (!check_condition) {
-    return BGASSERT_ACTION(message);
-  }
-};
+this.Background || (this.Background = {});
+root = this;
+Background.VERSION = '0.1.0';
 _BGJobContainer = (function() {
   function _BGJobContainer(frequency) {
     this.frequency = frequency;
@@ -52,15 +43,14 @@ _BGJobContainer = (function() {
       job.destroy(true);
     }
     if (this.timeout) {
-      window.clearInterval(this.timeout);
+      root.clearInterval(this.timeout);
       return this.timeout = null;
     }
   };
   _BGJobContainer.prototype._appendJob = function(init_fn_or_job, run_fn, destroy_fn) {
     var job;
-    BGASSERT(!this.isDestroyed(), "push shouldn't happen after destroy");
     if (this.isDestroyed()) {
-      return;
+      throw new Error("_BGJobContainer._appendJob: trying to append a job to a destroyed container");
     }
     if (BGJob.isAJob(init_fn_or_job)) {
       job = init_fn_or_job;
@@ -69,22 +59,20 @@ _BGJobContainer = (function() {
     }
     this.jobs.push(job);
     if (!this.timeout) {
-      return this.timeout = window.setInterval((__bind(function() {
+      return this.timeout = root.setInterval((__bind(function() {
         return this.tick();
       }, this)), this.frequency);
     }
   };
   _BGJobContainer.prototype._waitForJobs = function() {
     if (this.timeout) {
-      window.clearInterval(this.timeout);
+      root.clearInterval(this.timeout);
       return this.timeout = null;
     }
   };
   _BGJobContainer.prototype._doDestroy = function() {
-    BGASSERT(this.being_destroyed, "not in destroy");
-    BGASSERT(!this.is_destroyed, "already destroyed");
-    if (this.is_destroyed) {
-      return;
+    if (!this.being_destroyed || this.is_destroyed) {
+      throw new Error("_BGJobContainer.destroy: destroy state is corrupted");
     }
     this.is_destroyed = true;
     return this.clear();
@@ -96,7 +84,9 @@ _BGArrayIterator = (function() {
     this.batch_length = batch_length;
     this.total_count = total_count;
     this.current_range = current_range;
-    BGASSERT(this.batch_length && (typeof this.total_count !== 'undefined') && this.current_range, "positive integer batch length and range required");
+    if (!this.batch_length || (this.total_count === void 0) || !this.current_range) {
+      throw new Error("_BGArrayIterator: parameters invalid");
+    }
     this.reset();
   }
   _BGArrayIterator.prototype.reset = function() {

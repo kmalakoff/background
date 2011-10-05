@@ -54,7 +54,7 @@ job_queue.push(
       ) 
       job_queue.push(test_job)
 
-      job_queue.destroy() if(timeslice_count==3)   # end early
+      job_queue.destroy() if (timeslice_count==3)   # end early
     )
     return false # never signal as done
   ),

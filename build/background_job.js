@@ -17,19 +17,10 @@ BGJob = (function() {
   };
   BGJob.prototype.run = function() {
     if (this.init_fn) {
-      try {
-        this.init_fn();
-      } catch (error) {
-        BGASSERT(null, "init_fn failed because of '" + error.message + "'");
-        return true;
-      }
+      this.init_fn();
       this.init_fn = null;
     }
-    try {
-      this.was_completed = this.run_fn();
-    } catch (error) {
-      BGASSERT(null, "run_fn failed because of '" + error.message + "'");
-    }
+    this.was_completed = this.run_fn();
     if (this.was_completed) {
       this._cleanup();
     }
@@ -37,11 +28,7 @@ BGJob = (function() {
   };
   BGJob.prototype._cleanup = function() {
     if (this.destroy_fn) {
-      try {
-        this.destroy_fn(this.was_completed);
-      } catch (error) {
-        BGASSERT(null, "init_fn failed because of '" + error.message + "'");
-      }
+      this.destroy_fn(this.was_completed);
       return this.destroy_fn = null;
     }
   };

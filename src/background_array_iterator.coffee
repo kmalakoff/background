@@ -1,7 +1,7 @@
 class BGArrayIterator extends _BGArrayIterator
 
   constructor: (@array, batch_length) ->
-    BGASSERT(@array, "array required")
+    throw new Error("BGArrayIterator: missing array") if not @array
     @reset()
     excluded_boundary = if batch_length < @array.length then batch_length else (if @array.length then @array.length else 1)
     super(batch_length, @array.length, new BGRange(0, excluded_boundary))
@@ -17,14 +17,14 @@ class BGArrayIterator extends _BGArrayIterator
   # iterates passing (array_slice, range, array) once per call (but you should only need array_slice)
   nextBySlice: (fn) ->
     @step()
-    fn(@current_range.getSlice(@array), @current_range, @array) if(not @current_range.isDone())
+    fn(@current_range.getSlice(@array), @current_range, @array) if not @current_range.isDone()
     @current_range._stepToEnd()
     return @isDone()
 
   # iterates passing (range, array) once per call
   nextByRange: (fn) ->
     @step()
-    fn(@current_range, @array) if(not @current_range.isDone())
+    fn(@current_range, @array) if not @current_range.isDone()
     return @isDone()
 
 ####################################################

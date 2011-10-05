@@ -6,20 +6,11 @@
     https://github.com/kmalakoff/background/blob/master/LICENSE
   Dependencies: None.
 */
-var _BGArrayIterator, _BGJobContainer;
+var root, _BGArrayIterator, _BGJobContainer;
 var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
-window.BGDEBUG = true;
-window.BGASSERT_ACTION = function(message) {
-  return alert(message);
-};
-window.BGASSERT = function(check_condition, message) {
-  if (!window.BGDEBUG) {
-    return;
-  }
-  if (!check_condition) {
-    return BGASSERT_ACTION(message);
-  }
-};
+this.Background || (this.Background = {});
+root = this;
+Background.VERSION = '0.1.0';
 _BGJobContainer = (function() {
   function _BGJobContainer(frequency) {
     this.frequency = frequency;
@@ -52,15 +43,14 @@ _BGJobContainer = (function() {
       job.destroy(true);
     }
     if (this.timeout) {
-      window.clearInterval(this.timeout);
+      root.clearInterval(this.timeout);
       return this.timeout = null;
     }
   };
   _BGJobContainer.prototype._appendJob = function(init_fn_or_job, run_fn, destroy_fn) {
     var job;
-    BGASSERT(!this.isDestroyed(), "push shouldn't happen after destroy");
     if (this.isDestroyed()) {
-      return;
+      throw new Error("_BGJobContainer._appendJob: trying to append a job to a destroyed container");
     }
     if (BGJob.isAJob(init_fn_or_job)) {
       job = init_fn_or_job;
@@ -69,22 +59,20 @@ _BGJobContainer = (function() {
     }
     this.jobs.push(job);
     if (!this.timeout) {
-      return this.timeout = window.setInterval((__bind(function() {
+      return this.timeout = root.setInterval((__bind(function() {
         return this.tick();
       }, this)), this.frequency);
     }
   };
   _BGJobContainer.prototype._waitForJobs = function() {
     if (this.timeout) {
-      window.clearInterval(this.timeout);
+      root.clearInterval(this.timeout);
       return this.timeout = null;
     }
   };
   _BGJobContainer.prototype._doDestroy = function() {
-    BGASSERT(this.being_destroyed, "not in destroy");
-    BGASSERT(!this.is_destroyed, "already destroyed");
-    if (this.is_destroyed) {
-      return;
+    if (!this.being_destroyed || this.is_destroyed) {
+      throw new Error("_BGJobContainer.destroy: destroy state is corrupted");
     }
     this.is_destroyed = true;
     return this.clear();
@@ -96,7 +84,9 @@ _BGArrayIterator = (function() {
     this.batch_length = batch_length;
     this.total_count = total_count;
     this.current_range = current_range;
-    BGASSERT(this.batch_length && (typeof this.total_count !== 'undefined') && this.current_range, "positive integer batch length and range required");
+    if (!this.batch_length || (this.total_count === void 0) || !this.current_range) {
+      throw new Error("_BGArrayIterator: parameters invalid");
+    }
     this.reset();
   }
   _BGArrayIterator.prototype.reset = function() {
@@ -151,19 +141,10 @@ BGJob = (function() {
   };
   BGJob.prototype.run = function() {
     if (this.init_fn) {
-      try {
-        this.init_fn();
-      } catch (error) {
-        BGASSERT(null, "init_fn failed because of '" + error.message + "'");
-        return true;
-      }
+      this.init_fn();
       this.init_fn = null;
     }
-    try {
-      this.was_completed = this.run_fn();
-    } catch (error) {
-      BGASSERT(null, "run_fn failed because of '" + error.message + "'");
-    }
+    this.was_completed = this.run_fn();
     if (this.was_completed) {
       this._cleanup();
     }
@@ -171,11 +152,7 @@ BGJob = (function() {
   };
   BGJob.prototype._cleanup = function() {
     if (this.destroy_fn) {
-      try {
-        this.destroy_fn(this.was_completed);
-      } catch (error) {
-        BGASSERT(null, "init_fn failed because of '" + error.message + "'");
-      }
+      this.destroy_fn(this.was_completed);
       return this.destroy_fn = null;
     }
   };
@@ -276,7 +253,9 @@ BGRange = (function() {
   function BGRange(index, excluded_boundary) {
     this.index = index;
     this.excluded_boundary = excluded_boundary;
-    BGASSERT((typeof this.index !== 'undefined') && this.excluded_boundary, "missing parameters");
+    if ((this.index === void 0) || !this.excluded_boundary) {
+      throw new Error("BGRange: parameters invalid");
+    }
     return this;
   }
   BGRange.prototype.isDone = function() {
@@ -302,7 +281,9 @@ BGRange = (function() {
     return this;
   };
   BGRange.prototype._addBatchLength = function(batch_length) {
-    BGASSERT(batch_length, "missing parameters");
+    if (!batch_length) {
+      throw new Error("BGRange._addBatchLength: batch_length invalid");
+    }
     this.excluded_boundary += batch_length;
     return this;
   };
@@ -323,7 +304,9 @@ BGRange_xN = (function() {
   function BGRange_xN(ranges, batch_length) {
     this.ranges = ranges;
     this.batch_length = batch_length;
-    BGASSERT(this.ranges && this.batch_length, "missing parameters or invalid batch length");
+    if (!this.ranges || !this.batch_length) {
+      throw new Error("BGRange_xN: parameters invalid");
+    }
     this.batch_index = 0;
     return this;
   }
@@ -376,7 +359,9 @@ BGRange_xN = (function() {
     return this;
   };
   BGRange_xN.prototype._addBatchLength = function(batch_length) {
-    BGASSERT(batch_length, "missing parameters");
+    if (!batch_length) {
+      throw new Error("BGRange_xN._addBatchLength: batch_length invalid");
+    }
     this.batch_index = 0;
     this.batch_length = batch_length;
     return this;
@@ -400,7 +385,9 @@ BGArrayIterator = (function() {
   function BGArrayIterator(array, batch_length) {
     var excluded_boundary;
     this.array = array;
-    BGASSERT(this.array, "array required");
+    if (!this.array) {
+      throw new Error("BGArrayIterator: missing array");
+    }
     this.reset();
     excluded_boundary = batch_length < this.array.length ? batch_length : (this.array.length ? this.array.length : 1);
     BGArrayIterator.__super__.constructor.call(this, batch_length, this.array.length, new BGRange(0, excluded_boundary));
@@ -447,7 +434,9 @@ BGArrayIterator_xN = (function() {
   function BGArrayIterator_xN(arrays, batch_length) {
     var array, array_combination_count, ranges, _i, _j, _len, _len2, _ref, _ref2;
     this.arrays = arrays;
-    BGASSERT(this.arrays, "arrays required");
+    if (!this.arrays) {
+      throw new Error("BGArrayIterator_xN: missing arrays");
+    }
     array_combination_count = 1;
     _ref = this.arrays;
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {

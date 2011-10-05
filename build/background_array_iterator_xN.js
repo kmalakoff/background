@@ -12,7 +12,9 @@ BGArrayIterator_xN = (function() {
   function BGArrayIterator_xN(arrays, batch_length) {
     var array, array_combination_count, ranges, _i, _j, _len, _len2, _ref, _ref2;
     this.arrays = arrays;
-    BGASSERT(this.arrays, "arrays required");
+    if (!this.arrays) {
+      throw new Error("BGArrayIterator_xN: missing arrays");
+    }
     array_combination_count = 1;
     _ref = this.arrays;
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {

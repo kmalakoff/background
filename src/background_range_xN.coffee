@@ -1,12 +1,12 @@
 class BGRange_xN
 
-  constructor: (@ranges, @batch_length) -> 
-    BGASSERT(@ranges and @batch_length, "missing parameters or invalid batch length")
+  constructor: (@ranges, @batch_length) ->
+    throw new Error("BGRange_xN: parameters invalid") if not @ranges or not @batch_length
     @batch_index = 0
     return this
 
   isDone: -> return (@batch_index>=@batch_length)
-  step: -> 
+  step: ->
     @batch_index++
     index = @ranges.length - 1
     while index >= 0
@@ -18,11 +18,11 @@ class BGRange_xN
     # done iterating over all the ranges
     @_setIsDone()
     return null
-  getItems: (arrays) -> 
+  getItems: (arrays) ->
     items = []
     items.push(array[@ranges[index].index]) for index, array of arrays
     return items
-  getCombinations: (arrays) -> 
+  getCombinations: (arrays) ->
     combinations = []
     while not @isDone()
       combination = []
@@ -31,11 +31,11 @@ class BGRange_xN
       @step()
     return combinations
 
-  _setIsDone: -> 
+  _setIsDone: ->
     @batch_index = -1; @batch_length = -1
     return this
-  _addBatchLength: (batch_length) -> 
-    BGASSERT(batch_length, "missing parameters")
+  _addBatchLength: (batch_length) ->
+    throw new Error("BGRange_xN._addBatchLength: batch_length invalid") if not batch_length
     @batch_index = 0
     @batch_length = batch_length
     return this

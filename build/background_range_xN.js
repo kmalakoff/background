@@ -3,7 +3,9 @@ BGRange_xN = (function() {
   function BGRange_xN(ranges, batch_length) {
     this.ranges = ranges;
     this.batch_length = batch_length;
-    BGASSERT(this.ranges && this.batch_length, "missing parameters or invalid batch length");
+    if (!this.ranges || !this.batch_length) {
+      throw new Error("BGRange_xN: parameters invalid");
+    }
     this.batch_index = 0;
     return this;
   }
@@ -56,7 +58,9 @@ BGRange_xN = (function() {
     return this;
   };
   BGRange_xN.prototype._addBatchLength = function(batch_length) {
-    BGASSERT(batch_length, "missing parameters");
+    if (!batch_length) {
+      throw new Error("BGRange_xN._addBatchLength: batch_length invalid");
+    }
     this.batch_index = 0;
     this.batch_length = batch_length;
     return this;

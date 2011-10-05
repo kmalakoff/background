@@ -6,7 +6,7 @@ iteration_count = 0
 
 job_list.append(null,
   (-> tick_result.push('This');   return false)
-  ((was_completed)-> if(was_completed) then alert('Test completed') else alert('Test cancelled and job list destroyed'))
+  ((was_completed)-> if was_completed then alert('Test completed') else alert('Test cancelled and job list destroyed'))
 )
 job_list.append(null, (-> tick_result.push('is');     return false) )
 job_list.append(null, (-> tick_result.push('a');      return false) )
