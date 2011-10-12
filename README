@@ -12,6 +12,29 @@ You can get the library here:
   - Development version: https://github.com/kmalakoff/background/raw/master/background.js
   - Production version: https://github.com/kmalakoff/background/raw/master/background.min.js
 
+An Example:
+**********
+
+  queue = new Background.JobQueue(10) # create a queue that processes each 10 milliseconds
+  iterator = null # declare the iterator here so it is available in the init and run loop
+  test_array1 = [3,7,11]; test_array2 = [3,5]; test_array3 = [13,3,23]
+  iteration_count = 0; result = 0
+
+  queue.push(
+    (->
+      # set up the iterator for the arrays in batches of 3
+      iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],3)
+    ),
+    (->
+      iteration_count++
+      return iterator.nextByItems((items)-> result += items[0]*items[1]*items[2])
+    ),
+    (->
+      # use the result here, push another job onto the queue, etc
+    )
+  )
+
+****************
 The library is composed of the following classes:
 
   1) Background.JobQueue - a sequentially-processed background job queue. When you 'push' a job on a queue, it is run on each 'tick' until it signals it is finished then the job that was added immediately after is run on the next 'tick' until it has completed...and so on.
