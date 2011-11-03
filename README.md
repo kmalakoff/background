@@ -98,9 +98,9 @@ Please look at the provided examples and specs for sample code:
 # Background on Background.js
 This library was originally based on the following project: https://github.com/infojunkie/JobQueue with the following enhancements:
 
-1) Allow the caller to provide set up and clean up functions:
+### Allow the caller to provide set up and clean up functions:
 
-  a) Job without setup and cleanup:
+* Job without setup and cleanup:
 ````
 job_queue = new Background.JobQueue(10) # timeslice of 10ms per iteration
 job_queue.push(
@@ -111,7 +111,7 @@ job_queue.push(
 )
 ````
 
-  b) Job with setup and cleanup:
+* Job with setup and cleanup:
 ````
 some_var = false
 job_queue = new Background.JobQueue(10) # timeslice of 10ms per iteration
@@ -124,9 +124,9 @@ job_queue.push(
 )
 ````
 
-2) The addition of an array iterator
+### The addition of an array iterator
 
-  a) Iterate by array item per timeslice
+* Iterate by array item per timeslice
 
 ````
 some_data = [1, 2, 3, 4]
@@ -140,7 +140,7 @@ job_queue.push(
 )
 ````
 
-    a) Iterate by array slice per timeslice
+* Iterate by array slice per timeslice
 ````
 some_data = [1, 2, 3, 4]
 iterator = null
@@ -153,7 +153,7 @@ job_queue.push(
 )
 ````
 
-3) Allow the caller to destroy the queue (for example, if you have a single page app)
+### Allow the caller to destroy the queue (for example, if you have a single page app)
 ````
 was_destroyed = false
 job_queue = new Background.JobQueue(10) # timeslice of 10ms per iteration
