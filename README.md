@@ -101,6 +101,7 @@ This library was originally based on the following project: https://github.com/i
 ### Allow the caller to provide set up and clean up functions:
 
 * Job without setup and cleanup:
+
 ````
 job_queue = new Background.JobQueue(10) # timeslice of 10ms per iteration
 job_queue.push(
@@ -112,6 +113,7 @@ job_queue.push(
 ````
 
 * Job with setup and cleanup:
+
 ````
 some_var = false
 job_queue = new Background.JobQueue(10) # timeslice of 10ms per iteration
@@ -141,6 +143,7 @@ job_queue.push(
 ````
 
 * Iterate by array slice per timeslice
+
 ````
 some_data = [1, 2, 3, 4]
 iterator = null
