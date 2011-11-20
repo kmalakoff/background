@@ -148,10 +148,8 @@ try {
             _results2 = [];
             for (_i = 0, _len = slice.length; _i < _len; _i++) {
               item = slice[_i];
-              _results2.push((function(item) {
-                expect(item === test_array[test_count]).toBeTruthy();
-                return test_count++;
-              })(item));
+              expect(item === test_array[test_count]).toBeTruthy();
+              _results2.push(test_count++);
             }
             return _results2;
           })) {
@@ -170,10 +168,8 @@ try {
             _results2 = [];
             for (_i = 0, _len = slice.length; _i < _len; _i++) {
               item = slice[_i];
-              _results2.push((function(item) {
-                expect(item === test_array[test_count]).toBeTruthy();
-                return test_count++;
-              })(item));
+              expect(item === test_array[test_count]).toBeTruthy();
+              _results2.push(test_count++);
             }
             return _results2;
           })) {

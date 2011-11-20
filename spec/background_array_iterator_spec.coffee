@@ -95,9 +95,8 @@ try
         iterator = new Background.ArrayIterator(test_array,1)
         while(not iterator.nextBySlice((slice)->
           for item in slice
-            do (item) ->
-              expect(item == test_array[test_count]).toBeTruthy()
-              test_count++
+            expect(item == test_array[test_count]).toBeTruthy()
+            test_count++
         ))
           no_op=true
       )
@@ -107,9 +106,8 @@ try
         iterator = new Background.ArrayIterator(test_array,3)
         while(not iterator.nextBySlice((slice)->
           for item in slice
-            do (item) ->
-              expect(item == test_array[test_count]).toBeTruthy()
-              test_count++
+            expect(item == test_array[test_count]).toBeTruthy()
+            test_count++
         ))
           no_op=true
       )

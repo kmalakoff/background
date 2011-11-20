@@ -212,7 +212,7 @@ var __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, par
   child.prototype = new ctor;
   child.__super__ = parent.prototype;
   return child;
-}, __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+};
 Background.JobList = (function() {
   __extends(JobList, Background._JobContainer);
   function JobList(frequency) {
@@ -228,12 +228,11 @@ Background.JobList = (function() {
     _results = [];
     for (_i = 0, _len = jobs.length; _i < _len; _i++) {
       job = jobs[_i];
-      _results.push(__bind(function(job) {
-        if (job.run()) {
-          this.jobs.splice(this.jobs.indexOf(job), 1);
-          return job.destroy(false);
-        }
-      }, this)(job));
+      if (!job.run()) {
+        continue;
+      }
+      this.jobs.splice(this.jobs.indexOf(job), 1);
+      _results.push(job.destroy(false));
     }
     return _results;
   };
