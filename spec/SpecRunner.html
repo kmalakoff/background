@@ -5,6 +5,7 @@
   <link rel="stylesheet" href="vendor/jasmine.css" type="text/css" media="screen" />
   <script type="text/javascript" src="vendor/jasmine.js"></script>
   <script type="text/javascript" src="vendor/jasmine-html.js"></script>
+  <script type="text/javascript" src="vendor/jasmine.console_reporter.js"></script>
 
   <script type="text/javascript" src="../background.js"></script>
 
@@ -17,6 +18,7 @@
 </head>
 <body>
   <script type="text/javascript">
+    jasmine.getEnv().addReporter(new jasmine.ConsoleReporter());
     jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
     jasmine.getEnv().execute();
   </script>

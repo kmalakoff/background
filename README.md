@@ -1,3 +1,5 @@
+[![Build Status](https://secure.travis-ci.org/kmalakoff/background.png)](http://travis-ci.org/kmalakoff/background)
+
 ````
  _                _                                   _    _
 | |__   __ _  ___| | ____ _ _ __ ___  _   _ _ __   __| |  (_)___
@@ -169,3 +171,15 @@ job_queue.push(
 )
 job_queue.destroy(); job_queue = null
 ````
+
+Building, Running and Testing the library
+-----------------------
+
+###Installing:
+
+1. install node.js: http://nodejs.org
+2. install node packages: (sudo) 'npm install'
+
+###Commands:
+
+Look at: https://github.com/kmalakoff/easy-bake

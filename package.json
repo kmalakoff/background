@@ -1,12 +1,25 @@
 {
-  "name"          : "background",
-  "description"   : "Background.js provides a background job queue and list with array iterators for Javascript applications",
-  "homepage"      : "https://github.com/kmalakoff/background",
-  "keywords"      : ["util", "functional", "server", "client", "browser"],
-  "author"        : "Kevin Malakoff <xmann.intl@gmail.com>",
-  "contributors"  : [],
-  "dependencies"  : [],
-  "repository"    : {"type": "git", "url": "git://github.com/kmalakoff/background.git"},
-  "main"          : "background.js",
-  "version"       : "0.2.0"
+  "author": "Kevin Malakoff <https://github.com/kmalakoff>",
+  "name": "background",
+  "description": "Background.js provides a background job queue and list with array iterators for Javascript applications.",
+  "keywords"      : ["background", "backgroundjs", "client", "server", "javascript", "coffeescript"],
+
+  "url": "http://kmalakoff.github.com/background/",
+  "homepage": "http://kmalakoff.github.com/background/",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/kmalakoff/background.git"
+  },
+
+  "scripts": {
+    "test": "node_modules/.bin/cake -c test"
+  },
+  "devDependencies": {
+    "coffee-script": ">=1.3.3",
+    "easy-bake": ">=0.1.0"
+  },
+
+  "lib" : ".",
+  "main" : "background.js",
+  "version" : "0.2.1"
 }

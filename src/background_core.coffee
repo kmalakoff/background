@@ -1,5 +1,5 @@
 ###
-  background.js 0.2.0
+  background.js 0.2.1
   (c) 2011 Kevin Malakoff.
   Mixin is freely distributable under the MIT license.
   See the following for full license details:
@@ -11,7 +11,7 @@ this.Background||this.Background={} # define namspace
 root = this # save the root
 
 # Current version.
-Background.VERSION = '0.2.0'
+Background.VERSION = '0.2.1'
 
 class Background._JobContainer
 

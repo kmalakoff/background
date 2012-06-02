@@ -27,7 +27,7 @@ try
         total_count = test_array1.length * test_array2.length * test_array3.length
         test_count = 0
         iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],3)
-        while(not iterator.nextByItems(->test_count++)) 
+        while(not iterator.nextByItems(->test_count++))
           no_op=true
         expect(test_count==total_count).toBeTruthy()
       )
@@ -36,7 +36,7 @@ try
         total_count = test_array1.length * test_array2.length * test_array3.length
         test_count = 0
         iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],test_array1.length*test_array2.length+5)
-        while(not iterator.nextByItems(->test_count++)) 
+        while(not iterator.nextByItems(->test_count++))
           no_op=true
         expect(test_count==total_count).toBeTruthy()
       )
@@ -153,7 +153,7 @@ try
         test_count = 0
         iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],1)
         while(not iterator.nextByRange((range)->
-          while(not range.isDone()) 
+          while(not range.isDone())
             test_count++
             range.step()
         ))
@@ -166,7 +166,7 @@ try
         test_count = 0
         iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],2)
         while(not iterator.nextByRange((range)->
-          while(not range.isDone()) 
+          while(not range.isDone())
             test_count++
             range.step()
         ))
@@ -179,7 +179,7 @@ try
         test_count = 0
         iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],3)
         while(not iterator.nextByRange((range)->
-          while(not range.isDone()) 
+          while(not range.isDone())
             test_count++
             range.step()
         ))
@@ -197,7 +197,7 @@ try
         test_result = 0
         iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],1)
         while(not iterator.nextByRange((range, arrays)->
-          while(not range.isDone()) 
+          while(not range.isDone())
             test_result += range.ranges[0].getItem(arrays[0])*range.ranges[1].getItem(arrays[1])*range.ranges[2].getItem(arrays[2])
             range.step()
         ))
@@ -208,7 +208,7 @@ try
         test_result = 0
         iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],4)
         while(not iterator.nextByRange((range, arrays)->
-          while(not range.isDone()) 
+          while(not range.isDone())
             test_result += range.ranges[0].getItem(arrays[0])*range.ranges[1].getItem(arrays[1])*range.ranges[2].getItem(arrays[2])
             range.step()
         ))
@@ -219,7 +219,7 @@ try
         test_result = 0
         iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],test_array1.length*test_array2.length+5)
         while(not iterator.nextByRange((range, arrays)->
-          while(not range.isDone()) 
+          while(not range.isDone())
             test_result += range.ranges[0].getItem(arrays[0])*range.ranges[1].getItem(arrays[1])*range.ranges[2].getItem(arrays[2])
             range.step()
         ))
@@ -238,7 +238,7 @@ try
         iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],1)
         while(not iterator.isDone())
           range = iterator.step()
-          while(not range.isDone()) 
+          while(not range.isDone())
             test_count++
             range.step()
         expect(test_count==total_count).toBeTruthy()
@@ -250,7 +250,7 @@ try
         iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],2)
         while(not iterator.isDone())
           range = iterator.step()
-          while(not range.isDone()) 
+          while(not range.isDone())
             test_count++
             range.step()
         expect(test_count==total_count).toBeTruthy()
@@ -262,7 +262,7 @@ try
         iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],3)
         while(not iterator.isDone())
           range = iterator.step()
-          while(not range.isDone()) 
+          while(not range.isDone())
             test_count++
             range.step()
         expect(test_count==total_count).toBeTruthy()
@@ -279,7 +279,7 @@ try
         iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],1)
         while(not iterator.isDone())
           range = iterator.step()
-          while(not range.isDone()) 
+          while(not range.isDone())
             test_result += test_array1[range.ranges[0].index]*test_array2[range.ranges[1].index]*test_array3[range.ranges[2].index]
             range.step()
         expect(test_result == expected_result).toBeTruthy()
@@ -289,7 +289,7 @@ try
         iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],4)
         while(not iterator.isDone())
           range = iterator.step()
-          while(not range.isDone()) 
+          while(not range.isDone())
             test_result += test_array1[range.ranges[0].index]*test_array2[range.ranges[1].index]*test_array3[range.ranges[2].index]
             range.step()
         expect(test_result == expected_result).toBeTruthy()
@@ -299,7 +299,7 @@ try
         iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],test_array1.length*test_array2.length+5)
         while(not iterator.isDone())
           range = iterator.step()
-          while(not range.isDone()) 
+          while(not range.isDone())
             test_result += test_array1[range.ranges[0].index]*test_array2[range.ranges[1].index]*test_array3[range.ranges[2].index]
             range.step()
         expect(test_result == expected_result).toBeTruthy()
