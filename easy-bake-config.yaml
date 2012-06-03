@@ -22,5 +22,5 @@ tests:
     - spec
   options:
     test:
-      timeout: 60000
+      command: phantomjs
       runner: phantomjs-jasmine-runner.js
