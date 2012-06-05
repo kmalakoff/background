@@ -39,8 +39,3 @@ class Background.Range_xN
     @batch_index = 0
     @batch_length = batch_length
     return this
-
-####################################################
-# CommonJS
-####################################################
-exports.Background.Range = Background.Range if (typeof exports != 'undefined')

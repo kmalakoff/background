@@ -20,8 +20,3 @@ class Background.Range
     @index = 0
     return this
   _stepToEnd:    -> @index = @excluded_boundary
-
-####################################################
-# CommonJS
-####################################################
-exports.Background.Range = Background.Range if (typeof exports != 'undefined')

@@ -20,8 +20,3 @@ class Background.JobList extends Background._JobContainer
 
   append: (init_fn_or_job, run_fn, destroy_fn) ->
     @_appendJob(init_fn_or_job, run_fn, destroy_fn)
-
-####################################################
-# CommonJS
-####################################################
-exports.Background.JobList = Background.JobList if (typeof exports != 'undefined')

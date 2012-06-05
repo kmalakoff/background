@@ -27,8 +27,3 @@ class Background.ArrayIterator_xN extends Background._ArrayIterator
     @step()
     fn(@current_range, @arrays) if not @current_range.isDone()
     return @isDone()
-
-####################################################
-# CommonJS
-####################################################
-exports.Background.ArrayIterator = Background.ArrayIterator if (typeof exports != 'undefined')

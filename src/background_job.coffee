@@ -32,8 +32,3 @@ class Background.Job
 
   @isAJob: (job) ->
     return (job and (typeof job == 'object') and ('constructor' of job) and ('name' of job.constructor) and (job.constructor.name == 'Job'))
-
-####################################################
-# CommonJS
-####################################################
-exports.Background.Job = Background.Job if (typeof exports != 'undefined')

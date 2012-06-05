@@ -27,8 +27,3 @@ class Background.JobQueue extends Background._JobContainer
     # destroy the current job
     (@current_job.destroy(true); @current_job = null) if @current_job
     super()
-
-####################################################
-# CommonJS
-####################################################
-exports.Background.JobQueue = Background.JobQueue if (typeof exports != 'undefined')

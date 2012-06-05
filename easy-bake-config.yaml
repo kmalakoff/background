@@ -19,8 +19,11 @@ examples:
 tests:
   output: ./build
   directories:
-    - spec
+    - test/background_core
+    - test/packaging
   options:
     test:
       command: phantomjs
       runner: phantomjs-jasmine-runner.js
+    build:
+      no_files_ok: ['test/packaging']

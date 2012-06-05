@@ -1,5 +1,14 @@
 try
+  # import Background
+  Background = if not window.Background and (typeof(require) != 'undefined') then require('background') else window.Background
+
   describe("Background.ArrayIterator_x3", ->
+    describe("TEST DEPENDENCY MISSING", ->
+      it("Background should be defined", ->
+        expect(!!Background).toBeTruthy()
+      )
+    )
+
     ##############################
     # nextByItems
     ##############################
