@@ -13,8 +13,11 @@ Background.js provides a background job queue and list with array iterators for 
 
 You can get the library here:
 
-* Development version: https://github.com/kmalakoff/background/raw/master/background.js
-* Production version: https://github.com/kmalakoff/background/raw/master/background.min.js
+* [Development version][1]
+* [Production version][2]
+
+[1]: https://raw.github.com/kmalakoff/background/0.2.2/background.js
+[2]: https://raw.github.com/kmalakoff/background/0.2.2/background.min.js
 
 # An Example:
 
