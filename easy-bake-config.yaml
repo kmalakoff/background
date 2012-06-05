@@ -1,6 +1,6 @@
 library:
   join: background.js
-  minimize: true
+  compress: true
   files:
     - src/background_core.coffee
     - src/background_job.coffee
