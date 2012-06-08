@@ -1,17 +1,16 @@
 ###
   background.js 0.2.2
-  (c) 2011 Kevin Malakoff.
+  (c) 2011, 2012 Kevin Malakoff.
   Mixin is freely distributable under the MIT license.
   See the following for full license details:
     https://github.com/kmalakoff/background/blob/master/LICENSE
   Dependencies: None.
 ###
 
-# export or create Background namespace
-Background = @Background = if (typeof(exports) != 'undefined') then exports else {}
 root = @
 
-# Current version.
+# export or create Background namespace
+Background = @Background = if (typeof(exports) != 'undefined') then exports else {}
 Background.VERSION = '0.2.2'
 
 class Background._JobContainer

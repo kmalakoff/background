@@ -19,7 +19,7 @@ examples:
 tests:
   output: ./build
   directories:
-    - test/background_core
+    - test/core
     - test/packaging
   options:
     test:

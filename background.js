@@ -2,7 +2,7 @@
 
 /*
   background.js 0.2.2
-  (c) 2011 Kevin Malakoff.
+  (c) 2011, 2012 Kevin Malakoff.
   Mixin is freely distributable under the MIT license.
   See the following for full license details:
     https://github.com/kmalakoff/background/blob/master/LICENSE
@@ -15,9 +15,9 @@
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  Background = this.Background = typeof exports !== 'undefined' ? exports : {};
-
   root = this;
+
+  Background = this.Background = typeof exports !== 'undefined' ? exports : {};
 
   Background.VERSION = '0.2.2';
 
