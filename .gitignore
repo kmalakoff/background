@@ -1,7 +1,3 @@
-# osx noise
 .DS_Store
-
 node_modules/*
-
-spec/build/*
-examples/build/*
+build/
