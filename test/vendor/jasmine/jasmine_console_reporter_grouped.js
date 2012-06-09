@@ -10,15 +10,15 @@
      *
      * Usage:
      *
-     * jasmine.getEnv().addReporter(new jasmine.ConsoleReporter());
+     * jasmine.getEnv().addReporter(new jasmine.ConsoleReporterGrouped());
      * jasmine.getEnv().execute();
      */
-    var ConsoleReporter = function() {
+    var ConsoleReporterGrouped = function() {
         this.started = false;
         this.finished = false;
     };
 
-    ConsoleReporter.prototype = {
+    ConsoleReporterGrouped.prototype = {
         reportRunnerResults: function(runner) {
             if (this.hasGroupedConsole()) {
                 var suites = runner.suites();
@@ -138,5 +138,5 @@
     }
 
     // export public
-    jasmine.ConsoleReporter = ConsoleReporter;
+    jasmine.ConsoleReporterGrouped = ConsoleReporterGrouped;
 })();

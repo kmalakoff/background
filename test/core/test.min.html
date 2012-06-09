@@ -10,7 +10,9 @@
   <link rel="stylesheet" href="../vendor/jasmine/jasmine.css" type="text/css" media="screen" />
   <script type="text/javascript" src="../vendor/jasmine/jasmine.js"></script>
   <script type="text/javascript" src="../vendor/jasmine/jasmine-html.js"></script>
-  <script type="text/javascript" src="../vendor/jasmine/jasmine.console_reporter.js"></script>
+  <script type="text/javascript" src="../vendor/jasmine/jasmine_console_reporter_grouped.js"></script>
+  <script type="text/javascript" src="../vendor/jasmine/jasmine_console_reporter_headless.js"></script>
+  
   <script type="text/javascript" src="build/background_array_iterator_spec.js"></script>
   <script type="text/javascript" src="build/background_array_iterator_x2_spec.js"></script>
   <script type="text/javascript" src="build/background_array_iterator_x3_spec.js"></script>
@@ -20,7 +22,8 @@
 </head>
 <body>
   <script type="text/javascript">
-    jasmine.getEnv().addReporter(new jasmine.ConsoleReporter());
+    // jasmine.getEnv().addReporter(new jasmine.ConsoleReporterGrouped());
+    jasmine.getEnv().addReporter(new jasmine.ConsoleReporterHeadless());
     jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
     jasmine.getEnv().execute();
   </script>
