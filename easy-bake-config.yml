@@ -21,11 +21,14 @@ tests:
   directories:
     - test/core
     - test/packaging
-  options:
+  modes:
+    build:
+      bundles:
+        test/packaging/build/bundle.js:
+          background: background.js
+      no_files_ok: ['test/packaging']
     test:
       command: phantomjs
       runner: phantomjs-jasmine-runner.js
       files:
         - '**/*.html'
-    build:
-      no_files_ok: ['test/packaging']

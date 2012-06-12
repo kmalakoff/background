@@ -3,16 +3,7 @@
 <head>
   <title>Background.js Packaging Test Suite</title>
 
-  <!-- LIBRARY -->
-  <script type="text/javascript">
-    window.mock_requires = {};
-    window.require = function(path) { return window.mock_requires[path]; };
-    window.exports = {};
-  </script>
-  <script type="text/javascript" src="../../background.js"></script>
-  <script type="text/javascript">
-    window.mock_requires['background'] = window['exports']; delete window['exports']; delete window['Background']
-  </script>
+  <script type="text/javascript" src="build/bundle.js"></script>
 
   <!-- TESTS -->
   <script type="text/javascript" src="../vendor/qunit/jquery.js"></script>

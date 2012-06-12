@@ -7,7 +7,7 @@
   Dependencies: None.
 ###
 
-root = @
+root = if typeof(window) == 'undefined' then global else window
 
 # export or create Background namespace
 Background = @Background = if (typeof(exports) != 'undefined') then exports else {}

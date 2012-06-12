@@ -16,6 +16,9 @@
     "postinstall": "cake postinstall",
     "test": "cake -c -b test"
   },
+  "optionalDependencies": {
+    "browserify": "latest"
+  },
 
   "main"          : "background.js",
   "version"       : "0.2.2"
