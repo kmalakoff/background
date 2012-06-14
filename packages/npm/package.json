@@ -1,6 +1,6 @@
 {
   "author"        : {"name": "Kevin Malakoff", "url": "https://github.com/kmalakoff"},
-  "name"          : "background_dev",
+  "name"          : "background",
   "description"   : "Background.js provides a background job queue and list with array iterators for Javascript applications.",
   "keywords"      : ["background", "backgroundjs", "jobs", "workers", "tasks", "javascript", "coffeescript"],
 
@@ -9,12 +9,6 @@
   "repository": {
     "type": "git",
     "url": "http://github.com/kmalakoff/background.git"
-  },
-
-  "scripts": {
-    "preinstall": "npm install coffee-script; npm install easy-bake@0.1.2",
-    "postinstall": "cake postinstall",
-    "test": "cake -c -b test"
   },
 
   "main"          : "background.js",

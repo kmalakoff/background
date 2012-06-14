@@ -10,6 +10,13 @@ library:
     - src/background_range_xN.coffee
     - src/background_array_iterator.coffee
     - src/background_array_iterator_xN.coffee
+  modes:
+    build:
+      commands:
+        - 'cp background.js packages/npm/background.js'
+        - 'cp background.min.js packages/npm/background.min.js'
+        - 'cp background.js packages/nuget/Content/Scripts/background.js'
+        - 'cp background.min.js packages/nuget/Content/Scripts/background.min.js'
 
 examples:
   output: build
