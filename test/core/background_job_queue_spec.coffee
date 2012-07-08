@@ -10,163 +10,173 @@ try
     )
 
     ##############################
-    # init_fn
+    # start
     ##############################
-    describe("init_fn is called when expected", ->
-      it("should not call init_fn without a tick", ->
+    describe("start is called when expected", ->
+      it("should not call start without a tick", ->
         job_queue = new Background.JobQueue(10000)   # some long time
-        init_fn = jasmine.createSpy("init_fn")
-        expect(->job_queue.push(init_fn, (->return false))).not.toThrow()
-        expect(init_fn).not.toHaveBeenCalled()
+        start = jasmine.createSpy("start")
+        expect(->job_queue.push({
+          start: start
+          tick: -> return false
+        })).not.toThrow()
+        expect(start).not.toHaveBeenCalled()
       )
-      it("should call init_fn once for one tick", ->
+      it("should call start once for one tick", ->
         job_queue = new Background.JobQueue(10000)   # some long time
-        init_fn = jasmine.createSpy("init_fn")
-        expect(->job_queue.push(init_fn, (->return false))).not.toThrow()
+        start = jasmine.createSpy("start")
+        expect(->job_queue.push({
+          start: start
+          tick: -> return false
+        })).not.toThrow()
         job_queue.tick()
-        expect(init_fn).toHaveBeenCalled()
+        expect(start).toHaveBeenCalled()
       )
-      it("should call init_fn once for multiple ticks", ->
+      it("should call start once for multiple ticks", ->
         call_count = 0
         job_queue = new Background.JobQueue(10000)   # some long time
-        init_fn = jasmine.createSpy("init_fn").andCallFake(->call_count++)
-        expect(->job_queue.push(init_fn, (->return false))).not.toThrow()
+        start = jasmine.createSpy("start").andCallFake(->call_count++)
+        expect(->job_queue.push({
+          start: start
+          tick: -> return false
+        })).not.toThrow()
         job_queue.tick(); job_queue.tick(); job_queue.tick()
-        expect(init_fn).toHaveBeenCalled()
-        expect(call_count==1).toBeTruthy()
-      )
-    )
-    
-    ##############################
-    # run_fn
-    ##############################
-    describe("run_fn is called when expected", ->
-      it("should not call run_fn without a tick", ->
-        job_queue = new Background.JobQueue(10000)   # some long time
-        run_fn = jasmine.createSpy("run_fn").andCallFake(->return false)
-        expect(->job_queue.push(null, run_fn)).not.toThrow()
-        expect(run_fn).not.toHaveBeenCalled()
-      )
-      it("should call run_fn once for one tick", ->
-        job_queue = new Background.JobQueue(10000)   # some long time
-        run_fn = jasmine.createSpy("run_fn").andCallFake(->return false)
-        expect(->job_queue.push(null, run_fn)).not.toThrow()
-        job_queue.tick()
-        expect(run_fn).toHaveBeenCalled()
-      )
-      it("should call run_fn once per tick for multiple ticks when told to continue", ->
-        call_count = 0
-        job_queue = new Background.JobQueue(10000)   # some long time
-        run_fn = jasmine.createSpy("run_fn").andCallFake(->call_count++; return false)
-        expect(->job_queue.push(null, run_fn)).not.toThrow()
-        job_queue.tick(); job_queue.tick(); job_queue.tick()
-        expect(run_fn).toHaveBeenCalled()
-        expect(call_count==3).toBeTruthy()
-      )
-      it("should call run_fn once for multiple ticks when told to finish", ->
-        call_count = 0
-        job_queue = new Background.JobQueue(10000)   # some long time
-        run_fn = jasmine.createSpy("run_fn").andCallFake(->call_count++; return true)
-        expect(->job_queue.push(null, run_fn)).not.toThrow()
-        job_queue.tick(); job_queue.tick(); job_queue.tick()
-        expect(run_fn).toHaveBeenCalled()
+        expect(start).toHaveBeenCalled()
         expect(call_count==1).toBeTruthy()
       )
     )
 
     ##############################
-    # destroy_fn
+    # tick
     ##############################
-    describe("destroy_fn is called when expected", ->
-      it("should not call destroy_fn without a tick", ->
+    describe("tick is called when expected", ->
+      it("should not call tick without a tick", ->
         job_queue = new Background.JobQueue(10000)   # some long time
-        destroy_fn = jasmine.createSpy("destroy_fn")
-        expect(->job_queue.push(null, (->return false), destroy_fn)).not.toThrow()
-        expect(destroy_fn).not.toHaveBeenCalled()
+        tick = jasmine.createSpy("tick").andCallFake(->return false)
+        expect(->job_queue.push(tick)).not.toThrow()
+        expect(tick).not.toHaveBeenCalled()
       )
-      it("should not call destroy_fn with a tick and non-finished task", ->
+      it("should call tick once for one tick", ->
         job_queue = new Background.JobQueue(10000)   # some long time
-        destroy_fn = jasmine.createSpy("destroy_fn")
-        expect(->job_queue.push(null, (->return false), destroy_fn)).not.toThrow()
-        expect(destroy_fn).not.toHaveBeenCalled()
-      )
-      it("should call destroy_fn once for one tick for a finished task", ->
-        job_queue = new Background.JobQueue(10000)   # some long time
-        destroy_fn = jasmine.createSpy("destroy_fn")
-        expect(->job_queue.push(null, (->return true), destroy_fn)).not.toThrow()
+        tick = jasmine.createSpy("tick").andCallFake(->return false)
+        expect(->job_queue.push(tick)).not.toThrow()
         job_queue.tick()
-        expect(destroy_fn).toHaveBeenCalled()
+        expect(tick).toHaveBeenCalled()
       )
-      it("should call destroy_fn once for multiple ticks when told to finish", ->
+      it("should call tick once per tick for multiple ticks when told to continue", ->
         call_count = 0
         job_queue = new Background.JobQueue(10000)   # some long time
-        destroy_fn = jasmine.createSpy("destroy_fn").andCallFake(->call_count++)
-        expect(->job_queue.push(null, (->return true), destroy_fn)).not.toThrow()
+        tick = jasmine.createSpy("tick").andCallFake(->call_count++; return false)
+        expect(->job_queue.push(tick)).not.toThrow()
         job_queue.tick(); job_queue.tick(); job_queue.tick()
-        expect(destroy_fn).toHaveBeenCalled()
+        expect(tick).toHaveBeenCalled()
+        expect(call_count==3).toBeTruthy()
+      )
+      it("should call tick once for multiple ticks when told to finish", ->
+        call_count = 0
+        job_queue = new Background.JobQueue(10000)   # some long time
+        tick = jasmine.createSpy("tick").andCallFake(->call_count++; return true)
+        expect(->job_queue.push(tick)).not.toThrow()
+        job_queue.tick(); job_queue.tick(); job_queue.tick()
+        expect(tick).toHaveBeenCalled()
         expect(call_count==1).toBeTruthy()
       )
-      it("should call destroy_fn once for multiple ticks when destroyed", ->
+    )
+
+    ##############################
+    # finish
+    ##############################
+    describe("finish is called when expected", ->
+      it("should not call finish without a tick", ->
+        job_queue = new Background.JobQueue(10000)   # some long time
+        finish = jasmine.createSpy("finish")
+        expect(->job_queue.push({
+          tick: ->return false
+          finish: finish
+        })).not.toThrow()
+        expect(finish).not.toHaveBeenCalled()
+      )
+      it("should not call finish with a tick and non-finished task", ->
+        job_queue = new Background.JobQueue(10000)   # some long time
+        finish = jasmine.createSpy("finish")
+        expect(->job_queue.push({
+          tick: ->return false
+          finish: finish
+        })).not.toThrow()
+        expect(finish).not.toHaveBeenCalled()
+      )
+      it("should call finish once for one tick for a finished task", ->
+        job_queue = new Background.JobQueue(10000)   # some long time
+        finish = jasmine.createSpy("finish")
+        expect(->job_queue.push(finish: finish)).not.toThrow()
+        job_queue.tick()
+        expect(finish).toHaveBeenCalled()
+      )
+      it("should call finish once for multiple ticks when told to finish", ->
+        call_count = 0
+        job_queue = new Background.JobQueue(10000)   # some long time
+        finish = jasmine.createSpy("finish").andCallFake(->call_count++)
+        expect(->job_queue.push(finish: finish)).not.toThrow()
+        job_queue.tick(); job_queue.tick(); job_queue.tick()
+        expect(finish).toHaveBeenCalled()
+        expect(call_count==1).toBeTruthy()
+      )
+      it("should call finish once for multiple ticks when destroyed", ->
         call_count = 0
         job_queue = new Background.JobQueue(30)
-        destroy_fn = jasmine.createSpy("destroy_fn").andCallFake(->call_count++)
-        expect(->job_queue.push(null, (->return false), destroy_fn)).not.toThrow()
+        finish = jasmine.createSpy("finish").andCallFake(->call_count++)
+        expect(->job_queue.push({
+          tick: ->return false
+          finish: finish
+        })).not.toThrow()
         job_queue.tick()
         job_queue.destroy(); job_queue = null
-        waitsFor(-> return destroy_fn.wasCalled)
-        runs(-> 
-          expect(destroy_fn).toHaveBeenCalled()
+        waitsFor(-> return finish.wasCalled)
+        runs(->
+          expect(finish).toHaveBeenCalled()
           expect(call_count==1).toBeTruthy()
         )
       )
       it("should indicate the task was completed when completed", ->
         param_was_completed = false
         job_queue = new Background.JobQueue(10000)   # some long time
-        destroy_fn = jasmine.createSpy("destroy_fn").andCallFake((was_completed)->param_was_completed=was_completed)
-        expect(->job_queue.push(null, (->return true), destroy_fn)).not.toThrow()
+        finish = jasmine.createSpy("finish").andCallFake((was_completed)->param_was_completed=was_completed)
+        expect(->job_queue.push(finish: finish)).not.toThrow()
         job_queue.tick()
-        expect(destroy_fn).toHaveBeenCalled()
+        expect(finish).toHaveBeenCalled()
         expect(param_was_completed).toBeTruthy()
       )
       it("should indicate the task was not completed when destroyed", ->
         param_was_completed = true
         job_queue = new Background.JobQueue(30)
-        destroy_fn = jasmine.createSpy("destroy_fn").andCallFake((was_completed)->param_was_completed=was_completed)
-        expect(->job_queue.push(null, (->return true), destroy_fn)).not.toThrow()
+        finish = jasmine.createSpy("finish").andCallFake((was_completed)->param_was_completed=was_completed)
+        expect(->job_queue.push(finish: finish)).not.toThrow()
         job_queue.tick(); job_queue.tick(); job_queue.tick()
         job_queue.destroy(); job_queue = null
-        waitsFor(-> return destroy_fn.wasCalled)
-        runs(-> 
-          expect(destroy_fn).toHaveBeenCalled()
+        waitsFor(-> return finish.wasCalled)
+        runs(->
+          expect(finish).toHaveBeenCalled()
         )
       )
     )
-    
+
     ##############################
     # push functions and tick
     ##############################
-    describe("checking job run_fn is called for each tick", ->
+    describe("checking job tick is called for each tick", ->
       it("should call once for one tick", ->
         job_queue = new Background.JobQueue(10000)   # some long time
         call_count=0
-        job_queue.push(null, 
-          (-> 
-            call_count++
-            return false # not done
-          )
-        )
+        job = new Background.Job(-> call_count++; return false)
+        job_queue.push(job)
         job_queue.tick()
         expect(call_count==1).toBeTruthy()
       )
       it("should call three times for three ticks", ->
         job_queue = new Background.JobQueue(10000)   # some long time
         call_count=0
-        job_queue.push(null, 
-          (-> 
-            call_count++
-            return false # not done
-          )
-        )
+        job = new Background.Job(-> call_count++; return false)
+        job_queue.push(job)
         job_queue.tick(); job_queue.tick(); job_queue.tick()
         expect(call_count==3).toBeTruthy()
       )
@@ -175,16 +185,11 @@ try
     ##############################
     # push Background.Job and tick
     ##############################
-    describe("checking job run_fn is called for each tick", ->
+    describe("checking job tick is called for each tick", ->
       it("should call once for one tick", ->
         job_queue = new Background.JobQueue(10000)   # some long time
         call_count=0
-        job = new Background.Job(null, 
-          (-> 
-            call_count++
-            return false # not done
-          )
-        )
+        job = new Background.Job(-> call_count++; return false)
         job_queue.push(job)
         job_queue.tick()
         expect(call_count==1).toBeTruthy()
@@ -192,12 +197,7 @@ try
       it("should call three times for three ticks", ->
         job_queue = new Background.JobQueue(10000)   # some long time
         call_count=0
-        job = new Background.Job(null, 
-          (-> 
-            call_count++
-            return false # not done
-          )
-        )
+        job = new Background.Job(-> call_count++; return false)
         job_queue.push(job)
         job_queue.tick(); job_queue.tick(); job_queue.tick()
         expect(call_count==3).toBeTruthy()

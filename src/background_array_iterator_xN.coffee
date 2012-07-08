@@ -1,7 +1,7 @@
 class Background.ArrayIterator_xN extends Background._ArrayIterator
 
   constructor: (@arrays, batch_length) ->
-    throw new Error("Background.ArrayIterator_xN: missing arrays") if not @arrays
+    throw "Background.ArrayIterator_xN: missing arrays" unless @arrays
     array_combination_count = 1
     array_combination_count *= array.length for array in @arrays
     @reset()
@@ -19,11 +19,11 @@ class Background.ArrayIterator_xN extends Background._ArrayIterator
   # iterates passing (array_combinations, range, arrays) once per call (but you should only need array_combinations)
   nextByCombinations: (fn) ->
     @step()
-    fn(@current_range.getCombinations(@arrays), @current_range, @array) if not @current_range.isDone()
+    fn(@current_range.getCombinations(@arrays), @current_range, @array) unless @current_range.isDone()
     return @isDone()
 
   # iterates passing range and arrays once per call
   nextByRange: (fn) ->
     @step()
-    fn(@current_range, @arrays) if not @current_range.isDone()
+    fn(@current_range, @arrays) unless @current_range.isDone()
     return @isDone()

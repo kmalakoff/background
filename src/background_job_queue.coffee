@@ -6,9 +6,10 @@ class Background.JobQueue extends Background._JobContainer
 
   _doTick: ->
     # get a new job
-    if not @current_job
+    unless @current_job
+
       # no jobs, wait for next push
-      if not @jobs.length
+      unless @jobs.length
         @_waitForJobs()
         return
 
@@ -18,10 +19,10 @@ class Background.JobQueue extends Background._JobContainer
     # done
     if @current_job.run()
       @current_job.destroy(false)
-      @current_job = null 
+      @current_job = null
 
-  push: (init_fn_or_job, run_fn, destroy_fn) -> 
-    @_appendJob(init_fn_or_job, run_fn, destroy_fn) 
+  push: (functions) ->
+    @_appendJob.apply(this, arguments)
 
   _doDestroy: ->
     # destroy the current job

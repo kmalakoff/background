@@ -50,7 +50,7 @@ job_queue.push(
       test_job = new Background.Job(
         null, 
         (->was_run = true), 
-        ((was_completed)-> alert("Cancelled: #{if was_run then 'I was run' else 'I was never run'}") if not was_completed)
+        ((was_completed)-> alert("Cancelled: #{if was_run then 'I was run' else 'I was never run'}") unless was_completed)
       ) 
       job_queue.push(test_job)
 

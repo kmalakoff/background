@@ -1,5 +1,5 @@
 ###
-  background.js 0.2.2
+  background.js 0.3.0
   (c) 2011, 2012 Kevin Malakoff.
   Mixin is freely distributable under the MIT license.
   See the following for full license details:
@@ -11,28 +11,35 @@ root = @
 
 # export or create Background namespace
 Background = @Background = if (typeof(exports) != 'undefined') then exports else {}
-Background.VERSION = '0.2.2'
+Background.VERSION = '0.3.0'
+
+legacyToLatestTask = ->
+  functions = {}
+  functions.start = arguments[0] if arguments.length > 0
+  functions.tick = arguments[1] if arguments.length > 1
+  functions.finish = arguments[2] if arguments.length > 2
+  return functions
 
 class Background._JobContainer
 
   constructor: (@frequency) ->
     @jobs = [];
     @timeout = 0;
-    @being_destroyed = false
+    @in_destroy = false
 
-  destroy:      -> @being_destroyed = true
-  isDestroyed: -> return (@being_destroyed or @destroyed)
+  destroy:      -> @in_destroy = true
+  isDestroyed: -> return (@in_destroy or @destroyed)
 
   isEmpty: -> return (@jobs.length == 0)
   tick: ->
     # we are being destroyed
-    (@_doDestroy(); return) if @being_destroyed
+    (@_doDestroy(); return) if @in_destroy
 
     # let the container process the list
     @_doTick()
 
     # we are being destroyed
-    (@_doDestroy(); return) if @being_destroyed
+    (@_doDestroy(); return) if @in_destroy
 
   clear: ->
     # destroy the jobs
@@ -44,17 +51,18 @@ class Background._JobContainer
       root.clearInterval(@timeout)
       @timeout = null
 
-  _appendJob: (init_fn_or_job, run_fn, destroy_fn) ->
-    throw new Error("Background._JobContainer._appendJob: trying to append a job to a destroyed container") if @isDestroyed()
+  _appendJob: (functions) ->
+    functions = legacyToLatestTask.apply(null, arguments) if (arguments.length>1)
+    throw "Trying to append a job to a destroyed container" if @isDestroyed()
 
-    if Background.Job.isAJob(init_fn_or_job)
-      job = init_fn_or_job
+    if (functions instanceof Background.Job)
+      job = functions
     else
-      job = new Background.Job(init_fn_or_job, run_fn, destroy_fn)
+      job = new Background.Job(functions)
 
     # add the job and set a timeout if needed
     @jobs.push(job)
-    @timeout = root.setInterval((=> @tick()), @frequency) if not @timeout
+    @timeout = root.setInterval((=> @tick()), @frequency) unless @timeout
 
   _waitForJobs: ->
     if @timeout
@@ -62,7 +70,7 @@ class Background._JobContainer
       @timeout = null
 
   _doDestroy: ->
-    throw new Error("Background._JobContainer.destroy: destroy state is corrupted") if not @being_destroyed or @is_destroyed
+    throw "Destroy state is corrupted" if not @in_destroy or @is_destroyed
     @is_destroyed = true
 
     # clear the jobs
@@ -71,7 +79,7 @@ class Background._JobContainer
 class Background._ArrayIterator
 
   constructor: (@batch_length, @total_count, @current_range) ->
-    throw new Error("Background._ArrayIterator: parameters invalid") if not @batch_length or (@total_count==undefined) or not @current_range
+    throw "Iterator parameters invalid" if not @batch_length or (@total_count==undefined) or not @current_range
     @reset()
 
   reset: ->

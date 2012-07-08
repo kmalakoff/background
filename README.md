@@ -16,8 +16,10 @@ You can get the library here:
 * [Development version][1]
 * [Production version][2]
 
-[1]: https://raw.github.com/kmalakoff/background/0.2.2/background.js
-[2]: https://raw.github.com/kmalakoff/background/0.2.2/background.min.js
+[1]: https://raw.github.com/kmalakoff/background/0.3.0/background.js
+[2]: https://raw.github.com/kmalakoff/background/0.3.0/background.min.js
+
+# NOTE: 0.3.0+ has a significant API change for tasks that simplifies the usage of Background. See Release Notes for updates.
 
 # An Example:
 
@@ -27,19 +29,17 @@ You can get the library here:
   test_array1 = [3,7,11]; test_array2 = [3,5]; test_array3 = [13,3,23]
   iteration_count = 0; result = 0
 
-  queue.push(
-    (->
-      # set up the iterator for the arrays in batches of 3
-      iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],3)
-    ),
-    (->
+  queue.push({
+    # set up the iterator for the arrays in batches of 3
+    start: -> iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],3)
+
+    tick: ->
       iteration_count++
       return iterator.nextByItems((items)-> result += items[0]*items[1]*items[2])
-    ),
-    (->
-      # use the result here, push another job onto the queue, etc
-    )
-  )
+
+    # use the result here, push another job onto the queue, etc
+    finish: ->
+  })
 ````
 
 # Classes:
@@ -83,7 +83,7 @@ A multiple array range iterator which is used per iteration to access array item
 * getCombinations(arrays): used to get all the pair combinations of the arrays items that the range is referring to
 
 ## Background.Job
-A job class which requires a run_fn and can optionally be provided an init_fn and/or a destroy_fn.
+A job class which requires a functions.tick and can optionally be provided an functions.start and/or a functions.finish.
 
 # Tips
 
@@ -109,12 +109,7 @@ This library was originally based on the following project: https://github.com/i
 
 ````
 job_queue = new Background.JobQueue(10) # timeslice of 10ms per iteration
-job_queue.push(
-  null,
-  (->
-    return true # done
-  )
-)
+job_queue.push(-> return true) # done on first run
 ````
 
 * Job with setup and cleanup:
@@ -122,13 +117,10 @@ job_queue.push(
 ````
 some_var = false
 job_queue = new Background.JobQueue(10) # timeslice of 10ms per iteration
-job_queue.push(
-  (->some_var=1),
-  (->
-    return true # done
-  ),
-  ((was_completed)->some_var=true)
-)
+job_queue.push({
+  start: -> some_var=1
+  finish: (was_completed)-> some_var=true
+})
 ````
 
 ### The addition of an array iterator
@@ -139,12 +131,11 @@ job_queue.push(
 some_data = [1, 2, 3, 4]
 iterator = null
 job_queue = new Background.JobQueue(10) # timeslice of 10ms per iteration
-job_queue.push(
-  (->
-    iterator = new Background.ArrayIterator(some_data, 2)     # process 2 items per job timeslice
-  ),
-  (-> return iterator.nextByItem((item) ->) ),
-)
+job_queue.push({
+  # process 2 items per job timeslice
+  start: -> iterator = new Background.ArrayIterator(some_data, 2)
+  tick: -> return iterator.nextByItem((item) ->)
+})
 ````
 
 * Iterate by array slice per timeslice
@@ -154,10 +145,9 @@ some_data = [1, 2, 3, 4]
 iterator = null
 job_queue = new Background.JobQueue(10) # timeslice of 10ms per iteration
 job_queue.push(
-  (->
-    iterator = new Background.ArrayIterator(some_data, 2)     # process 2 items per job timeslice
-  ),
-  (-> return iterator.nextBySlice((items) ->) ),
+  # process 2 items per job timeslice
+  start: -> iterator = new Background.ArrayIterator(some_data, 2)
+  tick: -> return iterator.nextBySlice((items) ->)
 )
 ````
 
@@ -165,15 +155,23 @@ job_queue.push(
 ````
 was_destroyed = false
 job_queue = new Background.JobQueue(10) # timeslice of 10ms per iteration
-job_queue.push(
-  null,
-  (->
-    return false # not done
-  ),
-  ((was_completed)->was_destroyed=(was_completed==false))
-)
+job_queue.push({
+  tick: -> return false # not done
+  finish: (was_completed)-> was_destroyed=(was_completed==false)
+})
 job_queue.destroy(); job_queue = null
 ````
+
+Release Notes
+-----------------------
+
+# 0.3.0
+
+- reduced verbosity of task setup by:
+1. allowing for run functions to be passed if start and finish callbacks are not required
+2. using an object with {start: s, run: r, finish: f} functions so only the minimal functions need to be specified
+3. allowing the run function to be ignored meaning only the start and finish are called (if they exist) and the task finishes on its first run
+
 
 Building, Running and Testing the library
 -----------------------

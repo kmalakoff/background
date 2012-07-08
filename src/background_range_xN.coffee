@@ -1,7 +1,7 @@
 class Background.Range_xN
 
   constructor: (@ranges, @batch_length) ->
-    throw new Error("Background.Range_xN: parameters invalid") if not @ranges or not @batch_length
+    throw "Background.Range_xN: parameters invalid" if not @ranges or not @batch_length
     @batch_index = 0
     return this
 
@@ -35,7 +35,7 @@ class Background.Range_xN
     @batch_index = -1; @batch_length = -1
     return this
   _addBatchLength: (batch_length) ->
-    throw new Error("Background.Range_xN._addBatchLength: batch_length invalid") if not batch_length
+    throw "Background.Range_xN._addBatchLength: batch_length invalid" if not batch_length
     @batch_index = 0
     @batch_length = batch_length
     return this
