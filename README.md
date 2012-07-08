@@ -16,9 +16,6 @@ You can get the library here:
 * [Development version][1]
 * [Production version][2]
 
-[1]: https://raw.github.com/kmalakoff/background/0.3.0/background.js
-[2]: https://raw.github.com/kmalakoff/background/0.3.0/background.min.js
-
 # NOTE: 0.3.0+ has a significant API change for tasks that simplifies the usage of Background. See Release Notes for updates.
 
 # An Example:
@@ -184,3 +181,6 @@ Building, Running and Testing the library
 ###Commands:
 
 Look at: https://github.com/kmalakoff/easy-bake
+
+[1]: https://raw.github.com/kmalakoff/background/0.3.0/background.js
+[2]: https://raw.github.com/kmalakoff/background/0.3.0/background.min.js
