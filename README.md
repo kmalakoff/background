@@ -167,7 +167,7 @@ Release Notes
 
 # 0.3.0
 
-- reduced verbosity of task setup by:
+Reduced verbosity of task setup by:
 1. allowing for run functions to be passed if start and finish callbacks are not required
 2. using an object with {start: s, run: r, finish: f} functions so only the minimal functions need to be specified
 3. allowing the run function to be ignored meaning only the start and finish are called (if they exist) and the task finishes on its first run
