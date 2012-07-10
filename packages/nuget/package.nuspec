@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <version>0.3.0</version>
+    <authors>Kevin Malakoff</authors>
+    <owners />
+    <licenseUrl>https://github.com/kmalakoff/background/blob/master/LICENSE</licenseUrl>
+    <projectUrl>http://kmalakoff.github.com/background/</projectUrl>
+    <dependencies>
+    </dependencies>
+    <id>background</id>
+    <title>background</title>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Background.js provides a background job queue and list with array iterators for Javascript applications.</description>
+    <summary>Background.js provides a background job queue and list with array iterators for Javascript applications.</summary>
+    <copyright>Copyright (c) 2011-2012 Kevin Malakoff</copyright>
+    <tags>background backgroundjs jobs workers tasks javascript coffeescript</tags>
+  </metadata>
+  <files>
+    <file src="content/Scripts/background.js" target="content/Scripts/background.js" />
+    <file src="content/Scripts/background.min.js" target="content/Scripts/background.min.js" />
+  </files>
+</package>
