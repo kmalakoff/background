@@ -25,11 +25,11 @@ module.exports =
     directories: 'examples'
 
   tests:
-    output: 'build'
-    directories: [
-      'test/core'
-    ]
     _build:
+      output: 'build'
+      directories: [
+        'test/core'
+      ]
       commands: [
         'mbundle test/packaging/bundle-config.coffee'
       ]
