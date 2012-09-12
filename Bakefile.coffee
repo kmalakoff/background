@@ -16,6 +16,7 @@ module.exports =
       commands: [
         'cp background.js packages/npm/background.js'
         'cp background.min.js packages/npm/background.min.js'
+        'cp README.md packages/npm/README.md'
         'cp background.js packages/nuget/Content/Scripts/background.js'
         'cp background.min.js packages/nuget/Content/Scripts/background.min.js'
       ]
