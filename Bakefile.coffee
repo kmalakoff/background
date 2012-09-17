@@ -1,6 +1,7 @@
 module.exports =
   library:
     join: 'background.js'
+    wrapper: 'src/module-loader.js'
     compress: true
     files: [
       'src/background_core.coffee'

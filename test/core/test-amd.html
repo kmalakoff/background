@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>Background.js Test Suite (AMD)</title>
+
+  <!-- LIBRARY -->
+  <script src="../vendor/require.js"></script>
+  <script type="text/javascript">
+    require.config({
+      paths: {
+        'background': "../../background"
+      }
+    });
+  </script>
+
+  <!-- TESTS -->
+  <script type="text/javascript" src="../vendor/qunit/jquery.js"></script>
+  <link rel="stylesheet" href="../vendor/jasmine-1.2.0/jasmine.css" type="text/css" media="screen" />
+  <script type="text/javascript" src="../vendor/jasmine-1.2.0/jasmine.js"></script>
+  <script type="text/javascript" src="../vendor/jasmine-1.2.0/jasmine-html.js"></script>
+  <script type="text/javascript" src="../vendor/jasmine-1.2.0/jasmine_console_reporter_headless.js"></script>
+
+  <script type="text/javascript" src="build/background_array_iterator_spec-amd.js"></script>
+  <script type="text/javascript" src="build/background_array_iterator_x2_spec-amd.js"></script>
+  <script type="text/javascript" src="build/background_array_iterator_x3_spec-amd.js"></script>
+  <script type="text/javascript" src="build/background_job_list_spec-amd.js"></script>
+  <script type="text/javascript" src="build/background_job_queue_spec-amd.js"></script>
+</head>
+<body>
+  <script type="text/javascript" src="../vendor/jasmine-1.2.0/jasmine_configure.js"></script>
+</body>
+</html>

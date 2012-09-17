@@ -16,7 +16,7 @@ You can get the library here:
 * [Development version][1]
 * [Production version][2]
 
-# NOTE: 0.3.0+ has a significant API change for tasks that simplifies the usage of Background. See Release Notes for updates.
+# NOTE: 0.3.1+ has a significant API change for tasks that simplifies the usage of Background. See Release Notes for updates.
 
 # An Example:
 
@@ -162,7 +162,7 @@ job_queue.destroy(); job_queue = null
 Release Notes
 -----------------------
 
-# 0.3.0
+# 0.3.1
 
 Reduced verbosity of task setup by:
 1. allowing for run functions to be passed if start and finish callbacks are not required
@@ -182,5 +182,5 @@ Building, Running and Testing the library
 
 Look at: https://github.com/kmalakoff/easy-bake
 
-[1]: https://raw.github.com/kmalakoff/background/0.3.0/background.js
-[2]: https://raw.github.com/kmalakoff/background/0.3.0/background.min.js
+[1]: https://raw.github.com/kmalakoff/background/0.3.1/background.js
+[2]: https://raw.github.com/kmalakoff/background/0.3.1/background.min.js

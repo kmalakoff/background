@@ -1,17 +1,14 @@
 ###
-  background.js 0.3.0
-  (c) 2011, 2012 Kevin Malakoff.
-  Mixin is freely distributable under the MIT license.
-  See the following for full license details:
-    https://github.com/kmalakoff/background/blob/master/LICENSE
-  Dependencies: None.
+  background.js 0.3.1
+  (c) 2011, 2012 Kevin Malakoff - http://kmalakoff.github.com/background/
+  License: MIT (http://www.opensource.org/licenses/mit-license.php)
 ###
 
 root = @
 
 # export or create Background namespace
 Background = @Background = if (typeof(exports) != 'undefined') then exports else {}
-Background.VERSION = '0.3.0'
+Background.VERSION = '0.3.1'
 
 legacyToLatestTask = ->
   functions = {}
@@ -33,13 +30,13 @@ class Background._JobContainer
   isEmpty: -> return (@jobs.length == 0)
   tick: ->
     # we are being destroyed
-    (@_doDestroy(); return) if @in_destroy
+    (@_doDestroy() unless this.is_destroyed; return) if @in_destroy
 
     # let the container process the list
     @_doTick()
 
     # we are being destroyed
-    (@_doDestroy(); return) if @in_destroy
+    (@_doDestroy() unless this.is_destroyed; return) if @in_destroy
 
   clear: ->
     # destroy the jobs
