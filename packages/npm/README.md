@@ -11,12 +11,18 @@
 
 Background.js provides a background job queue and list with array iterators for Javascript applications.
 
-You can get the library here:
+#Download Latest (0.3.1):
 
-* [Development version][1]
-* [Production version][2]
+Please see the [release notes](https://github.com/kmalakoff/background/blob/master/RELEASE_NOTES.md) for upgrade pointers.
 
-# NOTE: 0.3.1+ has a significant API change for tasks that simplifies the usage of Background. See Release Notes for updates.
+* [Development version](https://raw.github.com/kmalakoff/background/0.3.1/background.js)
+* [Production version](https://raw.github.com/kmalakoff/background/0.3.1/background.min.js)
+
+###Module Loading
+
+Background.js is compatible with RequireJS, CommonJS, Brunch and AMD module loading. Module names:
+
+* 'background' - background.js.
 
 # An Example:
 
@@ -181,6 +187,3 @@ Building, Running and Testing the library
 ###Commands:
 
 Look at: https://github.com/kmalakoff/easy-bake
-
-[1]: https://raw.github.com/kmalakoff/background/0.3.1/background.js
-[2]: https://raw.github.com/kmalakoff/background/0.3.1/background.min.js
