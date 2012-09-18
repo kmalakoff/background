@@ -19,7 +19,7 @@ try
           test_count = 0
           iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],1)
           while(not iterator.nextByItems(->test_count++))
-            no_op=true
+            return
           expect(test_count==total_count).toBeTruthy()
         )
         it("should count once for each element in the arrays with batch size 2", ->
@@ -28,7 +28,7 @@ try
           test_count = 0
           iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],2)
           while(not iterator.nextByItems(->test_count++))
-            no_op=true
+            return
           expect(test_count==total_count).toBeTruthy()
         )
         it("should count once for each element in the arrays with batch size 3 and an odd number of elements", ->
@@ -37,7 +37,7 @@ try
           test_count = 0
           iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],3)
           while(not iterator.nextByItems(->test_count++))
-            no_op=true
+            return
           expect(test_count==total_count).toBeTruthy()
         )
         it("should count once for each element in the arrays with batch size greater than the number of elements", ->
@@ -46,7 +46,7 @@ try
           test_count = 0
           iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],test_array1.length*test_array2.length+5)
           while(not iterator.nextByItems(->test_count++))
-            no_op=true
+            return
           expect(test_count==total_count).toBeTruthy()
         )
       )
@@ -62,7 +62,7 @@ try
           while(not iterator.nextByItems((items)->
             test_result += items[0]*items[1]*items[2]
           ))
-            no_op=true
+            return
           expect(test_result == expected_result).toBeTruthy()
         )
         it("should calculate the correct result with batch size 4", ->
@@ -71,7 +71,7 @@ try
           while(not iterator.nextByItems((items)->
             test_result += items[0]*items[1]*items[2]
           ))
-            no_op=true
+            return
           expect(test_result == expected_result).toBeTruthy()
         )
         it("should calculate the correct result with batch size greater than the number of elements", ->
@@ -80,7 +80,7 @@ try
           while(not iterator.nextByItems((items)->
             test_result += items[0]*items[1]*items[2]
           ))
-            no_op=true
+            return
           expect(test_result == expected_result).toBeTruthy()
         )
       )
@@ -95,7 +95,7 @@ try
           test_count = 0
           iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],1)
           while(not iterator.nextByCombinations((combinations)->test_count+=combinations.length))
-            no_op=true
+            return
           expect(test_count==total_count).toBeTruthy()
         )
         it("should count once for each element in the arrays with batch size 2", ->
@@ -104,7 +104,7 @@ try
           test_count = 0
           iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],2)
           while(not iterator.nextByCombinations((combinations)->test_count+=combinations.length))
-            no_op=true
+            return
           expect(test_count==total_count).toBeTruthy()
         )
         it("should count once for each element in the arrays with batch size 3 and an odd number of elements", ->
@@ -113,7 +113,7 @@ try
           test_count = 0
           iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],3)
           while(not iterator.nextByCombinations((combinations)->test_count+=combinations.length))
-            no_op=true
+            return
           expect(test_count==total_count).toBeTruthy()
         )
       )
@@ -129,7 +129,7 @@ try
           while(not iterator.nextByCombinations((combinations)->
             test_result += combination[0]*combination[1]*combination[2] for combination in combinations
           ))
-            no_op=true
+            return
           expect(test_result == expected_result).toBeTruthy()
         )
         it("should calculate the correct result with batch size 4", ->
@@ -138,7 +138,7 @@ try
           while(not iterator.nextByCombinations((combinations)->
             test_result += combination[0]*combination[1]*combination[2] for combination in combinations
           ))
-            no_op=true
+            return
           expect(test_result == expected_result).toBeTruthy()
         )
         it("should calculate the correct result with batch size greater than the number of elements", ->
@@ -147,7 +147,7 @@ try
           while(not iterator.nextByCombinations((combinations)->
             test_result += combination[0]*combination[1]*combination[2] for combination in combinations
           ))
-            no_op=true
+            return
           expect(test_result == expected_result).toBeTruthy()
         )
       )
@@ -166,7 +166,7 @@ try
               test_count++
               range.step()
           ))
-            no_op=true
+            return
           expect(test_count==total_count).toBeTruthy()
         )
         it("should count once for each element in the arrays with batch size 2", ->
@@ -179,7 +179,7 @@ try
               test_count++
               range.step()
           ))
-            no_op=true
+            return
           expect(test_count==total_count).toBeTruthy()
         )
         it("should count once for each element in the arrays with batch size 3 and an odd number of elements", ->
@@ -192,7 +192,7 @@ try
               test_count++
               range.step()
           ))
-            no_op=true
+            return
           expect(test_count==total_count).toBeTruthy()
         )
       )
@@ -210,7 +210,7 @@ try
               test_result += range.ranges[0].getItem(arrays[0])*range.ranges[1].getItem(arrays[1])*range.ranges[2].getItem(arrays[2])
               range.step()
           ))
-            no_op=true
+            return
           expect(test_result == expected_result).toBeTruthy()
         )
         it("should calculate the correct result with batch size 4", ->
@@ -221,7 +221,7 @@ try
               test_result += range.ranges[0].getItem(arrays[0])*range.ranges[1].getItem(arrays[1])*range.ranges[2].getItem(arrays[2])
               range.step()
           ))
-            no_op=true
+            return
           expect(test_result == expected_result).toBeTruthy()
         )
         it("should calculate the correct result with batch size greater than the number of elements", ->
@@ -232,7 +232,7 @@ try
               test_result += range.ranges[0].getItem(arrays[0])*range.ranges[1].getItem(arrays[1])*range.ranges[2].getItem(arrays[2])
               range.step()
           ))
-            no_op=true
+            return
           expect(test_result == expected_result).toBeTruthy()
         )
       )

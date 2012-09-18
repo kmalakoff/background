@@ -17,6 +17,7 @@ class Background.JobList extends Background._JobContainer
       # done so destroy and remove from list
       @jobs.splice(@jobs.indexOf(job), 1)
       job.destroy(false)
+    return
 
   append: (functions) ->
     @_appendJob.apply(this, arguments)

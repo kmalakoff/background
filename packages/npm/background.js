@@ -278,22 +278,20 @@ Background.JobList = (function(_super) {
   }
 
   JobList.prototype._doTick = function() {
-    var job, jobs, _i, _len, _results;
+    var job, jobs, _i, _len;
     if (!this.jobs.length) {
       this._waitForJobs();
       return;
     }
     jobs = this.jobs.slice();
-    _results = [];
     for (_i = 0, _len = jobs.length; _i < _len; _i++) {
       job = jobs[_i];
       if (!job.run()) {
         continue;
       }
       this.jobs.splice(this.jobs.indexOf(job), 1);
-      _results.push(job.destroy(false));
+      job.destroy(false);
     }
-    return _results;
   };
 
   JobList.prototype.append = function(functions) {
