@@ -1,5 +1,5 @@
 ###
-  background.js 0.3.1
+  background.js 0.3.2
   (c) 2011, 2012 Kevin Malakoff - http://kmalakoff.github.com/background/
   License: MIT (http://www.opensource.org/licenses/mit-license.php)
 ###
@@ -8,7 +8,7 @@ root = @
 
 # export or create Background namespace
 Background = @Background = if (typeof(exports) != 'undefined') then exports else {}
-Background.VERSION = '0.3.1'
+Background.VERSION = '0.3.2'
 
 legacyToLatestTask = ->
   functions = {}
@@ -21,7 +21,7 @@ class Background._JobContainer
 
   constructor: (@frequency) ->
     @jobs = [];
-    @timeout = 0;
+    @interval = 0;
     @in_destroy = false
 
   destroy:      -> @in_destroy = true
@@ -44,9 +44,9 @@ class Background._JobContainer
       job.destroy(true)
 
     # clear the timer
-    if @timeout
-      root.clearInterval(@timeout)
-      @timeout = null
+    if @interval
+      root.clearInterval(@interval)
+      @interval = null
 
   _appendJob: (functions) ->
     functions = legacyToLatestTask.apply(null, arguments) if (arguments.length>1)
@@ -57,14 +57,14 @@ class Background._JobContainer
     else
       job = new Background.Job(functions)
 
-    # add the job and set a timeout if needed
+    # add the job and set a interval if needed
     @jobs.push(job)
-    @timeout = root.setInterval((=> @tick()), @frequency) unless @timeout
+    @interval = root.setInterval((=> @tick()), @frequency) unless @interval
 
   _waitForJobs: ->
-    if @timeout
-      root.clearInterval(@timeout)
-      @timeout = null
+    if @interval
+      root.clearInterval(@interval)
+      @interval = null
 
   _doDestroy: ->
     throw "Destroy state is corrupted" if not @in_destroy or @is_destroyed

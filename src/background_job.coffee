@@ -8,12 +8,17 @@ class Background.Job
   # }
   # OR
   # 2) only a tick function
-  constructor: (@functions) ->
+  constructor: (functions) ->
     # legacy interface
-    @functions = legacyToLatestTask.apply(null, arguments) if (arguments.length>1)
+    functions = legacyToLatestTask.apply(null, arguments) if (arguments.length>1)
     throw "Missing task functions" unless functions # there was only a tick function passed
 
-    @functions = {tick: @functions} if (typeof(@functions) is 'function') # a tick function pass passed instead of an object
+    if (typeof(functions) is 'function') # a tick function pass passed instead of an object
+      @functions = {tick: functions}
+    else
+      @functions = {}
+      for key, value of functions
+        @functions[key] = value
     @was_completed = false
 
   destroy: ->

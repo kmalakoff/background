@@ -11,12 +11,12 @@
 
 Background.js provides a background job queue and list with array iterators for Javascript applications.
 
-#Download Latest (0.3.1):
+#Download Latest (0.3.2):
 
 Please see the [release notes](https://github.com/kmalakoff/background/blob/master/RELEASE_NOTES.md) for upgrade pointers.
 
-* [Development version](https://raw.github.com/kmalakoff/background/0.3.1/background.js)
-* [Production version](https://raw.github.com/kmalakoff/background/0.3.1/background.min.js)
+* [Development version](https://raw.github.com/kmalakoff/background/0.3.2/background.js)
+* [Production version](https://raw.github.com/kmalakoff/background/0.3.2/background.min.js)
 
 ###Module Loading
 
@@ -168,7 +168,7 @@ job_queue.destroy(); job_queue = null
 Release Notes
 -----------------------
 
-# 0.3.1
+# 0.3.2
 
 Reduced verbosity of task setup by:
 1. allowing for run functions to be passed if start and finish callbacks are not required
