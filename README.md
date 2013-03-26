@@ -11,12 +11,12 @@
 
 Background.js provides a background job queue and list with array iterators for Javascript applications.
 
-#Download Latest (0.3.2):
+#Download Latest (0.3.3):
 
 Please see the [release notes](https://github.com/kmalakoff/background/blob/master/RELEASE_NOTES.md) for upgrade pointers.
 
-* [Development version](https://raw.github.com/kmalakoff/background/0.3.2/background.js)
-* [Production version](https://raw.github.com/kmalakoff/background/0.3.2/background.min.js)
+* [Development version](https://raw.github.com/kmalakoff/background/0.3.3/background.js)
+* [Production version](https://raw.github.com/kmalakoff/background/0.3.3/background.min.js)
 
 ###Module Loading
 
@@ -34,14 +34,14 @@ Background.js is compatible with RequireJS, CommonJS, Brunch and AMD module load
 
   queue.push({
     # set up the iterator for the arrays in batches of 3
-    start: -> iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],3)
+    start: (job) -> iterator = new Background.ArrayIterator_xN([test_array1,test_array2,test_array3],3)
 
-    tick: ->
+    tick: (job) ->
       iteration_count++
       return iterator.nextByItems((items)-> result += items[0]*items[1]*items[2])
 
     # use the result here, push another job onto the queue, etc
-    finish: ->
+    finish: (was_completed, job) ->
   })
 ````
 
@@ -168,7 +168,7 @@ job_queue.destroy(); job_queue = null
 Release Notes
 -----------------------
 
-# 0.3.2
+# 0.3.3
 
 Reduced verbosity of task setup by:
 1. allowing for run functions to be passed if start and finish callbacks are not required

@@ -1,5 +1,5 @@
 /*
-  background.js 0.3.2
+  background.js 0.3.3
   (c) 2011, 2012 Kevin Malakoff - http://kmalakoff.github.com/background/
   License: MIT (http://www.opensource.org/licenses/mit-license.php)
 */
