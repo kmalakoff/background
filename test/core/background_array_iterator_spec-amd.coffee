@@ -372,6 +372,7 @@ try
         )
       )
     )
+    require(['jasmine_configure'], -> jasmine.getEnv().execute())
   )
 
 catch error

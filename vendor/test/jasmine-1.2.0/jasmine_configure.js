@@ -13,10 +13,8 @@
   var currentWindowOnload = window.onload;
   window.onload = function() {
     if (currentWindowOnload) { currentWindowOnload(); }
-    execJasmine();
+    jasmineEnv.execute();
   };
-
-  function execJasmine() { jasmineEnv.execute(); }
 
   var start = Date.now();
   var timeout = 60000;

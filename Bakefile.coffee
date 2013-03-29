@@ -43,5 +43,4 @@ module.exports =
       directories: [
         'test/core'
         'test/packaging'
-        'test/lodash'
       ]
