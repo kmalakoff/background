@@ -1,5 +1,9 @@
 try
-  # library
+  require.config({
+    paths:
+      'background': "../../background"
+  })
+
   require ['background', 'jasmine_test_runner'], (Background, runner) ->
     window.Background = null # force each test to require dependencies synchronously
 
