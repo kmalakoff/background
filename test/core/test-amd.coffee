@@ -14,4 +14,4 @@ try
       runner.start()
 
 catch error
-  alert("Background.ArrayIterator specs failed: '#{error}'")
+  alert("Background AMD specs failed: '#{error}'")
