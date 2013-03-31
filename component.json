@@ -1,0 +1,13 @@
+{
+  "name": "background",
+  "version": "0.3.3",
+  "main": "background.js",
+  "ignore": [
+    "**/.*",
+    "components",
+    "node_modules",
+    "packages",
+    "test",
+    "vendor"
+  ]
+}
