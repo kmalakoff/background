@@ -13,6 +13,8 @@ Background.js provides a background job queue and list with array iterators for 
 
 #Download Latest (0.3.3):
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/kmalakoff/background.svg)](https://greenkeeper.io/)
+
 Please see the [release notes](https://github.com/kmalakoff/background/blob/master/RELEASE_NOTES.md) for upgrade pointers.
 
 * [Development version](https://raw.github.com/kmalakoff/background/0.3.3/background.js)
